@@ -1,0 +1,78 @@
+@startuml
+!theme materia
+
+title Runink Core Architecture: Go-Native, Linux-First, Raft-Backed
+
+package "Runink Engine (Go Modules)" <<Rectangle>> {
+  component "Scheduler" as Scheduler #98FB98
+  component "API Server" as APIServer #98FB98
+  component "DSL Parser & DAG Compiler" as DSLCompiler #B0E0E6
+  component "Runi Agent" as RuniAgent #AFEEEE
+  component "Secrets & Identity Manager" as IdentityMgr #DDA0DD
+  component "Data Governance Engine" as GovEngine #DDA0DD
+}
+
+package "Linux Native Execution Layer" <<Node>> {
+  node "Herd Namespace\n(user, pid, net, mount)" as HerdNS #F0FFF0
+  node "Cgroups\n(CPU, Mem, IO)" as Cgroups #F0FFF0
+  node "Pipes & Filesystem\n(exec, pipe, mount)" as PipesFS #F0FFF0
+  node "Ephemeral Users\n(service -> UID map)" as UIDMap #F0FFF0
+}
+
+package "Distributed Coordination" <<Cloud>> {
+  database "Raft-backed Store\n(Barn)" as RaftStore #D8BFD8
+  component "Raft Protocol" as RaftProto #D8BFD8
+  note right of RaftProto
+    - Leader Election  
+    - Log Replication  
+    - Quorum Commit  
+    - Read Consistency  
+  end note
+}
+
+package "Execution Model (Conceptual)" <<Rectangle>> {
+  component "Runi Slice" as RuniSlice #90EE90
+  component "Herds (Quota-bound Tenants)" as Herds #E6E6FA
+  component "Contracts + Steps\n(DSL)" as Contracts #B0E0E6
+}
+
+package "Observability & Security" <<Folder>> {
+  component "Prometheus Metrics" as Prometheus #FFD700
+  component "Fluent Bit Logging" as FluentBit #FFA07A
+  component "RBAC + OIDC + JWT" as Security #DDA0DD
+  component "Lineage & Metadata Tags" as Lineage #ADD8E6
+}
+
+' Connections (Conceptual Dependencies)
+Scheduler --> RaftStore : Reads Cluster State
+APIServer --> RaftStore : Pipeline/State Updates
+RuniAgent --> APIServer : Heartbeat, Commands
+RuniAgent --> RaftStore : Stateful Ops via API
+GovEngine --> RaftStore : Write Metadata
+IdentityMgr --> RaftStore : AuthZ/Secrets
+
+RuniAgent --> RuniSlice : Launch & Monitor
+RuniSlice --> HerdNS : Runs In Namespace
+RuniSlice --> Cgroups : Resource Bound
+RuniSlice --> PipesFS : Data Flow + Mounts
+RuniSlice --> UIDMap : Ephemeral Isolation
+
+DSLCompiler --> Contracts
+Contracts --> RuniSlice
+
+Herds --> RuniSlice
+Herds --> Cgroups
+Herds --> UIDMap
+
+RuniSlice --> Prometheus
+RuniSlice --> FluentBit
+RuniSlice --> Lineage
+RuniSlice --> Security
+
+Security --> APIServer
+Security --> RuniAgent
+
+note top of DSLCompiler : Compiles `.dsl` scenarios into DAGs
+note right of RuniSlice : Ephemeral Go process running a `@step`
+
+@enduml
