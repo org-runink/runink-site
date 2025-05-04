@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.142.0">
+    <meta name="generator" content="Relearn 7.6.1+d7685ad3986c906cb10e62854fca7c730df4bf58">
+    <meta name="description" content="🧰 Runink CLI Reference (runi) The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="CLI Reference :: Runink">
+    <meta name="twitter:description" content="🧰 Runink CLI Reference (runi) The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+    <meta property="og:url" content="http://localhost:1313/docs/cli/index.html">
+    <meta property="og:site_name" content="Runink">
+    <meta property="og:title" content="CLI Reference :: Runink">
+    <meta property="og:description" content="🧰 Runink CLI Reference (runi) The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Runink Docs">
+    <meta itemprop="name" content="CLI Reference :: Runink">
+    <meta itemprop="description" content="🧰 Runink CLI Reference (runi) The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+    <meta itemprop="wordCount" content="973">
+    <title>CLI Reference :: Runink</title>
+    <link href="/images/logo.png?1746367824" rel="icon" type="image/png">
+    <link href="/fonts/fontawesome/css/fontawesome-all.min.css?1746367824" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/fonts/fontawesome/css/fontawesome-all.min.css?1746367824" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar/perfect-scrollbar.min.css?1746367824" rel="stylesheet">
+    <link href="/css/theme.css?1746367824" rel="stylesheet">
+    <link href="/css/format-html.css?1746367824" rel="stylesheet" id="R-format-style">
+    <link href="/css/auto-complete/auto-complete.min.css?1746367824" rel="stylesheet">
+    <script src="/js/auto-complete/auto-complete.min.js?1746367824" defer></script>
+    <script src="/js/lunr/lunr.min.js?1746367824" defer></script>
+    <script src="/js/lunr/lunr.stemmer.support.min.js?1746367824" defer></script>
+    <script src="/js/lunr/lunr.multi.min.js?1746367824" defer></script>
+    <script src="/js/lunr/lunr.en.min.js?1746367824" defer></script>
+    <script src="/js/search.js?1746367824" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/docs\/cli\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.contentLangs=['en'];
+      window.relearn.index_js_url="/searchindex.en.js?1746367824";
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=false;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // variant stuff
+      window.relearn.themevariants = [ 'green' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+    <link href="/css/custom.css?1746367824" rel="stylesheet">
+  </head>
+  <body class="mobile-support html" data-url="/docs/cli/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#-project--pipeline-lifecycle">🧱 Project &amp; Pipeline Lifecycle</a></li>
+    <li><a href="#-schema--contract-management">📁 Schema &amp; Contract Management</a></li>
+    <li><a href="#-testing--data-validation">🧪 Testing &amp; Data Validation</a></li>
+    <li><a href="#-security-publishing--compliance">🔐 Security, Publishing &amp; Compliance</a></li>
+    <li><a href="#-observability--lineage">🔍 Observability &amp; Lineage</a></li>
+    <li><a href="#-distributed-execution-remote">🤖 Distributed Execution (Remote)</a></li>
+    <li><a href="#-control-plane--agents">💪 Control Plane &amp; Agents</a></li>
+    <li><a href="#-worker-slice-management">🌐 Worker Slice Management</a></li>
+    <li><a href="#-introspection--visualization">🔀 Introspection &amp; Visualization</a></li>
+    <li><a href="#-repl--exploratory-commands">🧪 REPL &amp; Exploratory Commands</a></li>
+    <li><a href="#-dev-tools--generators">🛠️ Dev Tools &amp; Generators</a></li>
+    <li><a href="#-plugins--extensions">🧹 Plugins &amp; Extensions</a></li>
+    <li><a href="#-packaging--cicd">📦 Packaging &amp; CI/CD</a></li>
+    <li><a href="#-runtime-lifecycle">📅 Runtime Lifecycle</a></li>
+    <li><a href="#-collaboration--governance">💬 Collaboration &amp; Governance</a></li>
+    <li><a href="#-privacy-redaction--data-escrow">🛡️ Privacy, Redaction &amp; Data Escrow</a></li>
+    <li><a href="#-event-based-execution">🗓 Event-Based Execution</a></li>
+    <li><a href="#-pipeline--contract-lifecycle">🔄 Pipeline &amp; Contract Lifecycle</a></li>
+    <li><a href="#-metadata-graph--semantic-search">🧬 Metadata Graph &amp; Semantic Search</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="topbar-breadcrumbs highlightable">
+            CLI Reference
+          </span>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable docs" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+
+<h1 id="-runink-cli-reference-runi">🧰 Runink CLI Reference (<code>runi</code>)</h1>
+<p>The <code>runi</code> CLI is the command-line interface to everything in the <strong>Runink</strong> data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative <code>.dsl</code> files and Go-native contracts.</p>
+<p>This reference describes all available commands, grouped by capability.</p>
+<hr>
+<h2 id="-project--pipeline-lifecycle">🧱 Project &amp; Pipeline Lifecycle</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi herd init [project-name]</code></td>
+          <td>Scaffold a new workspace with starter contracts, features, CI config</td>
+      </tr>
+      <tr>
+          <td><code>runi compile --scenario &lt;file&gt;</code></td>
+          <td>Generate Go pipeline code from <code>.dsl</code> files</td>
+      </tr>
+      <tr>
+          <td><code>runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt;</code></td>
+          <td>Run pipelines locally or remotely</td>
+      </tr>
+      <tr>
+          <td><code>runi watch --scenario &lt;file&gt;</code></td>
+          <td>Auto-compile &amp; re-run scenario on save</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-schema--contract-management">📁 Schema &amp; Contract Management</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi contract gen --struct &lt;pkg.Type&gt;</code></td>
+          <td>Generate a contract from Go struct</td>
+      </tr>
+      <tr>
+          <td><code>runi contract diff --old v1.json --new v2.json</code></td>
+          <td>Show schema drift between versions</td>
+      </tr>
+      <tr>
+          <td><code>runi contract rollback</code></td>
+          <td>Revert to previous contract version</td>
+      </tr>
+      <tr>
+          <td><code>runi contract history --name &lt;contract&gt;</code></td>
+          <td>Show all versions and changelog entries</td>
+      </tr>
+      <tr>
+          <td><code>runi contract validate --file &lt;file&gt;</code></td>
+          <td>Validate a file against a contract</td>
+      </tr>
+      <tr>
+          <td><code>runi contract catalog</code></td>
+          <td>Create an index of all contracts in the repo</td>
+      </tr>
+      <tr>
+          <td><code>runi contract hash</code></td>
+          <td>Generate contract hash for versioning</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-testing--data-validation">🧪 Testing &amp; Data Validation</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi synth --dsl feature.dsl --contract feature.contract --golden input.golden</code></td>
+          <td>Generate synthetic golden test data based on golden files</td>
+      </tr>
+      <tr>
+          <td><code>runi audit --dsl feature.dsl --contract feature.contract --golden input.golden</code></td>
+          <td>Validate pipeline against contract using golden files</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-security-publishing--compliance">🔐 Security, Publishing &amp; Compliance</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi secure [--sbom|--sign|--scan]</code></td>
+          <td>Run security audits and generate SBOM</td>
+      </tr>
+      <tr>
+          <td><code>runi publish</code></td>
+          <td>Push metadata, lineage, and contracts to registry</td>
+      </tr>
+      <tr>
+          <td><code>runi sbom export [--format spdx]</code></td>
+          <td>Export SPDX-compliant software bill of materials</td>
+      </tr>
+      <tr>
+          <td><code>runi changelog gen</code></td>
+          <td>Generate changelogs from contract/feature diffs</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-observability--lineage">🔍 Observability &amp; Lineage</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi lineage --run-id &lt;uuid&gt;</code></td>
+          <td>Show DAG lineage for a run</td>
+      </tr>
+      <tr>
+          <td><code>runi lineage track --source A --sink B</code></td>
+          <td>Manually link lineage metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi lineage graph --out file.dot</code></td>
+          <td>Export lineage graph in DOT format</td>
+      </tr>
+      <tr>
+          <td><code>runi metadata get --key &lt;name&gt;</code></td>
+          <td>Retrieve stored metadata for a step</td>
+      </tr>
+      <tr>
+          <td><code>runi metadata annotate --key &lt;name&gt;</code></td>
+          <td>Attach annotation to pipeline metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi logs --run-id &lt;uuid&gt;</code></td>
+          <td>View logs for a specific run</td>
+      </tr>
+      <tr>
+          <td><code>runi status --run-id &lt;uuid&gt;</code></td>
+          <td>Check status of a pipeline execution</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-distributed-execution-remote">🤖 Distributed Execution (Remote)</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi deploy --target &lt;k8s|local&gt;</code></td>
+          <td>Deploy Runi workers to a local or remote cluster</td>
+      </tr>
+      <tr>
+          <td><code>runi start --slice &lt;file&gt; --herd &lt;namespace&gt;</code></td>
+          <td>Start execution of a scenario remotely</td>
+      </tr>
+      <tr>
+          <td><code>runi kill --run-id &lt;uuid&gt;</code></td>
+          <td>Terminate running scenario</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-control-plane--agents">💪 Control Plane &amp; Agents</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi herdctl create</code></td>
+          <td>Create a new Herd (namespace + quotas + policies)</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl delete</code></td>
+          <td>Delete a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl update</code></td>
+          <td>Update Herd quotas, RBAC, metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl list</code></td>
+          <td>List all Herds and resource states</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl quota set &lt;herd&gt;</code></td>
+          <td>Update CPU/mem quotas live</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl lineage &lt;herd&gt;</code></td>
+          <td>View lineage graphs scoped to a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl list</code></td>
+          <td>List active Runi agents, resource usage, labels</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl status &lt;agent&gt;</code></td>
+          <td>Detailed agent status (health, registered slices, metrics)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl drain &lt;agent&gt;</code></td>
+          <td>Mark agent as unschedulable (cordon)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl register</code></td>
+          <td>Manually register agent (optional bootstrap)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl cordon &lt;agent&gt;</code></td>
+          <td>Prevent slice scheduling</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-worker-slice-management">🌐 Worker Slice Management</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi slicectl list --herd &lt;id&gt;</code></td>
+          <td>List all active slices for a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl logs &lt;slice-id&gt;</code></td>
+          <td>Fetch logs for a given slice</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl cancel &lt;slice-id&gt;</code></td>
+          <td>Cancel a running slice gracefully</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl metrics &lt;slice-id&gt;</code></td>
+          <td>Show real-time metrics for a slice</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl promote &lt;slice-id&gt;</code></td>
+          <td>Checkpoint a slice mid-run</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-introspection--visualization">🔀 Introspection &amp; Visualization</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi explain --scenario &lt;file&gt;</code></td>
+          <td>Describe DAG and step resolution logic</td>
+      </tr>
+      <tr>
+          <td><code>runi graphviz --scenario &lt;file&gt;</code></td>
+          <td>Render DAG as a .png, .svg, or .dot</td>
+      </tr>
+      <tr>
+          <td><code>runi diff --feature old.dsl --feature new.dsl</code></td>
+          <td>Compare feature files and show logic drift</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-repl--exploratory-commands">🧪 REPL &amp; Exploratory Commands</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi repl</code></td>
+          <td>Launch interactive DataFrame, SQL, JSON REPL</td>
+      </tr>
+      <tr>
+          <td><code>runi json explore -f file.json -q '.email'</code></td>
+          <td>Run jq-style query on JSON</td>
+      </tr>
+      <tr>
+          <td><code>runi query -e &quot;SELECT * FROM dataset&quot;</code></td>
+          <td>Run SQL-like query on scenario input</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-dev-tools--generators">🛠️ Dev Tools &amp; Generators</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi gen --dsl input.json</code></td>
+          <td>Generate feature from sample input</td>
+      </tr>
+      <tr>
+          <td><code>runi contract from-feature &lt;file&gt;</code></td>
+          <td>Extract contract from <code>.dsl</code> spec</td>
+      </tr>
+      <tr>
+          <td><code>runi schema hash</code></td>
+          <td>Generate contract fingerprint</td>
+      </tr>
+      <tr>
+          <td><code>runi bump</code></td>
+          <td>Auto-increment contract version with changelog</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-plugins--extensions">🧹 Plugins &amp; Extensions</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi plugin install &lt;url&gt;</code></td>
+          <td>Install external plugin</td>
+      </tr>
+      <tr>
+          <td><code>runi plugin list</code></td>
+          <td>List installed extensions</td>
+      </tr>
+      <tr>
+          <td><code>runi plugin run &lt;name&gt;</code></td>
+          <td>Execute a plugin subcommand</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-packaging--cicd">📦 Packaging &amp; CI/CD</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi build</code></td>
+          <td>Compile pipeline bundle for remote use</td>
+      </tr>
+      <tr>
+          <td><code>runi pack</code></td>
+          <td>Zip workspace for deployment/distribution</td>
+      </tr>
+      <tr>
+          <td><code>runi upgrade</code></td>
+          <td>Self-update the CLI and plugins</td>
+      </tr>
+      <tr>
+          <td><code>runi doctor</code></td>
+          <td>Diagnose CLI and project setup</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-runtime-lifecycle">📅 Runtime Lifecycle</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi restart --run-id &lt;uuid&gt;</code></td>
+          <td>Restart a pipeline from last successful checkpoint</td>
+      </tr>
+      <tr>
+          <td><code>runi resume --run-id &lt;uuid&gt;</code></td>
+          <td>Resume paused pipeline without reprocessing</td>
+      </tr>
+      <tr>
+          <td><code>runi checkpoint --scenario &lt;file&gt;</code></td>
+          <td>Create a persistent step-based checkpoint marker</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-collaboration--governance">💬 Collaboration &amp; Governance</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi comment --contract &lt;file&gt;</code></td>
+          <td>Leave inline comments for review (contract-level QA)</td>
+      </tr>
+      <tr>
+          <td><code>runi request-approval --contract &lt;file&gt;</code></td>
+          <td>Submit contract for governance approval</td>
+      </tr>
+      <tr>
+          <td><code>runi feedback --scenario &lt;file&gt;</code></td>
+          <td>Attach review notes to a scenario</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-privacy-redaction--data-escrow">🛡️ Privacy, Redaction &amp; Data Escrow</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi redact --contract &lt;file&gt;</code></td>
+          <td>Automatically redact PII based on tags</td>
+      </tr>
+      <tr>
+          <td><code>runi escrow --run-id &lt;uuid&gt;</code></td>
+          <td>Encrypt pipeline outputs for future unsealing</td>
+      </tr>
+      <tr>
+          <td><code>runi anonymize --input &lt;file&gt;</code></td>
+          <td>Generate synthetic version of a sensitive input file</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-event-based-execution">🗓 Event-Based Execution</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi trigger --on &lt;webhook|s3|pubsub&gt;</code></td>
+          <td>Set up trigger-based pipeline starts</td>
+      </tr>
+      <tr>
+          <td><code>runi listen --event &lt;type&gt;</code></td>
+          <td>Listen for external event to start scenario</td>
+      </tr>
+      <tr>
+          <td><code>runi subscribe --stream &lt;source&gt;</code></td>
+          <td>Subscribe to stream source with offset recovery</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-pipeline--contract-lifecycle">🔄 Pipeline &amp; Contract Lifecycle</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi freeze --scenario &lt;file&gt;</code></td>
+          <td>Lock DAG hash and contract state as immutable</td>
+      </tr>
+      <tr>
+          <td><code>runi archive --herd &lt;name&gt; --keep &lt;N&gt;</code></td>
+          <td>Archive old scenarios/runs beyond retention policy</td>
+      </tr>
+      <tr>
+          <td><code>runi retire --contract &lt;file&gt;</code></td>
+          <td>Deprecate contract from active use</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-metadata-graph--semantic-search">🧬 Metadata Graph &amp; Semantic Search</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi knowledge export --format turtle</code></td>
+          <td>Export contract and DAG metadata as RDF</td>
+      </tr>
+      <tr>
+          <td><code>runi query lineage</code></td>
+          <td>Run SQL-style queries across lineage metadata</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<blockquote>
+<p>💬 Use <code>runi &lt;command&gt; --help</code> for flags, options, and examples.</p>
+<p>Runink&rsquo;s CLI gives you a full stack data engine in your terminal — from contracts to clusters, from <code>.dsl</code> to full observability.</p>
+</blockquote>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+<a id="R-logo" href="/index.html">
+    <img src="/images/logo.png" alt="Runink logo" style="max-height: 350px;">
+  </a>
+  
+        </div>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="/index.html"><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="parent " data-nav-id="/docs/index.html"><a class="padding" href="/docs/index.html">Runink Docs</a><ul id="R-subsections-b5fa667da3c6d162416dac7e8c63bf8a" class="collapsible-menu">
+            <li class="" data-nav-id="/docs/architecture/index.html"><a class="padding" href="/docs/architecture/index.html">Architecture</a></li>
+            <li class="" data-nav-id="/docs/components/index.html"><a class="padding" href="/docs/components/index.html">Components</a></li>
+            <li class="" data-nav-id="/docs/benchmark/index.html"><a class="padding" href="/docs/benchmark/index.html">Benchmark</a></li>
+            <li class="active " data-nav-id="/docs/cli/index.html"><a class="padding" href="/docs/cli/index.html">CLI Reference</a></li>
+            <li class="" data-nav-id="/docs/clihelp/index.html"><a class="padding" href="/docs/clihelp/index.html">CLI Help Commands</a></li>
+            <li class="" data-nav-id="/docs/contributing/index.html"><a class="padding" href="/docs/contributing/index.html">Contributing</a></li>
+            <li class="" data-nav-id="/docs/data-lineage/index.html"><a class="padding" href="/docs/data-lineage/index.html">Data Lineage</a></li>
+            <li class="" data-nav-id="/docs/feature-dsl/index.html"><a class="padding" href="/docs/feature-dsl/index.html">Feature DSL</a></li>
+            <li class="" data-nav-id="/docs/getting_started/index.html"><a class="padding" href="/docs/getting_started/index.html">Getting Started</a></li>
+            <li class="" data-nav-id="/docs/glossary/index.html"><a class="padding" href="/docs/glossary/index.html">Glossary</a></li>
+            <li class="" data-nav-id="/docs/roadmap/index.html"><a class="padding" href="/docs/roadmap/index.html">Roadmap</a></li>
+            <li class="" data-nav-id="/docs/runink_quickstart/index.html"><a class="padding" href="/docs/runink_quickstart/index.html">Runink Quickstart</a></li>
+            <li class="" data-nav-id="/docs/schema-contracts/index.html"><a class="padding" href="/docs/schema-contracts/index.html">Schema Contracts</a></li>
+            <li class="" data-nav-id="/docs/security/index.html"><a class="padding" href="/docs/security/index.html">Security &amp; RBAC</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <div class="nav-title padding">More</div>
+          <ul class="space collapsible-menu">
+            <li class="" data-nav-id="https://github.com/paesdan/runink"><a class="padding" href="https://github.com/paesdan/runink" rel="external" target="_blank"><i class='fab fa-github'></i> GitHub</a></li>
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+          </ul>
+        </div>
+<div id="R-footer"><p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p></div>
+      </div>
+    </aside>
+    <script src="/js/clipboard/clipboard.min.js?1746367824" defer></script>
+    <script src="/js/perfect-scrollbar/perfect-scrollbar.min.js?1746367824" defer></script>
+    <script src="/js/js-yaml/js-yaml.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-color.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-dispatch.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-drag.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-ease.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-interpolate.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-selection.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-timer.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-transition.min.js?1746367824" defer></script>
+    <script src="/js/d3/d3-zoom.min.js?1746367824" defer></script>
+    <script src="/js/mermaid/mermaid.min.js?1746367824" defer></script>
+    <script>
+      window.relearn.themeUseMermaid = JSON.parse("{}");
+    </script>
+    <script src="/js/theme.js?1746367824" defer></script>
+  </body>
+</html>

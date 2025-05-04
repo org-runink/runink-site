@@ -1,56 +1,48 @@
-# Base URL of your site
-baseURL = 'https://runink.org/' # Change this to your actual deployment URL
-# Language of the site
-languageCode = 'en-us'
-# Title of your site
-title = 'Runink Project'
-# Enable Git information for pages (optional)
+baseURL = "https://runink.org/"
+title = "Runink"
+theme = "relearn"
+defaultContentLanguage = "en"
 enableGitInfo = true
-# Theme configuration
-theme = 'learn'
+enableEmoji = true
 
 [params]
-  # Theme variant ('green', 'red', 'blue', 'learn')
-  themeVariant = 'green' # Arch Linux uses blue tones
-  # Show search bar
-  showVisitedLinks = true
-  # Disable breadcrumbs (optional)
-  disableBreadcrumb = false
-  # Disable next/previous page buttons (optional)
-  disableNextPrev = false
-  # Order sections by weight
+  mermaidZoom = true
+  mermaid.force = true
+  themeVariant = "green"                          # Choose theme variant: green, blue, red, etc.
+  showVisitedLinks = false
+  disableBreadcrumb = true
+  disableNextPrev = true
+  disableTopNavigation = true
   ordersectionsby = "weight"
-  # Edit link (optional, points to your repo's docs folder)
-  editURL = "https://github.com/paesdan/runink/edit/main/docs/" # Adjust branch/path if needed
+  logo = "images/logo.png"
+  themeVariantToggle = true
+  
+[menu]
 
-[outputs]
-  home = [ "HTML", "RSS", "JSON"] # Keep standard outputs
-
-# --- Menu Configuration ---
-# Mimicking archlinux.org main navigation
-# Note: Hugo Learn theme primarily uses content structure for the sidebar.
-# This 'main' menu might appear in the header depending on theme customization.
-# For the Learn theme, the sidebar is built from your content folders.
-[[menu.main]]
+  [[menu.sidebar]]
     name = "Home"
     url = "/"
-    weight = 10
-[[menu.main]]
-    name = "Documentation"
-    url = "/docs/" # Assuming your docs are under /content/docs/
-    weight = 20
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/paesdan/runink/"
-    weight = 30
-# Add other sections like 'Community', 'Download' etc. if needed
+    weight = 1
 
-# --- Markdown Configuration ---
+  [[menu.sidebar]]
+    name = "Documentation"
+    url = "/docs/"
+    weight = 2
+
+  [[menu.sidebar]]
+    name = "Forums"
+    url = "/forums/"
+    weight = 3
+
+[[menu.shortcuts]]
+name = "GitHub"
+url = "https://github.com/paesdan/runink"
+weight = 1
+pre = "<i class='fab fa-github'></i> "
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = true # Needed for some advanced HTML/JS in Markdown if you use it
-  [markup.highlight]
-    # Code highlighting style
-    style = "dracula" # Or choose another style: https://xyproto.github.io/splash/docs/all.html
-    noClasses = false
+      unsafe = true
+    [markup.goldmark.parser]
+      attribute = true
