@@ -1,0 +1,18 @@
+#navbar-title {
+    display: none !important;
+  }
+  pre.mermaid {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .mermaid {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .mermaid svg {
+    background: none;
+    border: none;
+    padding: 0;
+  }  
