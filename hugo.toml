@@ -4,6 +4,7 @@ theme = "relearn"
 defaultContentLanguage = "en"
 enableGitInfo = true
 enableEmoji = true
+googleAnalytics = "G-SEECKDWZNJ" 
 
 [params]
   mermaidZoom = true
