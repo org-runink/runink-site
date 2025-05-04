@@ -16,7 +16,11 @@ enableEmoji = true
   ordersectionsby = "weight"
   logo = "images/logo.png"
   themeVariantToggle = true
-  
+
+[submodule "themes/relearn"]
+  path = themes/relearn
+  url = https://github.com/McShelby/hugo-theme-relearn.git
+
 [menu]
 
   [[menu.sidebar]]
