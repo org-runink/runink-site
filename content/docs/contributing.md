@@ -13,7 +13,7 @@ This document will guide you through the process of contributing code, filing is
 
 ## 📜 Code of Conduct
 
-We expect everyone participating to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) (to be created). Respect and kindness are the foundation.
+We expect everyone participating to adhere to our [Code of Conduct](https://github.com/paesdan/runink/main/CODE_OF_CONDUCT.md). Respect and kindness are the foundation.
 
 ---
 
@@ -86,7 +86,7 @@ On GitHub, create a new Pull Request and fill in the template (title, descriptio
 - Provide logs, stack traces, and your environment (OS, Go version).
 
 > If you discover a security vulnerability, **please do not open a public issue.**  
-Instead, email us at [paes@dashie.ink](mailto:paes@dashie.ink).
+Instead, email us at [paes@runink.org](mailto:paes@runink.org).
 
 
 ---
@@ -102,7 +102,7 @@ Instead, email us at [paes@dashie.ink](mailto:paes@dashie.ink).
 
 We’re a community of data builders. We expect contributors to be respectful, inclusive, and constructive.
 
-Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) before contributing.
+Please read our [Code of Conduct](https://github.com/paesdan/runink/main/CODE_OF_CONDUCT.md) before contributing.
 
 ---
 
