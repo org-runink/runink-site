@@ -3,9 +3,11 @@ title = "Runink"
 theme = "relearn"
 defaultContentLanguage = "en"
 enableGitInfo = true
-enableEmoji = true
-googleAnalytics = "G-SEECKDWZNJ" 
+enableEmoji = true 
 
+[services]
+  [services.googleAnalytics]
+    id = 'G-SEECKDWZNJ'
 [params]
   mermaidZoom = true
   mermaid.force = true
