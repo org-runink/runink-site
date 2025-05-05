@@ -5,7 +5,7 @@ var relearn_searchindex = [
     "description": "📌 Overview Runink is a Go-native distributed pipeline orchestration and governance platform. It defines a self-sufficient, distributed environment to orchestrate and execute data pipelines — replacing complex Kubernetes or Slurm setups with an integrated runtime built on:\nLinux primitives: cgroups, namespaces, exec Go-based execution and scheduling Governance, lineage, and contract enforcement Serverless-style, per-slice isolation and resource control Runink slices run like fast, secure micro-VMs — written in Go, isolated with Linux, coordinated by Raft.",
     "tags": [],
     "title": "Runink Docs",
-    "uri": "/runink-site/docs/index.html"
+    "uri": "/docs/index.html"
   },
   {
     "breadcrumb": "",
@@ -13,7 +13,7 @@ var relearn_searchindex = [
     "description": "Runink is a Go-native platform for orchestrating secure, testable, and governance-driven data pipelines at scale.",
     "tags": [],
     "title": "Runink: Declarative, Secure Data Pipelines",
-    "uri": "/runink-site/index.html"
+    "uri": "/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -21,7 +21,7 @@ var relearn_searchindex = [
     "description": "Runink Architecture: Go/Linux Native Distributed Data Environment Self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives. This system acts as the cluster resource manager and scheduler (replacing Slurm), provides Kubernetes-like logical isolation and RBAC, integrates data governance features, and ensures robust security and observability. It aims for high efficiency by avoiding traditional virtualization or container runtimes like Docker. Define a self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives, with enhanced metadata capabilities designed to support standard data governance (lineage, catalog) AND future integration of LLM-generated annotations.",
     "tags": [],
     "title": "Architecture",
-    "uri": "/runink-site/docs/architecture/index.html"
+    "uri": "/docs/architecture/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -29,7 +29,7 @@ var relearn_searchindex = [
     "description": "Runink Platform Components This page describes the core building blocks of Runink — from the API server to slices — that make up the distributed data environment. Each component serves a purpose in ensuring secure, auditable, and high-performance pipeline execution.\nComponents Table Component Role Location API Server Entry point, AuthN/Z, coordination Control Plane Identity Manager OIDC/JWT validation and RBAC enforcement Control Plane Barn Raft-backed KV store Control Plane Scheduler DAG-aware placement engine Control Plane Secrets Manager Encrypted secret storage and delivery Control Plane Governance Svc Lineage, quality, LLM annotations Control Plane Runi Agent Worker orchestrator (cgroup+namespace) Worker Node Runi Slice Executed unit of pipeline logic Worker Node Herd Tenant boundary and resource isolation System-wide Contracts Data validation and schema enforcement Contracts repo DSL Parser Converts .",
     "tags": [],
     "title": "Components",
-    "uri": "/runink-site/docs/components/index.html"
+    "uri": "/docs/components/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -37,7 +37,7 @@ var relearn_searchindex = [
     "description": "1. Architecture \u0026 Paradigm Runink: A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a Raft-based control plane to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.\nCompetitors: Use a layered, loosely coupled stack:",
     "tags": [],
     "title": "Benchmark",
-    "uri": "/runink-site/docs/benchmark/index.html"
+    "uri": "/docs/benchmark/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -45,7 +45,7 @@ var relearn_searchindex = [
     "description": "🧰 Runink CLI Reference (runi) The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.\nThis reference describes all available commands, grouped by capability.\n🧱 Project \u0026 Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario \u003cfile\u003e Generate Go pipeline code from .",
     "tags": [],
     "title": "CLI Reference",
-    "uri": "/runink-site/docs/cli/index.html"
+    "uri": "/docs/cli/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -53,7 +53,7 @@ var relearn_searchindex = [
     "description": "🆘 Runink CLI: Help Template This is a developer-friendly help template for implementing consistent runi \u003ccommand\u003e --help outputs.\n🧱 Format: Basic Help Command runi \u003ccommand\u003e [subcommand] [flags] Usage: runi \u003ccommand\u003e [options] Options: -h, --help Show this help message and exit -v, --verbose Show detailed logs and diagnostics Example: runi init --help Initialize a new Runink project. Usage: runi init [project-name] Flags: -h, --help Show help for init 🔄 Example: runi compile --help runi compile --scenario \u003cfile.",
     "tags": [],
     "title": "CLI Help Commands",
-    "uri": "/runink-site/docs/clihelp/index.html"
+    "uri": "/docs/clihelp/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -61,7 +61,7 @@ var relearn_searchindex = [
     "description": "🤝 Contributing to Runink Welcome! First off, thank you for considering contributing to Runink. We deeply appreciate your support and effort to improve our project.\nThis document will guide you through the process of contributing code, filing issues, suggesting features, and participating in the Runink community.\n📜 Code of Conduct We expect everyone participating to adhere to our Code of Conduct. Respect and kindness are the foundation.\n🛠️ How to Contribute 1.",
     "tags": [],
     "title": "Contributing",
-    "uri": "/runink-site/docs/contributing/index.html"
+    "uri": "/docs/contributing/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -69,7 +69,7 @@ var relearn_searchindex = [
     "description": "Data Lineage \u0026 Metadata Tracking – Runink Runink pipelines are designed to be fully traceable, auditable, and schema-aware. With built-in lineage support, every pipeline can generate:\nVisual DAGs of data flow and dependencies Metadata snapshots with schema versions and field hashes Run-level logs for audit, debugging, and compliance This guide walks through how Runink enables robust data observability and governance by default.\n🔍 What Is Data Lineage? Lineage describes where your data came from, what happened to it, and where it went.",
     "tags": [],
     "title": "Data Lineage",
-    "uri": "/runink-site/docs/data-lineage/index.html"
+    "uri": "/docs/data-lineage/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -77,7 +77,7 @@ var relearn_searchindex = [
     "description": "📘 Feature DSL — Authoring Pipelines in Natural Language Runink’s .dsl files allow data, governance, and domain teams to write declarative pipeline logic in plain English — no YAML, no code, just structured steps tied to contracts.\nInspired by Gherkin and feature-driven development, the DSL is intentionally designed to:\nAlign with real-world data contracts Support lineage, compliance, and multi-tenant governance Be editable by non-engineers — analysts, stewards, and reviewers ✨ Full Example Feature: Trade Events – Validation \u0026 Compliance Scenario: Validate and Tag Incoming Financial Trade Events Metadata: purpose: \"Check and tag incoming trade events for compliance and data quality\" module_layer: \"Silver\" herd: \"Finance\" slo: \"99.",
     "tags": [],
     "title": "Feature DSL",
-    "uri": "/runink-site/docs/feature-dsl/index.html"
+    "uri": "/docs/feature-dsl/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -85,7 +85,7 @@ var relearn_searchindex = [
     "description": "Getting Started with Runink Welcome to Runink! This quick-start guide will help you get up and running with Runink to effortlessly build, test, and run data pipelines.\n🚀 1. Installation Make sure you have Go installed (v1.20 or later). Then install Runink:\ngo install github.com/runink/runink@latest Ensure $GOPATH/bin is in your $PATH.\n🛠 2. Initialize Your Project Create a new Runink project in seconds:\nruni init myproject cd myproject This command generates:",
     "tags": [],
     "title": "Getting Started",
-    "uri": "/runink-site/docs/getting_started/index.html"
+    "uri": "/docs/getting_started/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -93,7 +93,7 @@ var relearn_searchindex = [
     "description": "Runink Glossary This glossary defines key terms, acronyms, and concepts used throughout the Runink documentation and codebase.\n.dsl File A human-readable file written in Gherkin syntax used to describe a data pipeline scenario using Given/When/Then structure and tags like @source, @step, and @sink.\nBDD (Behavior-Driven Development) A software development approach that describes application behavior in plain language, often used with .dsl files.\nGolden File A snapshot of the expected output from a pipeline or transformation, used to assert correctness in automated tests.",
     "tags": [],
     "title": "Glossary",
-    "uri": "/runink-site/docs/glossary/index.html"
+    "uri": "/docs/glossary/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -101,7 +101,7 @@ var relearn_searchindex = [
     "description": "🗺️ Runink Roadmap Welcome to the official Runink Roadmap — our evolving guide to what we’re building, where we’re headed, and how you can get involved.\nRunink is built on the belief that modern data platforms should be safe by default, composable by design, and collaborative at scale. This roadmap reflects our commitment to transparency, community-driven development, and rapid iteration.\n🧩 Roadmap Themes Theme Description Composable Pipelines Make it easy to build, reuse, and test pipeline steps across teams and domains.",
     "tags": [],
     "title": "Roadmap",
-    "uri": "/runink-site/docs/roadmap/index.html"
+    "uri": "/docs/roadmap/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -109,7 +109,7 @@ var relearn_searchindex = [
     "description": "🚀 Runink Quickstart: CDM Trade Pipeline This example shows how to define, test, apply, and run a declarative data pipeline using Runink.\nEnvironment scenario %% Mermaid Diagram: Runink Architecture (Blueprint View) flowchart TD subgraph Developer_Client[\"🌐 Developer / Client\"] Developer[\"Developer\"] end subgraph Global_Control_Plane[\"🧭 Runink Global Control Plane (HA Setup)\"] GlobalAPI[\"API Server x3 - AuthN/AuthZ - Herd Routing - TLS gRPC\"] HerdDirectory[\"Herd Directory - Maps Herds to Raft Groups - Metadata Routing\"] end subgraph Finance_Herd[\"🏦 Finance Herd Partition\"] FinanceScheduler[\"Finance Scheduler (Leader) - DAG Planning - Placement Decisions\"] FinanceBarn[\"Finance Barn (KV Store) - BadgerDB (Local)\"] FinanceGovernance[\"Finance Governance Service - Lineage - Quality - Contracts\"] FinanceSecrets[\"Finance Secrets Manager - Raft-backed Secret Storage\"] FinanceRaft[\"Finance Raft Group (5 Nodes) (etcd-io/raft)\"] end subgraph Analytics_Herd[\"📊 Analytics Herd Partition\"] AnalyticsScheduler[\"Analytics Scheduler (Leader) - DAG Planning - Placement Decisions\"] AnalyticsBarn[\"Analytics Barn (KV Store) - BadgerDB (Local)\"] AnalyticsGovernance[\"Analytics Governance Service - Lineage - Quality - Contracts\"] AnalyticsSecrets[\"Analytics Secrets Manager - Raft-backed Secret Storage\"] AnalyticsRaft[\"Analytics Raft Group (5 Nodes) (etcd-io/raft)\"] end subgraph Worker_Cluster[\"🧱 Worker Nodes Cluster\"] RuniAgent[\"Runi Agent x100 - Node Registration - Slice Management - Metrics Collection\"] RuniSlice[\"Runi Slice (Ephemeral Container) - Herd Namespaced - Config Loaded - Secrets Injected\"] end Developer --\u003e | CLI/API Requests | GlobalAPI GlobalAPI --\u003e | Resolve Herd Assignment | HerdDirectory GlobalAPI --\u003e | Finance Pipelines | FinanceScheduler GlobalAPI --\u003e | Analytics Pipelines | AnalyticsScheduler FinanceScheduler --\u003e | DAG and Placement Reads | FinanceBarn FinanceGovernance --\u003e | Metadata/Lineage Writes | FinanceBarn FinanceSecrets --\u003e | Secrets CRUD | FinanceBarn FinanceBarn --\u003e | Log Replication | FinanceRaft AnalyticsScheduler --\u003e | DAG and Placement Reads | AnalyticsBarn AnalyticsGovernance --\u003e | Metadata/Lineage Writes | AnalyticsBarn AnalyticsSecrets --\u003e | Secrets CRUD | AnalyticsBarn AnalyticsBarn --\u003e | Log Replication | AnalyticsRaft FinanceScheduler --\u003e | Dispatch Finance Slices | RuniAgent AnalyticsScheduler --\u003e | Dispatch Analytics Slices | RuniAgent RuniAgent --\u003e | Launch with Herd Isolation | RuniSlice RuniAgent --\u003e | Fetch Finance Secrets | FinanceSecrets RuniAgent --\u003e | Fetch Analytics Secrets | AnalyticsSecrets RuniSlice --\u003e | Emit Lineage Events | FinanceGovernance RuniSlice --\u003e | Emit Lineage Events | AnalyticsGovernance RuniSlice --\u003e | Expose Service Port | RuniAgent RuniAgent --\u003e | Port-Forwarded Access | Developer 🛠️ Prerequisites Ensure you have:",
     "tags": [],
     "title": "Runink Quickstart",
-    "uri": "/runink-site/docs/runink_quickstart/index.html"
+    "uri": "/docs/runink_quickstart/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -117,7 +117,7 @@ var relearn_searchindex = [
     "description": "Schema \u0026 Contract Management – Runink Runink enables data contracts as native Go structs — giving you strong typing, version tracking, schema validation, and backward compatibility across pipelines.\nThis guide shows how to define, version, test, and enforce schema contracts in your pipelines.\n📦 What Is a Contract? A contract in Runink is a schema definition used to:\nValidate incoming and outgoing data Detect schema drift Provide PII and RBAC tagging Drive pipeline generation and testing Contracts are generated from Go structs annotated with tags.",
     "tags": [],
     "title": "Schema Contracts",
-    "uri": "/runink-site/docs/schema-contracts/index.html"
+    "uri": "/docs/schema-contracts/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines \u003e  Runink Docs",
@@ -125,7 +125,7 @@ var relearn_searchindex = [
     "description": "Supported Versions We currently support the latest major release of pipetool. Older versions may not receive security updates or patches.\nReporting a Vulnerability If you discover a security vulnerability, please do not open a public issue.\nInstead, contact us directly:\nEmail: security@yourdomain.org PGP Key: https://yourdomain.org/pgp.key (optional) We aim to respond to all security reports within 5 business days. All disclosures will be handled confidentially and professionally.\nDisclosure Process Vulnerability reported via email Maintainers investigate and validate the issue A patch is prepared and tested privately Coordinated disclosure timeline is agreed upon with reporter Advisory + patched release are published Hall of Fame We may credit contributors who report valid vulnerabilities in our release notes, changelogs, or SECURITY.",
     "tags": [],
     "title": "Security \u0026 RBAC",
-    "uri": "/runink-site/docs/security/index.html"
+    "uri": "/docs/security/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines",
@@ -133,7 +133,7 @@ var relearn_searchindex = [
     "description": "",
     "tags": [],
     "title": "Categories",
-    "uri": "/runink-site/categories/index.html"
+    "uri": "/categories/index.html"
   },
   {
     "breadcrumb": "Runink: Declarative, Secure Data Pipelines",
@@ -141,6 +141,6 @@ var relearn_searchindex = [
     "description": "",
     "tags": [],
     "title": "Tags",
-    "uri": "/runink-site/tags/index.html"
+    "uri": "/tags/index.html"
   }
 ]
