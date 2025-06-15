@@ -98,7 +98,6 @@ runi run --dag dags/trade_cdm_dag.go
 * [🔎 Benchmark Comparison](/docs/benchmark/)
 * [🧱 Component Overview](/docs/components/)
 * [📚 Documentation Home](/docs/)
-* [💬 Community Forums](/forums/)
 
 ---
 

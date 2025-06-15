@@ -7,7 +7,9 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 --------------------------------------------------------------------------------------------------------------------------------
 
 <p align="center">
-  <img src="/images/logo.png" alt="Runink Logo" width="220" />
+
+![Runink Logo](/images/logo.png){ width=220 }
+
 </p>
 
 **Runink** is a self-contained, distributed data orchestration environment — purpose-built to run **secure, declarative data pipelines** without unnecessary extra components.
