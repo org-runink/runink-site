@@ -28,10 +28,10 @@ jobs:
           extended: true
 
       - name: Prepare Hugo Modules
-         run: |
-           hugo mod clean
-           hugo mod get github.com/imfing/hextra
-           hugo mod tidy
+        run: |
+          hugo mod clean
+          hugo mod get github.com/imfing/hextra
+          hugo mod tidy
 
       - name: Build Hugo site
         env:
