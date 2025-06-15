@@ -24,13 +24,16 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.127.0'   # ✅ compatible with Relearn
+          hugo-version: '0.127.0' 
           extended: true
 
       - name: Build Hugo site
         env:
           HUGO_ENV: production
         run: |
+          hugo mod clean
+          hugo mod get github.com/imfing/hextra
+          hugo mod tidy
           hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
 
       - name: Deploy to GitHub Pages

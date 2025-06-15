@@ -1,0 +1,20 @@
+<div class="mermaid">
+  {{- .Inner | safeHTML -}}
+</div>
+
+{{ if not (.Page.Scratch.Get "mermaidLoaded") }}
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
+  document.addEventListener('DOMContentLoaded', () => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true },
+      zoom: { enabled: true, scaleFactor: 0.2 }
+    });
+    mermaid.run();
+  });
+</script>
+{{ .Page.Scratch.Set "mermaidLoaded" true }}
+{{ end }}
