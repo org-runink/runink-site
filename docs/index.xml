@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Runink – Runink Docs</title><link>https://paesdan.github.io/runink-site/docs/</link><description>Recent content in Runink Docs on Runink</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://paesdan.github.io/runink-site/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Architecture</title><link>https://paesdan.github.io/runink-site/docs/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/architecture/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Runink – Runink Docs</title><link>https://www.runink.org/docs/</link><description>Recent content in Runink Docs on Runink</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://www.runink.org/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Architecture</title><link>https://www.runink.org/docs/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/architecture/</guid><description>
 &lt;h1>Runink Architecture: Go/Linux Native Distributed Data Environment&lt;/h1>&lt;p>Self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives. This system acts as the cluster resource manager and scheduler (replacing Slurm), provides Kubernetes-like logical isolation and RBAC, integrates data governance features, and ensures robust security and observability. It aims for high efficiency by avoiding traditional virtualization or container runtimes like Docker. Define a self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives, with enhanced metadata capabilities designed to support standard data governance (lineage, catalog) AND future integration of LLM-generated annotations.&lt;/p>
 &lt;h2>High-Level Architecture&lt;span class="hx:absolute hx:-mt-20" id="high-level-architecture">&lt;/span>
 &lt;a href="#high-level-architecture" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Runink operates with a Control Plane managing multiple Worker Nodes, each running a Runi Agent.&lt;/p>
@@ -475,7 +475,7 @@ title="Copy code"
 &lt;li>&lt;strong>LLM Call:&lt;/strong> The worker reads input data, constructs the prompt, calls the relevant LLM API (external or internal), potentially handling batching or retries.&lt;/li>
 &lt;li>&lt;strong>Metadata Persistence:&lt;/strong> Upon receiving results, the worker extracts the annotations, formats them according to the &lt;code>Data Governance Service&lt;/code> schema, and sends them via gRPC call to the service, linking them to the input data reference. It also reports standard lineage (input data -&amp;gt; LLM step -&amp;gt; annotations).&lt;/li>
 &lt;li>&lt;strong>Usage:&lt;/strong> Downstream pipeline steps or external users can then query the &lt;code>Data Governance Service&lt;/code> (via &lt;code>API Server&lt;/code>) to retrieve these annotations for further processing, reporting, or analysis.&lt;/li>
-&lt;/ol></description></item><item><title>Components</title><link>https://paesdan.github.io/runink-site/docs/components/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/components/</guid><description>
+&lt;/ol></description></item><item><title>Components</title><link>https://www.runink.org/docs/components/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/components/</guid><description>
 &lt;h1>Runink Platform Components&lt;/h1>&lt;p>This page describes the core building blocks of Runink — from the API server to slices — that make up the distributed data environment. Each component serves a purpose in ensuring secure, auditable, and high-performance pipeline execution.&lt;/p>
 &lt;h2>Components Table&lt;span class="hx:absolute hx:-mt-20" id="components-table">&lt;/span>
 &lt;a href="#components-table" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
@@ -669,7 +669,7 @@ title="Copy code"
 &lt;li>Logs are captured via stdout/stderr and piped to the agent.&lt;/li>
 &lt;/ul>
 &lt;p>🚰 &lt;em>Benefits:&lt;/em> Stream processing, constant memory, no containers.&lt;/p>
-&lt;hr></description></item><item><title>Benchmark</title><link>https://paesdan.github.io/runink-site/docs/benchmark/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/benchmark/</guid><description>
+&lt;hr></description></item><item><title>Benchmark</title><link>https://www.runink.org/docs/benchmark/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/benchmark/</guid><description>
 &lt;h2>1. Architecture &amp;amp; Paradigm&lt;span class="hx:absolute hx:-mt-20" id="1-architecture--paradigm">&lt;/span>
 &lt;a href="#1-architecture--paradigm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
 &lt;li>
@@ -1272,7 +1272,7 @@ mermaid.run();
 &lt;hr>
 &lt;h2>🧠 Conclusion: Go + Linux internals + Raft = Data-Native Compute&lt;span class="hx:absolute hx:-mt-20" id="-conclusion-go--linux-internals--raft--data-native-compute">&lt;/span>
 &lt;a href="#-conclusion-go--linux-internals--raft--data-native-compute" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Runink leverages &lt;strong>Raft consensus not just for fault tolerance, but as a foundational architectural choice&lt;/strong>. It eliminates whole categories of orchestration complexity, state drift, and configuration mismatches by building from first principles — while offering &lt;strong>a single runtime that natively understands pipelines, contracts, lineage, and compute&lt;/strong>.&lt;/p>
-&lt;p>If you’re designing a modern data platform — especially one focused on governance, and efficient domain isolation — Runink is a &lt;strong>radically integrated alternative&lt;/strong> to the Kubernetes-centric model.&lt;/p></description></item><item><title>CLI Reference</title><link>https://paesdan.github.io/runink-site/docs/cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/cli/</guid><description>
+&lt;p>If you’re designing a modern data platform — especially one focused on governance, and efficient domain isolation — Runink is a &lt;strong>radically integrated alternative&lt;/strong> to the Kubernetes-centric model.&lt;/p></description></item><item><title>CLI Reference</title><link>https://www.runink.org/docs/cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/cli/</guid><description>
 &lt;h1>🧰 Runink CLI Reference (&lt;code>runi&lt;/code>)&lt;/h1>&lt;p>The &lt;code>runi&lt;/code> CLI is the command-line interface to everything in the &lt;strong>Runink&lt;/strong> data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative &lt;code>.dsl&lt;/code> files and Go-native contracts.&lt;/p>
 &lt;p>This reference describes all available commands, grouped by capability.&lt;/p>
 &lt;hr>
@@ -1815,7 +1815,7 @@ mermaid.run();
 &lt;blockquote>
 &lt;p>💬 Use &lt;code>runi &amp;lt;command&amp;gt; --help&lt;/code> for flags, options, and examples.&lt;/p>
 &lt;p>Runink&amp;rsquo;s CLI gives you a full stack data engine in your terminal — from contracts to clusters, from &lt;code>.dsl&lt;/code> to full observability.&lt;/p>
-&lt;/blockquote></description></item><item><title>CLI Help Commands</title><link>https://paesdan.github.io/runink-site/docs/clihelp/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/clihelp/</guid><description>
+&lt;/blockquote></description></item><item><title>CLI Help Commands</title><link>https://www.runink.org/docs/clihelp/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/clihelp/</guid><description>
 &lt;h1>🆘 Runink CLI: Help Template&lt;/h1>&lt;p>This is a developer-friendly help template for implementing consistent &lt;code>runi &amp;lt;command&amp;gt; --help&lt;/code> outputs.&lt;/p>
 &lt;hr>
 &lt;h2>🧱 Format: Basic Help Command&lt;span class="hx:absolute hx:-mt-20" id="-format-basic-help-command">&lt;/span>
@@ -2402,7 +2402,7 @@ title="Copy code"
 &lt;li>✅ Provide guidance for &lt;code>--dry-run&lt;/code>, &lt;code>--verbose&lt;/code>, &lt;code>--help&lt;/code>&lt;/li>
 &lt;li>✅ Include multi-step examples if command touches multiple files&lt;/li>
 &lt;/ul>
-&lt;hr></description></item><item><title>Contributing</title><link>https://paesdan.github.io/runink-site/docs/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/contributing/</guid><description>
+&lt;hr></description></item><item><title>Contributing</title><link>https://www.runink.org/docs/contributing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/contributing/</guid><description>
 &lt;h1>🤝 Contributing to Runink&lt;/h1>&lt;p>Welcome! First off, thank you for considering contributing to &lt;strong>Runink&lt;/strong>. We deeply appreciate your support and effort to improve our project.&lt;/p>
 &lt;p>This document will guide you through the process of contributing code, filing issues, suggesting features, and participating in the Runink community.&lt;/p>
 &lt;hr>
@@ -2519,7 +2519,7 @@ Instead, email us at &lt;a href="mailto:paes@runink.org" >paes@runink.org&lt;/a>
 &lt;p>If you have any questions, feel free to open an issue or discussion!&lt;/p>
 &lt;p>Thanks for being part of the &lt;strong>Runink&lt;/strong> Herd and for helping us build the future of safe, expressive, and reliable data pipelines.🐑&lt;/p>
 &lt;p>We can’t wait to see what you contribute! 🙌&lt;/p>
-&lt;p>— The Runink Team&lt;/p></description></item><item><title>Data Lineage</title><link>https://paesdan.github.io/runink-site/docs/data-lineage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/data-lineage/</guid><description>
+&lt;p>— The Runink Team&lt;/p></description></item><item><title>Data Lineage</title><link>https://www.runink.org/docs/data-lineage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/data-lineage/</guid><description>
 &lt;h1>Data Lineage &amp;amp; Metadata Tracking – Runink&lt;/h1>&lt;p>Runink pipelines are designed to be fully &lt;strong>traceable&lt;/strong>, &lt;strong>auditable&lt;/strong>, and &lt;strong>schema-aware&lt;/strong>. With built-in lineage support, every pipeline can generate:&lt;/p>
 &lt;ul>
 &lt;li>Visual DAGs of data flow and dependencies&lt;/li>
@@ -2701,7 +2701,7 @@ title="Copy code"
 &lt;li>Auditable, role-aware stage outputs&lt;/li>
 &lt;li>Real-time observability with metrics&lt;/li>
 &lt;/ul>
-&lt;p>Lineage lets you move fast &lt;strong>without breaking trust&lt;/strong>.&lt;/p></description></item><item><title>Feature DSL</title><link>https://paesdan.github.io/runink-site/docs/feature-dsl/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/feature-dsl/</guid><description>
+&lt;p>Lineage lets you move fast &lt;strong>without breaking trust&lt;/strong>.&lt;/p></description></item><item><title>Feature DSL</title><link>https://www.runink.org/docs/feature-dsl/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/feature-dsl/</guid><description>
 &lt;h1>📘 Feature DSL — Authoring Pipelines in Natural Language&lt;/h1>&lt;p>Runink’s &lt;code>.dsl&lt;/code> files allow data, governance, and domain teams to write &lt;strong>declarative pipeline logic&lt;/strong> in plain English — no YAML, no code, just structured steps tied to contracts.&lt;/p>
 &lt;p>Inspired by &lt;strong>Gherkin&lt;/strong> and &lt;strong>feature-driven development&lt;/strong>, the DSL is intentionally designed to:&lt;/p>
 &lt;ul>
@@ -2870,7 +2870,7 @@ title="Copy code"
 &lt;hr>
 &lt;h2>🎯 Final Thought&lt;span class="hx:absolute hx:-mt-20" id="-final-thought">&lt;/span>
 &lt;a href="#-final-thought" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>With Runink DSL, &lt;strong>your data pipeline is the spec&lt;/strong> — no translation layers, no wasted doc effort. Write what the pipeline should do, tag it with intent, and Runink turns it into secure, auditable, executable logic.&lt;/p>
-&lt;p>Let your domain experts lead the way — and let infra follow automatically.&lt;/p></description></item><item><title>Getting Started</title><link>https://paesdan.github.io/runink-site/docs/getting_started/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/getting_started/</guid><description>
+&lt;p>Let your domain experts lead the way — and let infra follow automatically.&lt;/p></description></item><item><title>Getting Started</title><link>https://www.runink.org/docs/getting_started/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/getting_started/</guid><description>
 &lt;h1>Getting Started with Runink&lt;/h1>&lt;p>Welcome to &lt;strong>Runink&lt;/strong>! This quick-start guide will help you get up and running with Runink to effortlessly build, test, and run data pipelines.&lt;/p>
 &lt;hr>
 &lt;h2>🚀 &lt;strong>1. Installation&lt;/strong>&lt;span class="hx:absolute hx:-mt-20" id="-1-installation">&lt;/span>
@@ -3028,7 +3028,7 @@ title="Copy code"
 &lt;li>Open an &lt;a href="https://github.com/runink/runink/issues" target="_blank" rel="noopener">issue on GitHub&lt;/a>&lt;/li>
 &lt;li>Join our community discussions and get involved!&lt;/li>
 &lt;/ul>
-&lt;p>Let’s build secure, fast, and auditable pipelines — the Go-native way, with Runink.&lt;/p></description></item><item><title>Glossary</title><link>https://paesdan.github.io/runink-site/docs/glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/glossary/</guid><description>
+&lt;p>Let’s build secure, fast, and auditable pipelines — the Go-native way, with Runink.&lt;/p></description></item><item><title>Glossary</title><link>https://www.runink.org/docs/glossary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/glossary/</guid><description>
 &lt;h1>Runink Glossary&lt;/h1>&lt;p>This glossary defines key terms, acronyms, and concepts used throughout the Runink documentation and codebase.&lt;/p>
 &lt;hr>
 &lt;h3>.dsl File&lt;span class="hx:absolute hx:-mt-20" id="dsl-file">&lt;/span>
@@ -3085,7 +3085,7 @@ title="Copy code"
 &lt;h3>CDM (Common Domain Model)&lt;span class="hx:absolute hx:-mt-20" id="cdm-common-domain-model">&lt;/span>
 &lt;a href="#cdm-common-domain-model" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>A standardized schema used in finance and trading to represent products, trades, and events. Supported natively by Runink.&lt;/p>
 &lt;hr>
-&lt;p>Have a term you’d like added? Open an issue or suggest a change in the docs!&lt;/p></description></item><item><title>Roadmap</title><link>https://paesdan.github.io/runink-site/docs/roadmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/roadmap/</guid><description>
+&lt;p>Have a term you’d like added? Open an issue or suggest a change in the docs!&lt;/p></description></item><item><title>Roadmap</title><link>https://www.runink.org/docs/roadmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/roadmap/</guid><description>
 &lt;h1>🗺️ Runink Roadmap&lt;/h1>&lt;p>Welcome to the official &lt;strong>Runink Roadmap&lt;/strong> — our evolving guide to what we&amp;rsquo;re building, where we’re headed, and how you can get involved.&lt;/p>
 &lt;p>Runink is built on the belief that modern data platforms should be &lt;strong>safe by default&lt;/strong>, &lt;strong>composable by design&lt;/strong>, and &lt;strong>collaborative at scale&lt;/strong>. This roadmap reflects our commitment to transparency, community-driven development, and rapid iteration.&lt;/p>
 &lt;hr>
@@ -3187,7 +3187,7 @@ title="Copy code"
 &lt;p>Track progress in &lt;a href="./CHANGELOG.md" >&lt;code>CHANGELOG.md&lt;/code>&lt;/a>&lt;/p>
 &lt;hr>
 &lt;p>Thanks for being part of the journey — we’re building Runink &lt;strong>with&lt;/strong> you, not just &lt;strong>for&lt;/strong> you. Let’s define the future of safe, modular, and explainable data platforms together.&lt;/p>
-&lt;p>— Team Runink 🐑&lt;/p></description></item><item><title>Runink Quickstart</title><link>https://paesdan.github.io/runink-site/docs/runink_quickstart/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/runink_quickstart/</guid><description>
+&lt;p>— Team Runink 🐑&lt;/p></description></item><item><title>Runink Quickstart</title><link>https://www.runink.org/docs/runink_quickstart/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/runink_quickstart/</guid><description>
 &lt;h1>🚀 Runink Quickstart: CDM Trade Pipeline&lt;/h1>&lt;p>This example shows how to define, test, apply, and run a declarative data pipeline using Runink.&lt;/p>
 &lt;hr>
 &lt;h2>Environment scenario&lt;span class="hx:absolute hx:-mt-20" id="environment-scenario">&lt;/span>
@@ -3391,7 +3391,7 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;hr>
-&lt;p>Runink makes secure, declarative data orchestration easy — every pipeline is testable, auditable, and reproducible.&lt;/p></description></item><item><title>Schema Contracts</title><link>https://paesdan.github.io/runink-site/docs/schema-contracts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/schema-contracts/</guid><description>
+&lt;p>Runink makes secure, declarative data orchestration easy — every pipeline is testable, auditable, and reproducible.&lt;/p></description></item><item><title>Schema Contracts</title><link>https://www.runink.org/docs/schema-contracts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/schema-contracts/</guid><description>
 &lt;h1>Schema &amp;amp; Contract Management – Runink&lt;/h1>&lt;p>Runink enables &lt;strong>data contracts&lt;/strong> as native Go structs — giving you strong typing, version tracking, schema validation, and backward compatibility across pipelines.&lt;/p>
 &lt;p>This guide shows how to define, version, test, and enforce schema contracts in your pipelines.&lt;/p>
 &lt;hr>
@@ -3680,7 +3680,7 @@ title="Copy code"
 &lt;li>Trustworthy&lt;/li>
 &lt;li>Documented&lt;/li>
 &lt;li>Governed&lt;/li>
-&lt;/ul></description></item><item><title>Security &amp; RBAC</title><link>https://paesdan.github.io/runink-site/docs/security/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://paesdan.github.io/runink-site/docs/security/</guid><description>
+&lt;/ul></description></item><item><title>Security &amp; RBAC</title><link>https://www.runink.org/docs/security/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.runink.org/docs/security/</guid><description>
 &lt;h2>Supported Versions&lt;span class="hx:absolute hx:-mt-20" id="supported-versions">&lt;/span>
 &lt;a href="#supported-versions" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>We currently support the latest major release of pipetool. Older versions may not receive security updates or patches.&lt;/p>
 &lt;hr>
