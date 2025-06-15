@@ -31,7 +31,7 @@ jobs:
         env:
           HUGO_ENV: production
         run: |
-          hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
+          hugo --minify --baseURL "https://runink.org/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
