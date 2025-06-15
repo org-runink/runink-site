@@ -6,13 +6,6 @@ layout: "landing"
 description: "Runink offers expert consulting services for Cloud Architecture, Data Engineering, and Generative AI Leadership."
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-<p align="center">
-
-![Runink Logo](/images/logo.png){ width=220 }
-
-</p>
-
-
 ## 🚀 Runink offers expert consulting services for Cloud Architecture, Data Engineering, and Generative AI Leadership.
 
 **Runink** provides specialized consulting services for answering needs on Secure Multi-Cloud or Hybrid-Cloud Architecture, Data Wrangling and Presentation, and Generative AI Maturity Business Onboarding. Accelerate your journey to secure, scalable, and governance-driven cloud and data environments.
