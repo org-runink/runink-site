@@ -9,11 +9,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout repository and submodules
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - name: Sync and update submodules (ensures theme inclusion)
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive --force
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -24,7 +29,8 @@ jobs:
       - name: Build Hugo site
         env:
           HUGO_ENV: production
-        run: hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
+        run: |
+          hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
