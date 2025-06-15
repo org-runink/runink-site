@@ -7,7 +7,9 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 --------------------------------------------------------------------------------------------------------------------------------
 
 <p align="center">
-  <img src="{{ .Site.BaseURL }}images/logo.png" alt="Runink Logo" width="220"/>
+
+  ![Runink Diagram](/images/logo.png)
+
 </p>
 
 
