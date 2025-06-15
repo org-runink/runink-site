@@ -77,7 +77,7 @@ weight = 9
 # Parameters
 
 [params]
-description = "Runink provides strategic consulting in Cloud, Data Engineering, Security, and Generative AI."
+description = "Runink: Your Go-to Hub for for orchestrating secure, testable, and governance-driven data pipelines at scale. Fitting your Cloud, Data Engineering, and Generative AI initiatives with secure solutions, and cutting-edge compliant technologies."
 
 showVisitedLinks = false
 disableBreadcrumb = true

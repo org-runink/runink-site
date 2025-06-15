@@ -3,7 +3,7 @@
 title: "Runink: Declarative, Secure Data Pipelines"
 weight: 1
 layout: "landing"
-description: "Runink is a Go-native platform for orchestrating secure, testable, and governance-driven data pipelines at scale."
+description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and governance-driven data pipelines at scale. Fitting your Cloud, Data Engineering, and Generative AI initiatives with secure solutions, and cutting-edge compliant technologies."
 --------------------------------------------------------------------------------------------------------------------------------
 
 <p align="center">

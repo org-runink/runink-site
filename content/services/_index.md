@@ -3,7 +3,7 @@
 title: "Runink: Professional Cloud, Data, and AI Services"
 weight: 1
 layout: "landing"
-description: "Runink offers expert consulting services aligned with Google Cloud’s certification domains for Cloud Architecture, Data Engineering, and Generative AI Leadership."
+description: "Runink offers expert consulting services for Cloud Architecture, Data Engineering, and Generative AI Leadership."
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 <p align="center">
@@ -12,11 +12,9 @@ description: "Runink offers expert consulting services aligned with Google Cloud
 
 ## 🚀 Expert Consulting for Google Cloud Success
 
-**Runink** provides specialized consulting services precisely aligned with Google's Professional Cloud Architect, Data Engineer, and Generative AI Leader certification domains. Accelerate your journey to secure, scalable, and governance-driven cloud and data environments.
+**Runink** provides specialized consulting services for answering needs on Secure Multi-Cloud or Hybrid-Cloud Architecture, Data Wrangling and Presentation, and Generative AI Maturity Business Onboarding. Accelerate your journey to secure, scalable, and governance-driven cloud and data environments.
 
 ---
-
-## 🎯 Our Expertise Aligned to Google Certifications
 
 ### ☁️ **Cloud Architecture**
 
@@ -107,6 +105,6 @@ description: "Runink offers expert consulting services aligned with Google Cloud
 
 ## 🌟 Get Started with Runink
 
-Ready to align your technology strategy with industry-leading Google Cloud practices?
+Ready to align your technology strategy with industry-leading Google Cloud practices? Or interested in becoming a partner?
 
-[**Schedule Your Consultation →**](/contact)
+[**Schedule Your Consultation | Reach out to our Team →**](/contact)
