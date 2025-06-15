@@ -1,5 +1,6 @@
 baseURL = "https://www.runink.org/"
 title = "Runink"
+theme = "hextra"
 
 # Site Settings
 
@@ -14,16 +15,6 @@ defaultContentLanguage = "en"
 [languages.en]
 languageName = "English"
 weight = 1
-title = "Runink"
-
-# Hugo Version
-
-[module]
-workspace = "hugo.work"
-theme = "hextra"
-
-
-# Markup Settings
 
 [markup]
 [markup.highlight]
