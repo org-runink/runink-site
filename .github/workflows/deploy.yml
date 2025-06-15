@@ -15,7 +15,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Sync and update submodules (ensures theme inclusion)
+      - name: Sync and update submodules
         run: |
           git submodule sync --recursive
           git submodule update --init --recursive --force
@@ -26,11 +26,17 @@ jobs:
           hugo-version: '0.146.0'
           extended: true
 
+      - name: Initialize Hugo Modules (ensures dependencies/themes)
+        run: |
+          hugo mod clean
+          hugo mod get -u
+          hugo mod tidy
+
       - name: Build Hugo site
         env:
           HUGO_ENV: production
         run: |
-          hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
+          hugo --minify --baseURL "https://runink.org/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
