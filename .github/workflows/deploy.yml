@@ -10,34 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Explicitly checkout repository with submodules
-      - name: Checkout with submodules
+      - name: Checkout repository explicitly with submodules
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
-      # Step 2: Manually ensure submodule (theme) is updated
-      - name: Update and sync theme submodule
+      - name: Explicitly sync & update submodule
         run: |
           git submodule sync --recursive
           git submodule update --init --recursive --force
+          ls themes/hextra # Diagnostic: Check that theme files are actually cloned
 
-      # Step 3: Setup Hugo (exactly as local)
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: '0.146.0'
           extended: true
 
-      # Step 4: Build Hugo Site (exact command used locally)
       - name: Build Hugo Site
         env:
           HUGO_ENV: production
         run: |
           hugo --minify --baseURL "https://runink.org/"
 
-      # Step 5: Deploy explicitly to gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
