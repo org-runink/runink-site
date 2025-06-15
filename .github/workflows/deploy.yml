@@ -27,18 +27,11 @@ jobs:
           hugo-version: '0.146.0' 
           extended: true
 
-      - name: Prepare Hugo Modules
-        run: |
-          hugo mod clean
-          hugo mod get github.com/imfing/hextra
-          hugo mod tidy
-
       - name: Build Hugo site
         env:
           HUGO_ENV: production
         run: |
           hugo --minify --baseURL "https://paesdan.github.io/runink-site/"
-          ls -la public
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
