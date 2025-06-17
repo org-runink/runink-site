@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>CLI Reference – Runink</title>
+  <meta name="description" content="🧰 Runink CLI Reference (runi)The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples." /><link rel="canonical" href="http://localhost:1313/docs/cli/" itemprop="url" />
+
+<meta property="og:title" content="CLI Reference" />
+<meta property="og:description" content="🧰 Runink CLI Reference (runi)The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+
+🧱 Project &amp; Pipeline Lifecycle
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi herd init [project-name]
+          Scaffold a new workspace with starter contracts, features, CI config
+      
+      
+          runi compile --scenario &lt;file&gt;
+          Generate Go pipeline code from .dsl files
+      
+      
+          runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt;
+          Run pipelines locally or remotely
+      
+      
+          runi watch --scenario &lt;file&gt;
+          Auto-compile &amp; re-run scenario on save
+      
+  
+
+
+📁 Schema &amp; Contract Management
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi contract gen --struct &lt;pkg.Type&gt;
+          Generate a contract from Go struct
+      
+      
+          runi contract diff --old v1.json --new v2.json
+          Show schema drift between versions
+      
+      
+          runi contract rollback
+          Revert to previous contract version
+      
+      
+          runi contract history --name &lt;contract&gt;
+          Show all versions and changelog entries
+      
+      
+          runi contract validate --file &lt;file&gt;
+          Validate a file against a contract
+      
+      
+          runi contract catalog
+          Create an index of all contracts in the repo
+      
+      
+          runi contract hash
+          Generate contract hash for versioning
+      
+  
+
+
+🧪 Testing &amp; Data Validation
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi synth --dsl feature.dsl --contract feature.contract --golden input.golden
+          Generate synthetic golden test data based on golden files
+      
+      
+          runi audit --dsl feature.dsl --contract feature.contract --golden input.golden
+          Validate pipeline against contract using golden files
+      
+  
+
+
+🔐 Security, Publishing &amp; Compliance
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi secure [--sbom|--sign|--scan]
+          Run security audits and generate SBOM
+      
+      
+          runi publish
+          Push metadata, lineage, and contracts to registry
+      
+      
+          runi sbom export [--format spdx]
+          Export SPDX-compliant software bill of materials
+      
+      
+          runi changelog gen
+          Generate changelogs from contract/feature diffs
+      
+  
+
+
+🔍 Observability &amp; Lineage
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi lineage --run-id &lt;uuid&gt;
+          Show DAG lineage for a run
+      
+      
+          runi lineage track --source A --sink B
+          Manually link lineage metadata
+      
+      
+          runi lineage graph --out file.dot
+          Export lineage graph in DOT format
+      
+      
+          runi metadata get --key &lt;name&gt;
+          Retrieve stored metadata for a step
+      
+      
+          runi metadata annotate --key &lt;name&gt;
+          Attach annotation to pipeline metadata
+      
+      
+          runi logs --run-id &lt;uuid&gt;
+          View logs for a specific run
+      
+      
+          runi status --run-id &lt;uuid&gt;
+          Check status of a pipeline execution
+      
+  
+
+
+🤖 Distributed Execution (Remote)
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi deploy --target &lt;k8s|local&gt;
+          Deploy Runi workers to a local or remote cluster
+      
+      
+          runi start --slice &lt;file&gt; --herd &lt;namespace&gt;
+          Start execution of a scenario remotely
+      
+      
+          runi kill --run-id &lt;uuid&gt;
+          Terminate running scenario
+      
+  
+
+
+💪 Control Plane &amp; Agents
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi herdctl create
+          Create a new Herd (namespace &#43; quotas &#43; policies)
+      
+      
+          runi herdctl delete
+          Delete a Herd
+      
+      
+          runi herdctl update
+          Update Herd quotas, RBAC, metadata
+      
+      
+          runi herdctl list
+          List all Herds and resource states
+      
+      
+          runi herdctl quota set &lt;herd&gt;
+          Update CPU/mem quotas live
+      
+      
+          runi herdctl lineage &lt;herd&gt;
+          View lineage graphs scoped to a Herd
+      
+      
+          runi agentctl list
+          List active Runi agents, resource usage, labels
+      
+      
+          runi agentctl status &lt;agent&gt;
+          Detailed agent status (health, registered slices, metrics)
+      
+      
+          runi agentctl drain &lt;agent&gt;
+          Mark agent as unschedulable (cordon)
+      
+      
+          runi agentctl register
+          Manually register agent (optional bootstrap)
+      
+      
+          runi agentctl cordon &lt;agent&gt;
+          Prevent slice scheduling
+      
+  
+
+
+🌐 Worker Slice Management
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi slicectl list --herd &lt;id&gt;
+          List all active slices for a Herd
+      
+      
+          runi slicectl logs &lt;slice-id&gt;
+          Fetch logs for a given slice
+      
+      
+          runi slicectl cancel &lt;slice-id&gt;
+          Cancel a running slice gracefully
+      
+      
+          runi slicectl metrics &lt;slice-id&gt;
+          Show real-time metrics for a slice
+      
+      
+          runi slicectl promote &lt;slice-id&gt;
+          Checkpoint a slice mid-run
+      
+  
+
+
+🔀 Introspection &amp; Visualization
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi explain --scenario &lt;file&gt;
+          Describe DAG and step resolution logic
+      
+      
+          runi graphviz --scenario &lt;file&gt;
+          Render DAG as a .png, .svg, or .dot
+      
+      
+          runi diff --feature old.dsl --feature new.dsl
+          Compare feature files and show logic drift
+      
+  
+
+
+🧪 REPL &amp; Exploratory Commands
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi repl
+          Launch interactive DataFrame, SQL, JSON REPL
+      
+      
+          runi json explore -f file.json -q &#39;.email&#39;
+          Run jq-style query on JSON
+      
+      
+          runi query -e &quot;SELECT * FROM dataset&quot;
+          Run SQL-like query on scenario input
+      
+  
+
+
+🛠️ Dev Tools &amp; Generators
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi gen --dsl input.json
+          Generate feature from sample input
+      
+      
+          runi contract from-feature &lt;file&gt;
+          Extract contract from .dsl spec
+      
+      
+          runi schema hash
+          Generate contract fingerprint
+      
+      
+          runi bump
+          Auto-increment contract version with changelog
+      
+  
+
+
+🧹 Plugins &amp; Extensions
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi plugin install &lt;url&gt;
+          Install external plugin
+      
+      
+          runi plugin list
+          List installed extensions
+      
+      
+          runi plugin run &lt;name&gt;
+          Execute a plugin subcommand
+      
+  
+
+
+📦 Packaging &amp; CI/CD
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi build
+          Compile pipeline bundle for remote use
+      
+      
+          runi pack
+          Zip workspace for deployment/distribution
+      
+      
+          runi upgrade
+          Self-update the CLI and plugins
+      
+      
+          runi doctor
+          Diagnose CLI and project setup
+      
+  
+
+
+📅 Runtime Lifecycle
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi restart --run-id &lt;uuid&gt;
+          Restart a pipeline from last successful checkpoint
+      
+      
+          runi resume --run-id &lt;uuid&gt;
+          Resume paused pipeline without reprocessing
+      
+      
+          runi checkpoint --scenario &lt;file&gt;
+          Create a persistent step-based checkpoint marker
+      
+  
+
+
+💬 Collaboration &amp; Governance
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi comment --contract &lt;file&gt;
+          Leave inline comments for review (contract-level QA)
+      
+      
+          runi request-approval --contract &lt;file&gt;
+          Submit contract for governance approval
+      
+      
+          runi feedback --scenario &lt;file&gt;
+          Attach review notes to a scenario
+      
+  
+
+
+🛡️ Privacy, Redaction &amp; Data Escrow
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi redact --contract &lt;file&gt;
+          Automatically redact PII based on tags
+      
+      
+          runi escrow --run-id &lt;uuid&gt;
+          Encrypt pipeline outputs for future unsealing
+      
+      
+          runi anonymize --input &lt;file&gt;
+          Generate synthetic version of a sensitive input file
+      
+  
+
+
+🗓 Event-Based Execution
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi trigger --on &lt;webhook|s3|pubsub&gt;
+          Set up trigger-based pipeline starts
+      
+      
+          runi listen --event &lt;type&gt;
+          Listen for external event to start scenario
+      
+      
+          runi subscribe --stream &lt;source&gt;
+          Subscribe to stream source with offset recovery
+      
+  
+
+
+🔄 Pipeline &amp; Contract Lifecycle
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi freeze --scenario &lt;file&gt;
+          Lock DAG hash and contract state as immutable
+      
+      
+          runi archive --herd &lt;name&gt; --keep &lt;N&gt;
+          Archive old scenarios/runs beyond retention policy
+      
+      
+          runi retire --contract &lt;file&gt;
+          Deprecate contract from active use
+      
+  
+
+
+🧬 Metadata Graph &amp; Semantic Search
+    
+  
+      
+          Command
+          Description
+      
+  
+  
+      
+          runi knowledge export --format turtle
+          Export contract and DAG metadata as RDF
+      
+      
+          runi query lineage
+          Run SQL-style queries across lineage metadata
+      
+  
+
+
+
+  💬 Use runi &lt;command&gt; --help for flags, options, and examples." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/docs/cli/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2025-05-04T10:11:46-04:00" />
+
+  <meta itemprop="name" content="CLI Reference">
+  <meta itemprop="description" content="🧰 Runink CLI Reference (runi)The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+  <meta itemprop="dateModified" content="2025-05-04T10:11:46-04:00">
+  <meta itemprop="wordCount" content="972">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CLI Reference">
+  <meta name="twitter:description" content="🧰 Runink CLI Reference (runi)The runi CLI is the command-line interface to everything in the Runink data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative .dsl files and Go-native contracts.
+This reference describes all available commands, grouped by capability.
+🧱 Project &amp; Pipeline Lifecycle Command Description runi herd init [project-name] Scaffold a new workspace with starter contracts, features, CI config runi compile --scenario &lt;file&gt; Generate Go pipeline code from .dsl files runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt; Run pipelines locally or remotely runi watch --scenario &lt;file&gt; Auto-compile &amp; re-run scenario on save 📁 Schema &amp; Contract Management Command Description runi contract gen --struct &lt;pkg.Type&gt; Generate a contract from Go struct runi contract diff --old v1.json --new v2.json Show schema drift between versions runi contract rollback Revert to previous contract version runi contract history --name &lt;contract&gt; Show all versions and changelog entries runi contract validate --file &lt;file&gt; Validate a file against a contract runi contract catalog Create an index of all contracts in the repo runi contract hash Generate contract hash for versioning 🧪 Testing &amp; Data Validation Command Description runi synth --dsl feature.dsl --contract feature.contract --golden input.golden Generate synthetic golden test data based on golden files runi audit --dsl feature.dsl --contract feature.contract --golden input.golden Validate pipeline against contract using golden files 🔐 Security, Publishing &amp; Compliance Command Description runi secure [--sbom|--sign|--scan] Run security audits and generate SBOM runi publish Push metadata, lineage, and contracts to registry runi sbom export [--format spdx] Export SPDX-compliant software bill of materials runi changelog gen Generate changelogs from contract/feature diffs 🔍 Observability &amp; Lineage Command Description runi lineage --run-id &lt;uuid&gt; Show DAG lineage for a run runi lineage track --source A --sink B Manually link lineage metadata runi lineage graph --out file.dot Export lineage graph in DOT format runi metadata get --key &lt;name&gt; Retrieve stored metadata for a step runi metadata annotate --key &lt;name&gt; Attach annotation to pipeline metadata runi logs --run-id &lt;uuid&gt; View logs for a specific run runi status --run-id &lt;uuid&gt; Check status of a pipeline execution 🤖 Distributed Execution (Remote) Command Description runi deploy --target &lt;k8s|local&gt; Deploy Runi workers to a local or remote cluster runi start --slice &lt;file&gt; --herd &lt;namespace&gt; Start execution of a scenario remotely runi kill --run-id &lt;uuid&gt; Terminate running scenario 💪 Control Plane &amp; Agents Command Description runi herdctl create Create a new Herd (namespace &#43; quotas &#43; policies) runi herdctl delete Delete a Herd runi herdctl update Update Herd quotas, RBAC, metadata runi herdctl list List all Herds and resource states runi herdctl quota set &lt;herd&gt; Update CPU/mem quotas live runi herdctl lineage &lt;herd&gt; View lineage graphs scoped to a Herd runi agentctl list List active Runi agents, resource usage, labels runi agentctl status &lt;agent&gt; Detailed agent status (health, registered slices, metrics) runi agentctl drain &lt;agent&gt; Mark agent as unschedulable (cordon) runi agentctl register Manually register agent (optional bootstrap) runi agentctl cordon &lt;agent&gt; Prevent slice scheduling 🌐 Worker Slice Management Command Description runi slicectl list --herd &lt;id&gt; List all active slices for a Herd runi slicectl logs &lt;slice-id&gt; Fetch logs for a given slice runi slicectl cancel &lt;slice-id&gt; Cancel a running slice gracefully runi slicectl metrics &lt;slice-id&gt; Show real-time metrics for a slice runi slicectl promote &lt;slice-id&gt; Checkpoint a slice mid-run 🔀 Introspection &amp; Visualization Command Description runi explain --scenario &lt;file&gt; Describe DAG and step resolution logic runi graphviz --scenario &lt;file&gt; Render DAG as a .png, .svg, or .dot runi diff --feature old.dsl --feature new.dsl Compare feature files and show logic drift 🧪 REPL &amp; Exploratory Commands Command Description runi repl Launch interactive DataFrame, SQL, JSON REPL runi json explore -f file.json -q &#39;.email&#39; Run jq-style query on JSON runi query -e &#34;SELECT * FROM dataset&#34; Run SQL-like query on scenario input 🛠️ Dev Tools &amp; Generators Command Description runi gen --dsl input.json Generate feature from sample input runi contract from-feature &lt;file&gt; Extract contract from .dsl spec runi schema hash Generate contract fingerprint runi bump Auto-increment contract version with changelog 🧹 Plugins &amp; Extensions Command Description runi plugin install &lt;url&gt; Install external plugin runi plugin list List installed extensions runi plugin run &lt;name&gt; Execute a plugin subcommand 📦 Packaging &amp; CI/CD Command Description runi build Compile pipeline bundle for remote use runi pack Zip workspace for deployment/distribution runi upgrade Self-update the CLI and plugins runi doctor Diagnose CLI and project setup 📅 Runtime Lifecycle Command Description runi restart --run-id &lt;uuid&gt; Restart a pipeline from last successful checkpoint runi resume --run-id &lt;uuid&gt; Resume paused pipeline without reprocessing runi checkpoint --scenario &lt;file&gt; Create a persistent step-based checkpoint marker 💬 Collaboration &amp; Governance Command Description runi comment --contract &lt;file&gt; Leave inline comments for review (contract-level QA) runi request-approval --contract &lt;file&gt; Submit contract for governance approval runi feedback --scenario &lt;file&gt; Attach review notes to a scenario 🛡️ Privacy, Redaction &amp; Data Escrow Command Description runi redact --contract &lt;file&gt; Automatically redact PII based on tags runi escrow --run-id &lt;uuid&gt; Encrypt pipeline outputs for future unsealing runi anonymize --input &lt;file&gt; Generate synthetic version of a sensitive input file 🗓 Event-Based Execution Command Description runi trigger --on &lt;webhook|s3|pubsub&gt; Set up trigger-based pipeline starts runi listen --event &lt;type&gt; Listen for external event to start scenario runi subscribe --stream &lt;source&gt; Subscribe to stream source with offset recovery 🔄 Pipeline &amp; Contract Lifecycle Command Description runi freeze --scenario &lt;file&gt; Lock DAG hash and contract state as immutable runi archive --herd &lt;name&gt; --keep &lt;N&gt; Archive old scenarios/runs beyond retention policy runi retire --contract &lt;file&gt; Deprecate contract from active use 🧬 Metadata Graph &amp; Semantic Search Command Description runi knowledge export --format turtle Export contract and DAG metadata as RDF runi query lineage Run SQL-style queries across lineage metadata 💬 Use runi &lt;command&gt; --help for flags, options, and examples.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+
+  
+
+  <script>
+     
+    const defaultTheme = 'system';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  
+  </head>
+<body dir="ltr"><div class="nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+        <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.png" alt="Logo" height="20" width="20" />
+        <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo_white.png" alt="Dark Logo" height="20" width="20" />
+        <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title="Runink">Runink</span>
+    </a>
+            <a
+              title="Documentation"
+              href="/docs"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:font-medium"
+            >
+              <span class="hx:text-center">Documentation</span>
+            </a>
+            <a
+              title="Use Cases"
+              href="/use-cases"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Use Cases</span>
+            </a>
+            <a
+              title="Technical Whitepapers"
+              href="/whitepapers"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Technical Whitepapers</span>
+            </a>
+            <a
+              title="Blog"
+              href="/blog"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Blog</span>
+            </a>
+            <a
+              title="About"
+              href="/about"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">About</span>
+            </a>
+            <a
+              title="Contact"
+              href="/contact"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Contact</span>
+            </a>
+            <a
+              title="Professional Services"
+              href="/services"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Professional Services</span>
+            </a><button type="button" aria-label="Menu" class="hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  
+  <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+    <div class="search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/"
+    
+  >Runink Docs
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/architecture/"
+    
+  >Architecture
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/components/"
+    
+  >Components
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/benchmark/"
+    
+  >Benchmark
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/docs/cli/"
+    
+  >CLI Reference
+    </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#-project--pipeline-lifecycle"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧱 Project &amp; Pipeline Lifecycle</a>
+            </li>
+          <li>
+              <a
+                href="#-schema--contract-management"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >📁 Schema &amp; Contract Management</a>
+            </li>
+          <li>
+              <a
+                href="#-testing--data-validation"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧪 Testing &amp; Data Validation</a>
+            </li>
+          <li>
+              <a
+                href="#-security-publishing--compliance"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🔐 Security, Publishing &amp; Compliance</a>
+            </li>
+          <li>
+              <a
+                href="#-observability--lineage"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🔍 Observability &amp; Lineage</a>
+            </li>
+          <li>
+              <a
+                href="#-distributed-execution-remote"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🤖 Distributed Execution (Remote)</a>
+            </li>
+          <li>
+              <a
+                href="#-control-plane--agents"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >💪 Control Plane &amp; Agents</a>
+            </li>
+          <li>
+              <a
+                href="#-worker-slice-management"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🌐 Worker Slice Management</a>
+            </li>
+          <li>
+              <a
+                href="#-introspection--visualization"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🔀 Introspection &amp; Visualization</a>
+            </li>
+          <li>
+              <a
+                href="#-repl--exploratory-commands"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧪 REPL &amp; Exploratory Commands</a>
+            </li>
+          <li>
+              <a
+                href="#-dev-tools--generators"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🛠️ Dev Tools &amp; Generators</a>
+            </li>
+          <li>
+              <a
+                href="#-plugins--extensions"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧹 Plugins &amp; Extensions</a>
+            </li>
+          <li>
+              <a
+                href="#-packaging--cicd"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >📦 Packaging &amp; CI/CD</a>
+            </li>
+          <li>
+              <a
+                href="#-runtime-lifecycle"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >📅 Runtime Lifecycle</a>
+            </li>
+          <li>
+              <a
+                href="#-collaboration--governance"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >💬 Collaboration &amp; Governance</a>
+            </li>
+          <li>
+              <a
+                href="#-privacy-redaction--data-escrow"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🛡️ Privacy, Redaction &amp; Data Escrow</a>
+            </li>
+          <li>
+              <a
+                href="#-event-based-execution"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🗓 Event-Based Execution</a>
+            </li>
+          <li>
+              <a
+                href="#-pipeline--contract-lifecycle"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🔄 Pipeline &amp; Contract Lifecycle</a>
+            </li>
+          <li>
+              <a
+                href="#-metadata-graph--semantic-search"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧬 Metadata Graph &amp; Semantic Search</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/clihelp/"
+    
+  >CLI Help Commands
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/contributing/"
+    
+  >Contributing
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/data-lineage/"
+    
+  >Data Lineage
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/feature-dsl/"
+    
+  >Feature DSL
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/getting_started/"
+    
+  >Getting Started
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/glossary/"
+    
+  >Glossary
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/roadmap/"
+    
+  >Roadmap
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/runink_quickstart/"
+    
+  >Runink Quickstart
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/schema-contracts/"
+    
+  >Schema Contracts
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/security/"
+    
+  >Security &amp; RBAC
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/"
+    
+  >Runink: Professional Cloud, Data, and AI Services
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/about/"
+    
+  >About Runink
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/contact/"
+    
+  >Contact Runink
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/"
+    
+  >Runink Blog
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/iso-standards-data-driven-business/"
+    
+  >Why ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001 &amp; ISO 27701 Matter for Data‑Driven Business Success
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/whitepapers/"
+    
+  >Technical Whitepapers
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/use-cases/"
+    
+  >Use Cases
+    </a></li>
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/architecture/"
+    
+  >Architecture
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/components/"
+    
+  >Components
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/benchmark/"
+    
+  >Benchmark
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/docs/cli/"
+    
+  >CLI Reference
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/clihelp/"
+    
+  >CLI Help Commands
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/contributing/"
+    
+  >Contributing
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/data-lineage/"
+    
+  >Data Lineage
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/feature-dsl/"
+    
+  >Feature DSL
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/getting_started/"
+    
+  >Getting Started
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/glossary/"
+    
+  >Glossary
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/roadmap/"
+    
+  >Roadmap
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/runink_quickstart/"
+    
+  >Runink Quickstart
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/schema-contracts/"
+    
+  >Schema Contracts
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/security/"
+    
+  >Security &amp; RBAC
+    </a></li>
+        
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height=12 class="hx:group-data-[theme=dark]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div>
+</button>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-project--pipeline-lifecycle">🧱 Project &amp; Pipeline Lifecycle
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-schema--contract-management">📁 Schema &amp; Contract Management
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-testing--data-validation">🧪 Testing &amp; Data Validation
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-security-publishing--compliance">🔐 Security, Publishing &amp; Compliance
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-observability--lineage">🔍 Observability &amp; Lineage
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-distributed-execution-remote">🤖 Distributed Execution (Remote)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-control-plane--agents">💪 Control Plane &amp; Agents
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-worker-slice-management">🌐 Worker Slice Management
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-introspection--visualization">🔀 Introspection &amp; Visualization
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-repl--exploratory-commands">🧪 REPL &amp; Exploratory Commands
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-dev-tools--generators">🛠️ Dev Tools &amp; Generators
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-plugins--extensions">🧹 Plugins &amp; Extensions
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-packaging--cicd">📦 Packaging &amp; CI/CD
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-runtime-lifecycle">📅 Runtime Lifecycle
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-collaboration--governance">💬 Collaboration &amp; Governance
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-privacy-redaction--data-escrow">🛡️ Privacy, Redaction &amp; Data Escrow
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-event-based-execution">🗓 Event-Based Execution
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-pipeline--contract-lifecycle">🔄 Pipeline &amp; Contract Lifecycle
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-metadata-graph--semantic-search">🧬 Metadata Graph &amp; Semantic Search
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><a class="hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="https://github.com/runink-site/docs/edit/main/content/docs/cli.md" target="_blank" rel="noreferrer">Edit this page on GitHub →</a>
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12">
+        
+  <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/">Runink Docs</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">CLI Reference</div>
+  </div>
+
+        <div class="content">
+          <h1>CLI Reference</h1>
+          <h1>🧰 Runink CLI Reference (<code>runi</code>)</h1><p>The <code>runi</code> CLI is the command-line interface to everything in the <strong>Runink</strong> data platform. It’s your developer-first companion for defining, testing, running, securing, and publishing data pipelines — all from declarative <code>.dsl</code> files and Go-native contracts.</p>
+<p>This reference describes all available commands, grouped by capability.</p>
+<hr>
+<h2>🧱 Project &amp; Pipeline Lifecycle<span class="hx:absolute hx:-mt-20" id="-project--pipeline-lifecycle"></span>
+    <a href="#-project--pipeline-lifecycle" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi herd init [project-name]</code></td>
+          <td>Scaffold a new workspace with starter contracts, features, CI config</td>
+      </tr>
+      <tr>
+          <td><code>runi compile --scenario &lt;file&gt;</code></td>
+          <td>Generate Go pipeline code from <code>.dsl</code> files</td>
+      </tr>
+      <tr>
+          <td><code>runi run --scenario &lt;file&gt; --contract &lt;contract.json&gt;</code></td>
+          <td>Run pipelines locally or remotely</td>
+      </tr>
+      <tr>
+          <td><code>runi watch --scenario &lt;file&gt;</code></td>
+          <td>Auto-compile &amp; re-run scenario on save</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>📁 Schema &amp; Contract Management<span class="hx:absolute hx:-mt-20" id="-schema--contract-management"></span>
+    <a href="#-schema--contract-management" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi contract gen --struct &lt;pkg.Type&gt;</code></td>
+          <td>Generate a contract from Go struct</td>
+      </tr>
+      <tr>
+          <td><code>runi contract diff --old v1.json --new v2.json</code></td>
+          <td>Show schema drift between versions</td>
+      </tr>
+      <tr>
+          <td><code>runi contract rollback</code></td>
+          <td>Revert to previous contract version</td>
+      </tr>
+      <tr>
+          <td><code>runi contract history --name &lt;contract&gt;</code></td>
+          <td>Show all versions and changelog entries</td>
+      </tr>
+      <tr>
+          <td><code>runi contract validate --file &lt;file&gt;</code></td>
+          <td>Validate a file against a contract</td>
+      </tr>
+      <tr>
+          <td><code>runi contract catalog</code></td>
+          <td>Create an index of all contracts in the repo</td>
+      </tr>
+      <tr>
+          <td><code>runi contract hash</code></td>
+          <td>Generate contract hash for versioning</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🧪 Testing &amp; Data Validation<span class="hx:absolute hx:-mt-20" id="-testing--data-validation"></span>
+    <a href="#-testing--data-validation" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi synth --dsl feature.dsl --contract feature.contract --golden input.golden</code></td>
+          <td>Generate synthetic golden test data based on golden files</td>
+      </tr>
+      <tr>
+          <td><code>runi audit --dsl feature.dsl --contract feature.contract --golden input.golden</code></td>
+          <td>Validate pipeline against contract using golden files</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🔐 Security, Publishing &amp; Compliance<span class="hx:absolute hx:-mt-20" id="-security-publishing--compliance"></span>
+    <a href="#-security-publishing--compliance" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi secure [--sbom|--sign|--scan]</code></td>
+          <td>Run security audits and generate SBOM</td>
+      </tr>
+      <tr>
+          <td><code>runi publish</code></td>
+          <td>Push metadata, lineage, and contracts to registry</td>
+      </tr>
+      <tr>
+          <td><code>runi sbom export [--format spdx]</code></td>
+          <td>Export SPDX-compliant software bill of materials</td>
+      </tr>
+      <tr>
+          <td><code>runi changelog gen</code></td>
+          <td>Generate changelogs from contract/feature diffs</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🔍 Observability &amp; Lineage<span class="hx:absolute hx:-mt-20" id="-observability--lineage"></span>
+    <a href="#-observability--lineage" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi lineage --run-id &lt;uuid&gt;</code></td>
+          <td>Show DAG lineage for a run</td>
+      </tr>
+      <tr>
+          <td><code>runi lineage track --source A --sink B</code></td>
+          <td>Manually link lineage metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi lineage graph --out file.dot</code></td>
+          <td>Export lineage graph in DOT format</td>
+      </tr>
+      <tr>
+          <td><code>runi metadata get --key &lt;name&gt;</code></td>
+          <td>Retrieve stored metadata for a step</td>
+      </tr>
+      <tr>
+          <td><code>runi metadata annotate --key &lt;name&gt;</code></td>
+          <td>Attach annotation to pipeline metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi logs --run-id &lt;uuid&gt;</code></td>
+          <td>View logs for a specific run</td>
+      </tr>
+      <tr>
+          <td><code>runi status --run-id &lt;uuid&gt;</code></td>
+          <td>Check status of a pipeline execution</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🤖 Distributed Execution (Remote)<span class="hx:absolute hx:-mt-20" id="-distributed-execution-remote"></span>
+    <a href="#-distributed-execution-remote" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi deploy --target &lt;k8s|local&gt;</code></td>
+          <td>Deploy Runi workers to a local or remote cluster</td>
+      </tr>
+      <tr>
+          <td><code>runi start --slice &lt;file&gt; --herd &lt;namespace&gt;</code></td>
+          <td>Start execution of a scenario remotely</td>
+      </tr>
+      <tr>
+          <td><code>runi kill --run-id &lt;uuid&gt;</code></td>
+          <td>Terminate running scenario</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>💪 Control Plane &amp; Agents<span class="hx:absolute hx:-mt-20" id="-control-plane--agents"></span>
+    <a href="#-control-plane--agents" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi herdctl create</code></td>
+          <td>Create a new Herd (namespace + quotas + policies)</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl delete</code></td>
+          <td>Delete a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl update</code></td>
+          <td>Update Herd quotas, RBAC, metadata</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl list</code></td>
+          <td>List all Herds and resource states</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl quota set &lt;herd&gt;</code></td>
+          <td>Update CPU/mem quotas live</td>
+      </tr>
+      <tr>
+          <td><code>runi herdctl lineage &lt;herd&gt;</code></td>
+          <td>View lineage graphs scoped to a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl list</code></td>
+          <td>List active Runi agents, resource usage, labels</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl status &lt;agent&gt;</code></td>
+          <td>Detailed agent status (health, registered slices, metrics)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl drain &lt;agent&gt;</code></td>
+          <td>Mark agent as unschedulable (cordon)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl register</code></td>
+          <td>Manually register agent (optional bootstrap)</td>
+      </tr>
+      <tr>
+          <td><code>runi agentctl cordon &lt;agent&gt;</code></td>
+          <td>Prevent slice scheduling</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🌐 Worker Slice Management<span class="hx:absolute hx:-mt-20" id="-worker-slice-management"></span>
+    <a href="#-worker-slice-management" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi slicectl list --herd &lt;id&gt;</code></td>
+          <td>List all active slices for a Herd</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl logs &lt;slice-id&gt;</code></td>
+          <td>Fetch logs for a given slice</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl cancel &lt;slice-id&gt;</code></td>
+          <td>Cancel a running slice gracefully</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl metrics &lt;slice-id&gt;</code></td>
+          <td>Show real-time metrics for a slice</td>
+      </tr>
+      <tr>
+          <td><code>runi slicectl promote &lt;slice-id&gt;</code></td>
+          <td>Checkpoint a slice mid-run</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🔀 Introspection &amp; Visualization<span class="hx:absolute hx:-mt-20" id="-introspection--visualization"></span>
+    <a href="#-introspection--visualization" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi explain --scenario &lt;file&gt;</code></td>
+          <td>Describe DAG and step resolution logic</td>
+      </tr>
+      <tr>
+          <td><code>runi graphviz --scenario &lt;file&gt;</code></td>
+          <td>Render DAG as a .png, .svg, or .dot</td>
+      </tr>
+      <tr>
+          <td><code>runi diff --feature old.dsl --feature new.dsl</code></td>
+          <td>Compare feature files and show logic drift</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🧪 REPL &amp; Exploratory Commands<span class="hx:absolute hx:-mt-20" id="-repl--exploratory-commands"></span>
+    <a href="#-repl--exploratory-commands" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi repl</code></td>
+          <td>Launch interactive DataFrame, SQL, JSON REPL</td>
+      </tr>
+      <tr>
+          <td><code>runi json explore -f file.json -q '.email'</code></td>
+          <td>Run jq-style query on JSON</td>
+      </tr>
+      <tr>
+          <td><code>runi query -e &quot;SELECT * FROM dataset&quot;</code></td>
+          <td>Run SQL-like query on scenario input</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🛠️ Dev Tools &amp; Generators<span class="hx:absolute hx:-mt-20" id="-dev-tools--generators"></span>
+    <a href="#-dev-tools--generators" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi gen --dsl input.json</code></td>
+          <td>Generate feature from sample input</td>
+      </tr>
+      <tr>
+          <td><code>runi contract from-feature &lt;file&gt;</code></td>
+          <td>Extract contract from <code>.dsl</code> spec</td>
+      </tr>
+      <tr>
+          <td><code>runi schema hash</code></td>
+          <td>Generate contract fingerprint</td>
+      </tr>
+      <tr>
+          <td><code>runi bump</code></td>
+          <td>Auto-increment contract version with changelog</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🧹 Plugins &amp; Extensions<span class="hx:absolute hx:-mt-20" id="-plugins--extensions"></span>
+    <a href="#-plugins--extensions" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi plugin install &lt;url&gt;</code></td>
+          <td>Install external plugin</td>
+      </tr>
+      <tr>
+          <td><code>runi plugin list</code></td>
+          <td>List installed extensions</td>
+      </tr>
+      <tr>
+          <td><code>runi plugin run &lt;name&gt;</code></td>
+          <td>Execute a plugin subcommand</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>📦 Packaging &amp; CI/CD<span class="hx:absolute hx:-mt-20" id="-packaging--cicd"></span>
+    <a href="#-packaging--cicd" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi build</code></td>
+          <td>Compile pipeline bundle for remote use</td>
+      </tr>
+      <tr>
+          <td><code>runi pack</code></td>
+          <td>Zip workspace for deployment/distribution</td>
+      </tr>
+      <tr>
+          <td><code>runi upgrade</code></td>
+          <td>Self-update the CLI and plugins</td>
+      </tr>
+      <tr>
+          <td><code>runi doctor</code></td>
+          <td>Diagnose CLI and project setup</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>📅 Runtime Lifecycle<span class="hx:absolute hx:-mt-20" id="-runtime-lifecycle"></span>
+    <a href="#-runtime-lifecycle" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi restart --run-id &lt;uuid&gt;</code></td>
+          <td>Restart a pipeline from last successful checkpoint</td>
+      </tr>
+      <tr>
+          <td><code>runi resume --run-id &lt;uuid&gt;</code></td>
+          <td>Resume paused pipeline without reprocessing</td>
+      </tr>
+      <tr>
+          <td><code>runi checkpoint --scenario &lt;file&gt;</code></td>
+          <td>Create a persistent step-based checkpoint marker</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>💬 Collaboration &amp; Governance<span class="hx:absolute hx:-mt-20" id="-collaboration--governance"></span>
+    <a href="#-collaboration--governance" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi comment --contract &lt;file&gt;</code></td>
+          <td>Leave inline comments for review (contract-level QA)</td>
+      </tr>
+      <tr>
+          <td><code>runi request-approval --contract &lt;file&gt;</code></td>
+          <td>Submit contract for governance approval</td>
+      </tr>
+      <tr>
+          <td><code>runi feedback --scenario &lt;file&gt;</code></td>
+          <td>Attach review notes to a scenario</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🛡️ Privacy, Redaction &amp; Data Escrow<span class="hx:absolute hx:-mt-20" id="-privacy-redaction--data-escrow"></span>
+    <a href="#-privacy-redaction--data-escrow" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi redact --contract &lt;file&gt;</code></td>
+          <td>Automatically redact PII based on tags</td>
+      </tr>
+      <tr>
+          <td><code>runi escrow --run-id &lt;uuid&gt;</code></td>
+          <td>Encrypt pipeline outputs for future unsealing</td>
+      </tr>
+      <tr>
+          <td><code>runi anonymize --input &lt;file&gt;</code></td>
+          <td>Generate synthetic version of a sensitive input file</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🗓 Event-Based Execution<span class="hx:absolute hx:-mt-20" id="-event-based-execution"></span>
+    <a href="#-event-based-execution" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi trigger --on &lt;webhook|s3|pubsub&gt;</code></td>
+          <td>Set up trigger-based pipeline starts</td>
+      </tr>
+      <tr>
+          <td><code>runi listen --event &lt;type&gt;</code></td>
+          <td>Listen for external event to start scenario</td>
+      </tr>
+      <tr>
+          <td><code>runi subscribe --stream &lt;source&gt;</code></td>
+          <td>Subscribe to stream source with offset recovery</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🔄 Pipeline &amp; Contract Lifecycle<span class="hx:absolute hx:-mt-20" id="-pipeline--contract-lifecycle"></span>
+    <a href="#-pipeline--contract-lifecycle" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi freeze --scenario &lt;file&gt;</code></td>
+          <td>Lock DAG hash and contract state as immutable</td>
+      </tr>
+      <tr>
+          <td><code>runi archive --herd &lt;name&gt; --keep &lt;N&gt;</code></td>
+          <td>Archive old scenarios/runs beyond retention policy</td>
+      </tr>
+      <tr>
+          <td><code>runi retire --contract &lt;file&gt;</code></td>
+          <td>Deprecate contract from active use</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🧬 Metadata Graph &amp; Semantic Search<span class="hx:absolute hx:-mt-20" id="-metadata-graph--semantic-search"></span>
+    <a href="#-metadata-graph--semantic-search" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>runi knowledge export --format turtle</code></td>
+          <td>Export contract and DAG metadata as RDF</td>
+      </tr>
+      <tr>
+          <td><code>runi query lineage</code></td>
+          <td>Run SQL-style queries across lineage metadata</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<blockquote>
+  <p>💬 Use <code>runi &lt;command&gt; --help</code> for flags, options, and examples.</p>
+<p>Runink&rsquo;s CLI gives you a full stack data engine in your terminal — from contracts to clusters, from <code>.dsl</code> to full observability.</p>
+</blockquote>
+
+        </div>
+        <div class="hx:mt-16"></div>
+        <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/docs/benchmark/"
+        title="Benchmark"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Benchmark</a><a
+        href="/docs/clihelp/"
+        title="CLI Help Commands"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >CLI Help Commands<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Powered by Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2025 Hextra Project.</div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/en.search.js" integrity=""></script>
+  </body>
+</html>
