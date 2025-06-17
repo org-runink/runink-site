@@ -35,13 +35,13 @@ description: "Runink offers expert consulting services for Cloud Architecture, D
 
 ---
 
-## 📌 Suggested Consulting Services
+## 📌 Consulting Services
 
-### 🌐 **Google Cloud Infrastructure Migration**
+### 🌐 **Cloud Infrastructure Migration**
 
 * **Duration:** 2–4 weeks standard packages
 * **Includes:** Landing zone setup, IAM policies, Kubernetes, Docker
-* **Outcomes:** Fully operational GCP environment, migration of critical workloads
+* **Outcomes:** Fully operational GCP/AWS environment, migration of critical workloads
 
 ### 📈 **Data Platform Accelerator**
 
