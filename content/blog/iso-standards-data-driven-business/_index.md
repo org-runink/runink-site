@@ -164,4 +164,4 @@ In an era where data fuels everything from personalized marketing to AI‑powere
 The result is a **resilient, future‑proof enterprise** where reliable data drives growth, security controls mitigate risk, and privacy safeguards earn lasting customer loyalty. For businesses aiming to lead in the digital age, integrating these standards is no longer optional—it is a strategic imperative.
 
 > **Ready to transform your data into a strategic asset?**  
-> [**Contact us today**](https://www.example.com/contact) and embark on your ISO‑powered, data‑driven future.
+> [**Schedule Your Consultation | Reach out to our Team →**](/contact) and embark on your ISO‑powered, data‑driven future.

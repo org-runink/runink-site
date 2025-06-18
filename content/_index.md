@@ -79,6 +79,10 @@ Runink includes:
 * 🧠 [Architecture Overview](/docs/architecture/)
 * 🔍 [Benchmark Comparison](/docs/benchmark/)
 
+Interested in contributing or collaborating? 
+
+[**Reach out to our Team →**](/contact).
+
 ---
 
 ## ⚠️ Development Status

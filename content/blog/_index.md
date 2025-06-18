@@ -21,4 +21,4 @@ Stay updated with our latest articles, tutorials, and thought leadership pieces 
 
 Interested in contributing a guest post or collaborating? 
 
-Reach out via [paes@runink.org](mailto:paes@runink.org).
+[**Reach out to our Team →**](/contact).
