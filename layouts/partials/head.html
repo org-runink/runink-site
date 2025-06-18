@@ -1,10 +1,14 @@
+<!-- Custom JS -->
 <script src="{{ "js/custom.js" | relURL }}"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SEECKDWZNJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-SEECKDWZNJ');
-</script>
+<!-- Google tag (gtag.js) -->
+{{ if not (eq hugo.Environment "development") }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEECKDWZNJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SEECKDWZNJ');
+  </script>
+{{ end }}
