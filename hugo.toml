@@ -4,6 +4,9 @@ theme = "hextra"
 
 # Site Settings
 
+[services]
+  [services.googleAnalytics]
+    ID = 'G-SEECKDWZNJ'
 enableRobotsTXT = true
 enableGitInfo = true
 hasCJKLanguage = false
