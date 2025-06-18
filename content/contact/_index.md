@@ -4,6 +4,34 @@ layout: "page"
 description: "Get in touch with the Runink team for consulting inquiries, partnerships, or general questions."
 ---
 
+## 🌟 Who We Are
+
+**Runink** is a specialized professional services firm, dedicated to architecting secure, scalable, and compliant cloud solutions. We're passionate about leveraging our deep expertise in cloud architecture, data engineering, and generative AI leadership to deliver outstanding results.
+
+---
+
+## 🚀 Our Mission
+
+To empower organizations with strategic technical leadership, innovative data solutions, and secure cloud infrastructure aligned with industry-leading practices.
+
+---
+
+## 🧠 Our Expertise
+
+- **Cloud Architecture**: Infrastructure migration, security, and automation
+- **Data Engineering**: Modern data warehouses, governance, and analytics enablement
+- **Generative AI**: AI strategy, ethical frameworks, and scalable infrastructure
+
+---
+
+## 📈 Why Clients Trust Runink
+
+- **Experience:** Proven track record and industry expertise.
+- **Quality:** Commitment to excellence in every engagement.
+- **Partnership:** Collaborative approach to achieving your goals.
+
+---
+
 ## 📬 Let's Talk!
 
 We're excited to help you navigate your cloud, data, and generative AI challenges. 
@@ -12,7 +40,7 @@ Fill out the form below or reach out directly:
 
 - 📧 **Email:** [paes@runink.org](mailto:paes@runink.org)
 - 📍 **Location:** Montreal, Canada (serving globally)
-- 🔗 **LinkedIn:** [Runink on LinkedIn](https://www.linkedin.com/)
+- 🔗 **LinkedIn:** [Runink on LinkedIn](https://www.linkedin.com/company/runink/)
 
 ---
 

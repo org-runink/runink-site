@@ -1,5 +1,4 @@
 ---
-
 title: "Runink: Declarative, Secure Data Pipelines"
 weight: 1
 layout: "landing"
