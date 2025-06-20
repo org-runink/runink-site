@@ -2,7 +2,7 @@
 title: "Why ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001 & ISO 27701 Matter for Data‑Driven Business Success"
 description: "Explore how ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001, and ISO 27701 create reliable, secure, and privacy‑centric data foundations—essential for modern, data‑driven enterprises."
 slug: iso-standards-data-driven-business
-author: "Runink Team"
+author: "Runink Editorial Team"
 date: 2025-06-16
 tags: [ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001, ISO 27701, data quality, information security, privacy management, AI governance, data-driven business]
 robots: index, follow
