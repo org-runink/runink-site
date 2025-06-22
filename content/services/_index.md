@@ -37,10 +37,11 @@ Plan and scale AI initiatives with confidence — including infrastructure for L
 
 Choose a tailored engagement or a focused accelerator to get started fast:
 
-* **Cloud Infrastructure Accelerator** → Get a secure, production-grade cloud foundation in just weeks
-* **Data Platform Quickstart** → Deliver insights with scalable data pipelines and warehousing
-* **Security & Compliance Readiness** → Align your stack with SOC 2, HIPAA, or GDPR from day one
-* **Fractional CTO/CDO Advisory** → Access seasoned leadership to guide your platform, people, and priorities
+* [**Cloud Infrastructure Accelerator**](/services/cloud_accelerator) → Get a secure, production-grade cloud foundation in just weeks
+* [**Data Platform Quickstart**](/services/data_platform) → Deliver insights with scalable data pipelines and warehousing
+* [**AI and Data Maturity Assessment**](/services/ai_readiness) → Strategy-first, evaluate your organization’s readiness for AI adoption and Data maturity
+* [**Security & Compliance Readiness**](/services/security_readiness) → Align your stack with SOC 2, HIPAA, or GDPR from day one
+* [**Fractional CTO/CDO Advisory**](/services/fractional_cxo) → Access seasoned leadership to guide your platform, people, and priorities
 
 ---
 
