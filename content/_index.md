@@ -7,7 +7,7 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 
 <p align="center">
 
-  ![Runink Diagram](/images/logo_black.png)
+  ![Runink Diagram](/images/banner.png)
 
 </p>
 
