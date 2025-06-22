@@ -17,23 +17,23 @@ At Runink, we help companies transform legacy systems, adopt modern data platfor
 
 ---
 
-### 💼 Our Core Service Areas
+### Our Core Service Areas
 
-#### ☁️ Cloud Architecture & DevOps
+#### Cloud Architecture & DevOps
 
 Modernize your infrastructure with secure-by-default cloud platforms, automated CI/CD, and scalable multi-cloud strategies.
 
-#### 📊 Data Engineering & Governance
+#### Data Engineering & Governance
 
 Build intelligent data ecosystems using modern warehouses, robust pipelines, and federated governance for real-time insights and regulatory confidence.
 
-#### 🤖 Generative AI & Technical Leadership
+#### Generative AI & Technical Leadership
 
 Plan and scale AI initiatives with confidence — including infrastructure for LLMs, responsible AI frameworks, and executive-level strategic leadership.
 
 ---
 
-### 🧰 Ready-to-Deploy Consulting Packages
+### Ready-to-Deploy Consulting Packages
 
 Choose a tailored engagement or a focused accelerator to get started fast:
 
@@ -44,7 +44,7 @@ Choose a tailored engagement or a focused accelerator to get started fast:
 
 ---
 
-### 🤝 Why Runink?
+### Why Runink?
 
 * 18+ years of enterprise data & cloud leadership
 * Trusted by financial, insurance, retail, supply-chain, and healthcare sectors
@@ -52,7 +52,7 @@ Choose a tailored engagement or a focused accelerator to get started fast:
 
 ---
 
-## 🌟 Get Started with Runink
+### Get Started with Runink
 
 Ready to align your technology strategy with industry-leading cloud best practices? Or interested in becoming a partner?
 

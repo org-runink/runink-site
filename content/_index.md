@@ -7,75 +7,103 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 
 <p align="center">
 
-  ![Runink Diagram](/images/logo.png)
+  ![Runink Diagram](/images/logo_black.png)
 
 </p>
 
+# 🚀 Runink: Data You Can Trust. Decisions You Can Defend.
 
-**Runink** is a self-contained, distributed data orchestration environment — purpose-built to run **secure, declarative data pipelines** without unnecessary extra components.
+**Runink** is a platform that helps organizations build, govern, and deliver reliable data pipelines — all without managing complex infrastructure or relying solely on engineers.
 
-Written in **Go**, hardened by **Linux namespaces and cgroups**, and coordinated with **Raft**, Runink:
-
-* Uses **Go slices** instead of containers
-* Wraps execution with **kernel primitives** (namespaces, cgroups, pipes)
-* Orchestrates them with **Raft-consistent DAGs**
-* Tracks everything via native **Governance/Observability layers**
-
-Runink is ideal for teams that need:
-
-* 🔐 **Governance** (lineage, contracts, access control)
-* ⚡ **Performance** (compiled pipelines, minimal runtime)
-* 🧪 **Testing** (golden files, scenario coverage)
-* 🧱 **Isolation** (multi-tenant slices within herds)
+> _“From raw data to responsible insights — Runink makes it simple, testable, and traceable.”_
 
 ---
 
-## 🧠 Who is it for?
+## ✅ Why Runink?
 
-| For Engineers               | For Organizations                     |
-| --------------------------- | ------------------------------------- |
-| ✅ Run DAGs with `runi` CLI  | ✅ Enforce data contracts across teams |
-| ✅ Version features with Git | ✅ Prove lineage, compliance & SLOs    |
+- **Make faster, safer decisions**  
+  Runink ensures every dataset is validated, versioned, and governed before it reaches a dashboard or model.
 
----
+- **No technical skills required**  
+  Define pipelines with simple, readable scenarios. No YAML, no Kubernetes, no DevOps tickets.
 
-## 🧰 How it Works
+- **From governance to execution in one place**  
+  Schema validation, access control, scheduling, observability, and lineage — all built-in.
 
-Each pipeline is defined with:
-
-* **DSL Scenario Files** → declarative `@step`, `@source`, `@sink` specs
-* **Contracts** → Go structs with schema and validation logic
-* **Herds** → Resource-scoped namespaces for pipeline execution
-* **Slices** → Isolated processes launched under cgroups & namespaces
-
-Runink compiles DSL + contracts into DAGs, then schedules them on bare metal, cloud VMs, or edge workers — no orchestrator required.
+- **Minimize risks, maximize agility**  
+  Changes are testable, auditable, and rollback-friendly by default.
 
 ---
 
-## 🔐 Built for Data Governance
+## 🧠 What You Can Do
 
-Runink includes:
+- ✍️ **Write Scenarios, Not Scripts**  
+  Describe pipeline logic in plain language (`.dsl` format), then Runink compiles and runs it.
 
-* ✅ **RBAC & OIDC Integration**
-* ✅ **Schema Contracts with Versioning**
-* ✅ **Lineage Tracking by Run, Herd, Contract**
-* ✅ **Golden Test Framework for Pipeline Scenarios**
-* ✅ **Secure Secrets Delivery via Raft-backed store**
+- 🧪 **Validate and Test Every Step**  
+  Built-in golden file testing, contract drift detection, and metadata snapshots for every run.
 
----
+- 🔐 **Govern Access and PII Automatically**  
+  Field-level tags, RBAC enforcement, and lineage all tied to your organizational roles.
 
-## 🖼 Architecture Diagram
-
-<p align="center">
-  <img src="/images/components.png" alt="Runink Architecture" width="700"/>
-</p>
+- 📊 **Deliver Business-Ready Outputs**  
+  Whether for analytics, finance, ML, or compliance — every result is trustworthy and traceable.
 
 ---
 
-## 🛠 Get Involved
+## 👥 Who It's For: Data Governance Roles
+
+| Persona                      | Value Delivered by Runink                                  |
+|-----------------------------|-------------------------------------------------------------|
+| **Data Stewards**           | Ensure consistent definitions and enforce schema policies   |
+| **Data Owners**             | Control access, classify sensitivity, and monitor quality   |
+| **Data Engineers**          | Build, test, and ship pipelines with built-in validation    |
+| **Analytics Engineers**     | Transform and publish domain datasets with metadata trails  |
+| **BI Analysts**             | Consume curated, trustworthy data with full context         |
+| **Data Scientists**         | Access reproducible, lineage-rich training datasets         |
+| **Platform Engineers**      | Deploy governed pipelines without K8s or external tools     |
+| **Compliance Officers**     | Prove policy enforcement, lineage, and auditability         |
+| **Product Managers**        | Define data products with contractual guarantees            |
+
+---
+
+## 📌 How It Works
+
+1. **Describe Your Scenario**
+   Use our human-readable DSL to define business logic, contracts, and output requirements.
+
+2. **Compile, Run, and Observe**
+   Runink turns it into Go-native pipelines — validated, versioned, and observable.
+
+3. **Deliver Insight**
+   Trusted outputs, audit trails, and schema guarantees — ready for BI, ML, or compliance.
+
+---
+
+## 🔒 Secure by Design
+
+- RBAC per domain (`Herd`)
+- OIDC + JWT authentication
+- Encrypted secrets delivery
+- Lineage + metadata capture per record
+
+---
+
+## 🧪 Production-Ready from Day One
+
+- Golden file testing  
+- Schema drift detection  
+- Role-based sinks  
+- Prometheus metrics + logs + traceability  
+
+---
+
+## 🚧 Join the Early Access Program
+
+**Runink is currently onboarding early teams.**  
+Want to simplify your pipeline stack and move faster with confidence?
 
 * 📚 [Documentation](/docs/)
-* 🤝 [Contributing](/docs/contributing/)
 * 🧠 [Architecture Overview](/docs/architecture/)
 * 🔍 [Benchmark Comparison](/docs/benchmark/)
 
@@ -85,6 +113,4 @@ Interested in contributing or collaborating?
 
 ---
 
-## ⚠️ Development Status
-
-Runink is currently in **alpha** and under active development. Feedback and contributions are welcome.
+> Runink — Turning pipelines into products, and data into trust.

@@ -47,30 +47,20 @@ name = "Documentation"
 pageRef = "/docs"
 weight = 1
 [[menu.main]]
-identifier = "usecases"
-name = "Use Cases"
-pageRef = "/use-cases"
-weight = 2
-[[menu.main]]
-identifier = "whitepapers"
-name = "Technical Whitepapers"
-pageRef = "/whitepapers"
-weight = 3
-[[menu.main]]
 identifier = "blog"
 name = "Blog"
 pageRef = "/blog"
-weight = 4
+weight = 2
 [[menu.main]]
 identifier = "contact"
 name = "Contact"
 pageRef = "/contact"
-weight = 5
+weight = 3
 [[menu.main]]
 identifier = "services"
 name = "Professional Services"
 pageRef = "/services"
-weight = 6
+weight = 4
 
 # Parameters
 
@@ -88,7 +78,7 @@ themeVariantToggle = true
 [params.navbar]
 displayTitle = true
 displayLogo = true
-logo = { path = "images/logo.png", dark = "images/logo_white.png" }
+logo = { path = "images/logo_black.png", dark = "images/logo_white.png" }
 width = "wide"
 
 [params.page]
