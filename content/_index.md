@@ -1,5 +1,5 @@
 ---
-title: "Runink: Declarative, Secure Data Pipelines"
+title: "Runink: Data You Can Trust. Decisions You Can Defend."
 weight: 1
 layout: "landing"
 description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and governance-driven data pipelines at scale. Fitting your Cloud, Data Engineering, and Generative AI initiatives with secure solutions, and cutting-edge compliant technologies."
@@ -10,8 +10,6 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
   ![Runink Diagram](/images/banner.png)
 
 </p>
-
-# 🚀 Runink: Data You Can Trust. Decisions You Can Defend.
 
 **Runink** is a platform that helps organizations build, govern, and deliver reliable data pipelines — all without managing complex infrastructure or relying solely on engineers.
 
