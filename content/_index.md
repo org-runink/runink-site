@@ -19,49 +19,34 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 
 ## ✅ Why Runink?
 
-- **Make faster, safer decisions**  
-  Runink ensures every dataset is validated, versioned, and governed before it reaches a dashboard or model.
+{{< cards >}}
+  {{< card title="Make faster, safer decisions" icon="badge-check" subtitle="Runink ensures every dataset is validated, versioned, and governed before it reaches a dashboard or model.">}}
+  {{< card title="No technical skills required" icon="book-open" subtitle="Define pipelines with simple, readable scenarios. No YAML, no Kubernetes, no DevOps tickets." >}}
+  {{< card title="From governance to execution in one place" icon="shield-check" subtitle="Schema validation, access control, scheduling, observability, and lineage — all built-in." >}}
+  {{< card title="Minimize risks, maximize agility" icon="finger-print" subtitle="Changes are testable, auditable, and rollback-friendly by default." >}}
+  {{< card title="Deliver Business-Ready Outputs" icon="template" subtitle="Whether for analytics, finance, ML, or compliance — every result is trustworthy and traceable." >}}
+  {{< card title="Govern Access and Data Anonymization Automatically" icon="lock-closed" subtitle="Field-level tags, RBAC enforcement, and lineage all tied to your organizational roles." >}}
+{{< /cards >}}
 
-- **No technical skills required**  
-  Define pipelines with simple, readable scenarios. No YAML, no Kubernetes, no DevOps tickets.
-
-- **From governance to execution in one place**  
-  Schema validation, access control, scheduling, observability, and lineage — all built-in.
-
-- **Minimize risks, maximize agility**  
-  Changes are testable, auditable, and rollback-friendly by default.
-
----
-
-## 🧠 What You Can Do
-
-- ✍️ **Write Scenarios, Not Scripts**  
-  Describe pipeline logic in plain language (`.dsl` format), then Runink compiles and runs it.
-
-- 🧪 **Validate and Test Every Step**  
-  Built-in golden file testing, contract drift detection, and metadata snapshots for every run.
-
-- 🔐 **Govern Access and PII Automatically**  
-  Field-level tags, RBAC enforcement, and lineage all tied to your organizational roles.
-
-- 📊 **Deliver Business-Ready Outputs**  
-  Whether for analytics, finance, ML, or compliance — every result is trustworthy and traceable.
+<br>
 
 ---
+
+<br>
 
 ## 👥 Who It's For: Data Governance Roles
 
-| Persona                      | Value Delivered by Runink                                  |
-|-----------------------------|-------------------------------------------------------------|
-| **Data Stewards**           | Ensure consistent definitions and enforce schema policies   |
-| **Data Owners**             | Control access, classify sensitivity, and monitor quality   |
-| **Data Engineers**          | Build, test, and ship pipelines with built-in validation    |
-| **Analytics Engineers**     | Transform and publish domain datasets with metadata trails  |
-| **BI Analysts**             | Consume curated, trustworthy data with full context         |
-| **Data Scientists**         | Access reproducible, lineage-rich training datasets         |
-| **Platform Engineers**      | Deploy governed pipelines without K8s or external tools     |
-| **Compliance Officers**     | Prove policy enforcement, lineage, and auditability         |
-| **Product Managers**        | Define data products with contractual guarantees            |
+{{< cards >}}
+  {{< card title="Data Stewards" image="/images/personas/data_steward.png" method="Resize" options="200x q80 webp" subtitle="Ensure consistent definitions and enforce schema policies" >}}
+  {{< card title="Data Owners" image="/images/personas/data_owner.png" method="Resize" options="200x q80 webp" subtitle="Control access, classify sensitivity, and monitor quality" >}}
+  {{< card title="Data Engineers" image="/images/personas/data_engineer.png" method="Resize" options="200x q80 webp" subtitle="Build, test, and ship pipelines with built-in validation" >}}
+  {{< card title="Analytics Engineers" image="/images/personas/analytics_engineer.png" method="Resize" options="200x q80 webp" subtitle="Transform and publish domain datasets with metadata trails" >}}
+  {{< card title="BI Analysts" image="/images/personas/bi_analyst.png" method="Resize" options="200x q80 webp" subtitle="Consume curated, trustworthy data with full context" >}}
+  {{< card title="Data Scientists" image="/images/personas/data_scientist.png" method="Resize" options="200x q80 webp" subtitle="Access reproducible, lineage-rich training datasets" >}}
+  {{< card title="Platform Engineers" image="/images/personas/platform_engineer.png" method="Resize" options="200x q80 webp" subtitle="Deploy governed pipelines without K8s or external tools" >}}
+  {{< card title="Compliance Officers" image="/images/personas/compliance_officer.png" method="Resize" options="200x q80 webp" subtitle="Prove policy enforcement, lineage, and auditability" >}}
+  {{< card title="Product Managers" image="/images/personas/product_manager.png" method="Resize" options="200x q80 webp" subtitle="Define data products with contractual guarantees" >}}
+{{< /cards >}}
 
 ---
 
@@ -79,20 +64,20 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 ---
 
 ## 🔒 Secure by Design
+{{% details title="Details" %}}
 
-- RBAC per domain (`Herd`)
-- OIDC + JWT authentication
-- Encrypted secrets delivery
-- Lineage + metadata capture per record
+* RBAC per domain (`Herd`)
+* OIDC + JWT authentication
+* Encrypted secrets delivery
+* Lineage + metadata capture per record
+* Golden file testing  
+* Schema drift detection  
+* Role-based sinks  
+* Observability metrics baked in 
+* Slice processing level traceability  
 
----
+{{% /details %}}
 
-## 🧪 Production-Ready from Day One
-
-- Golden file testing  
-- Schema drift detection  
-- Role-based sinks  
-- Prometheus metrics + logs + traceability  
 
 ---
 
@@ -101,9 +86,12 @@ description: "Runink: Your Go-to Hub for for orchestrating secure, testable, and
 **Runink is currently onboarding early teams.**  
 Want to simplify your pipeline stack and move faster with confidence?
 
-* 📚 [Documentation](/docs/)
-* 🧠 [Architecture Overview](/docs/architecture/)
-* 🔍 [Benchmark Comparison](/docs/benchmark/)
+
+{{< cards >}}
+  {{< card link="/docs/" title="Runink Documentation" icon="academic-cap">}}
+  {{< card link="/docs/architecture/" title="Runink Components" icon="collection">}}
+  {{< card link="/docs/benchmark/" title="Runink Benchmarks" icon="briefcase">}}
+{{< /cards >}}
 
 Interested in contributing or collaborating? 
 
