@@ -2,60 +2,59 @@
 &lt;h1>Runink Architecture: Go/Linux Native Distributed Data Environment&lt;/h1>&lt;p>Self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives. This system acts as the cluster resource manager and scheduler (replacing Slurm), provides Kubernetes-like logical isolation and RBAC, integrates data governance features, and ensures robust security and observability. It aims for high efficiency by avoiding traditional virtualization or container runtimes like Docker. Define a self-sufficient, distributed environment for orchestrating and executing data pipelines using Go and Linux primitives, with enhanced metadata capabilities designed to support standard data governance (lineage, catalog) AND future integration of LLM-generated annotations.&lt;/p>
 &lt;h2>High-Level Architecture&lt;span class="hx:absolute hx:-mt-20" id="high-level-architecture">&lt;/span>
 &lt;a href="#high-level-architecture" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Runink operates with a Control Plane managing multiple Worker Nodes, each running a Runi Agent.&lt;/p>
-&lt;div class="mermaid">
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+&lt;pre class="mermaid hx:mt-6">
 flowchart LR
-subgraph External ["External Interaction"]
-A["User / Client
-(CLI, UI, API)"]
+subgraph External [&amp;#34;External Interaction&amp;#34;]
+A[&amp;#34;User / Client
+(CLI, UI, API)&amp;#34;]
 end
-subgraph ControlPlane ["HERD CONTROL PLANE (Services state managed in Barn via Raft)"]
+subgraph ControlPlane [&amp;#34;HERD CONTROL PLANE (Services state managed in Barn via Raft)&amp;#34;]
 direction TB
-B["API Server
-(Gateway, AuthN/Z)"]
-subgraph StateStore ["Cluster State Store (Barn)"]
-D["Barn (KV Store)"]
-subgraph RaftConsensus ["Raft Protocol (HA/Consistency)"]
-D1["Leader"] --- D2["Followers"]
+B[&amp;#34;API Server
+(Gateway, AuthN/Z)&amp;#34;]
+subgraph StateStore [&amp;#34;Cluster State Store (Barn)&amp;#34;]
+D[&amp;#34;Barn (KV Store)&amp;#34;]
+subgraph RaftConsensus [&amp;#34;Raft Protocol (HA/Consistency)&amp;#34;]
+D1[&amp;#34;Leader&amp;#34;] --- D2[&amp;#34;Followers&amp;#34;]
 end
 D --- RaftConsensus
 end
-subgraph InternalServices ["Internal Services (Rely on Barn)"]
+subgraph InternalServices [&amp;#34;Internal Services (Rely on Barn)&amp;#34;]
 direction TB
-C["(Identity &amp; RBAC Mgr)"]
-E["Scheduler"]
-F["Secrets Manager"]
-G["Data Governance Svc"]
+C[&amp;#34;(Identity &amp;amp; RBAC Mgr)&amp;#34;]
+E[&amp;#34;Scheduler&amp;#34;]
+F[&amp;#34;Secrets Manager&amp;#34;]
+G[&amp;#34;Data Governance Svc&amp;#34;]
 end
-%% Interaction Flow: User -> API -> Barn &amp; Services -> Barn
-A --> B
-B -->|API Server validates state in Barn / AuthZ| D
-B -->|API Server Coordinates with RBAC Mgr| C
-B -->|API Server Coordinates with Scheduler| E
-B -->|API Server Coordinates with Secrets Mgr| F
-B -->|API Server Coordinates with Governance Svc| G
+%% Interaction Flow: User -&amp;gt; API -&amp;gt; Barn &amp;amp; Services -&amp;gt; Barn
+A --&amp;gt; B
+B --&amp;gt;|API Server validates state in Barn / AuthZ| D
+B --&amp;gt;|API Server Coordinates with RBAC Mgr| C
+B --&amp;gt;|API Server Coordinates with Scheduler| E
+B --&amp;gt;|API Server Coordinates with Secrets Mgr| F
+B --&amp;gt;|API Server Coordinates with Governance Svc| G
 %% Services use Barn for persistence and state synchronization
-C -->|Stores/Reads Policies| D
-E -->|Watches Tasks / Stores Placements| D
-F -->|Stores/Reads Secrets| D
-G -->|Stores/Reads Core Metadata &amp; Lineage Refs| D
+C --&amp;gt;|Stores/Reads Policies| D
+E --&amp;gt;|Watches Tasks / Stores Placements| D
+F --&amp;gt;|Stores/Reads Secrets| D
+G --&amp;gt;|Stores/Reads Core Metadata &amp;amp; Lineage Refs| D
 end
-subgraph WorkerNode ["Worker Node"]
+subgraph WorkerNode [&amp;#34;Worker Node&amp;#34;]
 direction TB
-H["Runi Agent"]
-I["Runi Slice"]
-H -->| Agent manages Slice | I
+H[&amp;#34;Runi Agent&amp;#34;]
+I[&amp;#34;Runi Slice&amp;#34;]
+H --&amp;gt;| Agent manages Slice | I
 end
-subgraph ExternalServices ["External Services"]
-J["External Services
-(DB, Object Store, LLMs)"]
+subgraph ExternalServices [&amp;#34;External Services&amp;#34;]
+J[&amp;#34;External Services
+(DB, Object Store, LLMs)&amp;#34;]
 end
-%% Control Plane -> Worker Interactions (Orchestrated)
-E -->|Instructs Agent to Place Task| H
-F -->|Delivers Secrets via Agent| H
-%% Worker -> Control Plane / External Interactions
-I -->|Slice Reports Lineage/Metadata to Governance Service| G
-I -->|Slice interacts with external systems over Data/APIs| J
+%% Control Plane -&amp;gt; Worker Interactions (Orchestrated)
+E --&amp;gt;|Instructs Agent to Place Task| H
+F --&amp;gt;|Delivers Secrets via Agent| H
+%% Worker -&amp;gt; Control Plane / External Interactions
+I --&amp;gt;|Slice Reports Lineage/Metadata to Governance Service| G
+I --&amp;gt;|Slice interacts with external systems over Data/APIs| J
 %% Styling Definitions (Adjusted for better light/dark theme visibility)
 style External fill:#aaccff,stroke:#004488,stroke-width:2px,color:#000
 style ControlPlane fill:#e0e0e0,stroke:#444444,stroke-width:2px,color:#000
@@ -63,21 +62,7 @@ style StateStore fill:#f0f0e8,stroke:#777777,stroke-width:1px,color:#000 %% Rena
 style RaftConsensus fill:#ffebcc,stroke:#aa7700,stroke-width:1px,stroke-dasharray: 5 5,color:#000
 style WorkerNode fill:#cceece,stroke:#006600,stroke-width:2px,color:#000
 style ExternalServices fill:#ffcccc,stroke:#990000,stroke-width:2px,color:#000
-&lt;/div>
-&lt;script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
-document.addEventListener('DOMContentLoaded', () => {
-mermaid.initialize({
-startOnLoad: true,
-theme: 'default',
-securityLevel: 'loose',
-flowchart: { useMaxWidth: true, htmlLabels: true },
-zoom: { enabled: true, scaleFactor: 0.2 }
-});
-mermaid.run();
-});
-&lt;/script>
-&lt;h3>Runi Agent / Worker slice channels orchesrtration&lt;span class="hx:absolute hx:-mt-20" id="runi-agent--worker-slice-channels-orchesrtration">&lt;/span>
+&lt;/pre>&lt;h3>Runi Agent / Worker slice channels orchesrtration&lt;span class="hx:absolute hx:-mt-20" id="runi-agent--worker-slice-channels-orchesrtration">&lt;/span>
 &lt;a href="#runi-agent--worker-slice-channels-orchesrtration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Ephemeral UIDs &amp;amp; mTLS
 Each slice runs as:&lt;/p>
 &lt;ul>
@@ -86,15 +71,13 @@ Each slice runs as:&lt;/p>
 &lt;li>In an &lt;strong>isolated namespace&lt;/strong>&lt;/li>
 &lt;li>Authenticated over mTLS via service tokens&lt;/li>
 &lt;/ul>
-&lt;div class="mermaid">
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+&lt;pre class="mermaid hx:mt-6">
 flowchart TD
-A["Runi Agent&lt;br/>(PID 1 inside namespace)"] --> B["Launch Slice&lt;br/>(Normalize step)"]
-B --> C1["io.Pipe() Reader&lt;br/>→ Goroutine: Validate step"]
-B --> C2["io.Pipe() Reader&lt;br/>→ Goroutine: Enrich step"]
-B --> D["Final Writer&lt;br/>(sink to disk or message bus)"]
-&lt;/div>
-&lt;h3>Core Principles&lt;span class="hx:absolute hx:-mt-20" id="core-principles">&lt;/span>
+A[&amp;#34;Runi Agent&amp;lt;br/&amp;gt;(PID 1 inside namespace)&amp;#34;] --&amp;gt; B[&amp;#34;Launch Slice&amp;lt;br/&amp;gt;(Normalize step)&amp;#34;]
+B --&amp;gt; C1[&amp;#34;io.Pipe() Reader&amp;lt;br/&amp;gt;→ Goroutine: Validate step&amp;#34;]
+B --&amp;gt; C2[&amp;#34;io.Pipe() Reader&amp;lt;br/&amp;gt;→ Goroutine: Enrich step&amp;#34;]
+B --&amp;gt; D[&amp;#34;Final Writer&amp;lt;br/&amp;gt;(sink to disk or message bus)&amp;#34;]
+&lt;/pre>&lt;h3>Core Principles&lt;span class="hx:absolute hx:-mt-20" id="core-principles">&lt;/span>
 &lt;a href="#core-principles" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
 &lt;li>&lt;strong>User Interaction:&lt;/strong> Client requests are often scoped to a specific Herd.&lt;/li>
 &lt;li>&lt;strong>API Server / RBAC:&lt;/strong> Enforces RBAC policies based on user/service account permissions within a target Herd.&lt;/li>
@@ -1138,78 +1121,63 @@ title="Copy code"
 &lt;/tbody>
 &lt;/table>
 &lt;h2>Process flow&lt;span class="hx:absolute hx:-mt-20" id="process-flow">&lt;/span>
-&lt;a href="#process-flow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="mermaid">
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+&lt;a href="#process-flow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;pre class="mermaid hx:mt-6">
 %% Mermaid Diagram: MapReduce vs RDD vs Raft (Runink)
 flowchart LR
-subgraph Normal_Operation["✅ Normal Operation (Execution Flow)"]
+subgraph Normal_Operation[&amp;#34;✅ Normal Operation (Execution Flow)&amp;#34;]
 subgraph MapReduce
-ID1["Input Data 📂"]
-MP["Map Phase 🛠️"]
-SS["Shuffle &amp; Sort Phase 🔀"]
-RP["Reduce Phase 🛠️"]
-ID1 --> MP --> SS --> RP
+ID1[&amp;#34;Input Data 📂&amp;#34;]
+MP[&amp;#34;Map Phase 🛠️&amp;#34;]
+SS[&amp;#34;Shuffle &amp;amp; Sort Phase 🔀&amp;#34;]
+RP[&amp;#34;Reduce Phase 🛠️&amp;#34;]
+ID1 --&amp;gt; MP --&amp;gt; SS --&amp;gt; RP
 end
 subgraph RDD
-RID1["Input Data 📂"]
-RT["RDD Transformations 🔄"]
-AT["Action Trigger ▶️"]
-JS["Job Scheduler 📋"]
-CE["Cluster Execution (Executors) ⚙️"]
-OD["Output Data 📦"]
-RID1 --> RT --> AT --> JS --> CE --> OD
+RID1[&amp;#34;Input Data 📂&amp;#34;]
+RT[&amp;#34;RDD Transformations 🔄&amp;#34;]
+AT[&amp;#34;Action Trigger ▶️&amp;#34;]
+JS[&amp;#34;Job Scheduler 📋&amp;#34;]
+CE[&amp;#34;Cluster Execution (Executors) ⚙️&amp;#34;]
+OD[&amp;#34;Output Data 📦&amp;#34;]
+RID1 --&amp;gt; RT --&amp;gt; AT --&amp;gt; JS --&amp;gt; CE --&amp;gt; OD
 end
 subgraph Raft_Runink
-RIN["Input Data 📂"]
-RC["Raft Commit (Contracts + Metadata) 🗄️"]
-RS["Runi Scheduler (Raft-backed) 🧠"]
-LW["Launch Slices (Isolated Workers) 🚀"]
-ROD["Output Data 📦"]
-RIN --> RC --> RS --> LW --> ROD
+RIN[&amp;#34;Input Data 📂&amp;#34;]
+RC[&amp;#34;Raft Commit (Contracts + Metadata) 🗄️&amp;#34;]
+RS[&amp;#34;Runi Scheduler (Raft-backed) 🧠&amp;#34;]
+LW[&amp;#34;Launch Slices (Isolated Workers) 🚀&amp;#34;]
+ROD[&amp;#34;Output Data 📦&amp;#34;]
+RIN --&amp;gt; RC --&amp;gt; RS --&amp;gt; LW --&amp;gt; ROD
 end
 end
-subgraph Failure_Recovery["⚡ Failure Recovery Flow (Crash Handling)"]
+subgraph Failure_Recovery[&amp;#34;⚡ Failure Recovery Flow (Crash Handling)&amp;#34;]
 subgraph MapReduce_Failure
-MFID["Input Data 📂"]
-MFR["Map Phase Running 🛠️"]
-MC["Map Node Crash 🛑"]
-MF["Job Fails Entirely ❌"]
-MR["Manual Restart Needed 🔄"]
-MFID --> MFR --> MC --> MF --> MR
+MFID[&amp;#34;Input Data 📂&amp;#34;]
+MFR[&amp;#34;Map Phase Running 🛠️&amp;#34;]
+MC[&amp;#34;Map Node Crash 🛑&amp;#34;]
+MF[&amp;#34;Job Fails Entirely ❌&amp;#34;]
+MR[&amp;#34;Manual Restart Needed 🔄&amp;#34;]
+MFID --&amp;gt; MFR --&amp;gt; MC --&amp;gt; MF --&amp;gt; MR
 end
 subgraph RDD_Failure
-RFID["Input Data 📂"]
-RER["RDD Execution Running 🔄"]
-RCN["RDD Node Crash 🛑"]
-DR["Driver Attempts Lineage Recompute 🔁"]
-PR["Partial or Full Job Restart 🔄"]
-RFID --> RER --> RCN --> DR --> PR
+RFID[&amp;#34;Input Data 📂&amp;#34;]
+RER[&amp;#34;RDD Execution Running 🔄&amp;#34;]
+RCN[&amp;#34;RDD Node Crash 🛑&amp;#34;]
+DR[&amp;#34;Driver Attempts Lineage Recompute 🔁&amp;#34;]
+PR[&amp;#34;Partial or Full Job Restart 🔄&amp;#34;]
+RFID --&amp;gt; RER --&amp;gt; RCN --&amp;gt; DR --&amp;gt; PR
 end
 subgraph Raft_Failure
-RFD["Input Data 📂"]
-SR["Slice Running 🚀"]
-RC["Raft Node Crash 🛑"]
-EL["Raft Detects Loss + Elects New Leader 🧠"]
-RE["Reschedule Slice Elsewhere ♻️"]
-CE["Continue Execution Seamlessly ✅"]
-RFD --> SR --> RC --> EL --> RE --> CE
+RFD[&amp;#34;Input Data 📂&amp;#34;]
+SR[&amp;#34;Slice Running 🚀&amp;#34;]
+RC[&amp;#34;Raft Node Crash 🛑&amp;#34;]
+EL[&amp;#34;Raft Detects Loss + Elects New Leader 🧠&amp;#34;]
+RE[&amp;#34;Reschedule Slice Elsewhere ♻️&amp;#34;]
+CE[&amp;#34;Continue Execution Seamlessly ✅&amp;#34;]
+RFD --&amp;gt; SR --&amp;gt; RC --&amp;gt; EL --&amp;gt; RE --&amp;gt; CE
 end
 end
-&lt;/div>
-&lt;script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
-document.addEventListener('DOMContentLoaded', () => {
-mermaid.initialize({
-startOnLoad: true,
-theme: 'default',
-securityLevel: 'loose',
-flowchart: { useMaxWidth: true, htmlLabels: true },
-zoom: { enabled: true, scaleFactor: 0.2 }
-});
-mermaid.run();
-});
-&lt;/script>
-&lt;h2>🚀 How This Model Beats the Status Quo&lt;span class="hx:absolute hx:-mt-20" id="-how-this-model-beats-the-status-quo">&lt;/span>
+&lt;/pre>&lt;h2>🚀 How This Model Beats the Status Quo&lt;span class="hx:absolute hx:-mt-20" id="-how-this-model-beats-the-status-quo">&lt;/span>
 &lt;a href="#-how-this-model-beats-the-status-quo" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>✅ Compared to Apache Spark&lt;span class="hx:absolute hx:-mt-20" id="-compared-to-apache-spark">&lt;/span>
 &lt;a href="#-compared-to-apache-spark" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
 &lt;thead>
@@ -3191,97 +3159,83 @@ title="Copy code"
 &lt;h1>🚀 Runink Quickstart: CDM Trade Pipeline&lt;/h1>&lt;p>This example shows how to define, test, apply, and run a declarative data pipeline using Runink.&lt;/p>
 &lt;hr>
 &lt;h2>Environment scenario&lt;span class="hx:absolute hx:-mt-20" id="environment-scenario">&lt;/span>
-&lt;a href="#environment-scenario" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="mermaid">
+&lt;a href="#environment-scenario" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;pre class="mermaid hx:mt-6">
 %% Mermaid Diagram: Runink Architecture (Blueprint View)
 flowchart TD
-subgraph Developer_Client["🌐 Developer / Client"]
-Developer["Developer"]
+subgraph Developer_Client[&amp;#34;🌐 Developer / Client&amp;#34;]
+Developer[&amp;#34;Developer&amp;#34;]
 end
-subgraph Global_Control_Plane["🧭 Runink Global Control Plane (HA Setup)"]
-GlobalAPI["API Server x3
+subgraph Global_Control_Plane[&amp;#34;🧭 Runink Global Control Plane (HA Setup)&amp;#34;]
+GlobalAPI[&amp;#34;API Server x3
 - AuthN/AuthZ
 - Herd Routing
-- TLS gRPC"]
-HerdDirectory["Herd Directory
+- TLS gRPC&amp;#34;]
+HerdDirectory[&amp;#34;Herd Directory
 - Maps Herds to Raft Groups
-- Metadata Routing"]
+- Metadata Routing&amp;#34;]
 end
-subgraph Finance_Herd["🏦 Finance Herd Partition"]
-FinanceScheduler["Finance Scheduler (Leader)
+subgraph Finance_Herd[&amp;#34;🏦 Finance Herd Partition&amp;#34;]
+FinanceScheduler[&amp;#34;Finance Scheduler (Leader)
 - DAG Planning
-- Placement Decisions"]
-FinanceBarn["Finance Barn (KV Store)
-- BadgerDB (Local)"]
-FinanceGovernance["Finance Governance Service
+- Placement Decisions&amp;#34;]
+FinanceBarn[&amp;#34;Finance Barn (KV Store)
+- BadgerDB (Local)&amp;#34;]
+FinanceGovernance[&amp;#34;Finance Governance Service
 - Lineage
 - Quality
-- Contracts"]
-FinanceSecrets["Finance Secrets Manager
-- Raft-backed Secret Storage"]
-FinanceRaft["Finance Raft Group (5 Nodes)
-(etcd-io/raft)"]
+- Contracts&amp;#34;]
+FinanceSecrets[&amp;#34;Finance Secrets Manager
+- Raft-backed Secret Storage&amp;#34;]
+FinanceRaft[&amp;#34;Finance Raft Group (5 Nodes)
+(etcd-io/raft)&amp;#34;]
 end
-subgraph Analytics_Herd["📊 Analytics Herd Partition"]
-AnalyticsScheduler["Analytics Scheduler (Leader)
+subgraph Analytics_Herd[&amp;#34;📊 Analytics Herd Partition&amp;#34;]
+AnalyticsScheduler[&amp;#34;Analytics Scheduler (Leader)
 - DAG Planning
-- Placement Decisions"]
-AnalyticsBarn["Analytics Barn (KV Store)
-- BadgerDB (Local)"]
-AnalyticsGovernance["Analytics Governance Service
+- Placement Decisions&amp;#34;]
+AnalyticsBarn[&amp;#34;Analytics Barn (KV Store)
+- BadgerDB (Local)&amp;#34;]
+AnalyticsGovernance[&amp;#34;Analytics Governance Service
 - Lineage
 - Quality
-- Contracts"]
-AnalyticsSecrets["Analytics Secrets Manager
-- Raft-backed Secret Storage"]
-AnalyticsRaft["Analytics Raft Group (5 Nodes)
-(etcd-io/raft)"]
+- Contracts&amp;#34;]
+AnalyticsSecrets[&amp;#34;Analytics Secrets Manager
+- Raft-backed Secret Storage&amp;#34;]
+AnalyticsRaft[&amp;#34;Analytics Raft Group (5 Nodes)
+(etcd-io/raft)&amp;#34;]
 end
-subgraph Worker_Cluster["🧱 Worker Nodes Cluster"]
-RuniAgent["Runi Agent x100
+subgraph Worker_Cluster[&amp;#34;🧱 Worker Nodes Cluster&amp;#34;]
+RuniAgent[&amp;#34;Runi Agent x100
 - Node Registration
 - Slice Management
-- Metrics Collection"]
-RuniSlice["Runi Slice (Ephemeral Container)
+- Metrics Collection&amp;#34;]
+RuniSlice[&amp;#34;Runi Slice (Ephemeral Container)
 - Herd Namespaced
 - Config Loaded
-- Secrets Injected"]
+- Secrets Injected&amp;#34;]
 end
-Developer --> | CLI/API Requests | GlobalAPI
-GlobalAPI --> | Resolve Herd Assignment | HerdDirectory
-GlobalAPI --> | Finance Pipelines | FinanceScheduler
-GlobalAPI --> | Analytics Pipelines | AnalyticsScheduler
-FinanceScheduler --> | DAG and Placement Reads | FinanceBarn
-FinanceGovernance --> | Metadata/Lineage Writes | FinanceBarn
-FinanceSecrets --> | Secrets CRUD | FinanceBarn
-FinanceBarn --> | Log Replication | FinanceRaft
-AnalyticsScheduler --> | DAG and Placement Reads | AnalyticsBarn
-AnalyticsGovernance --> | Metadata/Lineage Writes | AnalyticsBarn
-AnalyticsSecrets --> | Secrets CRUD | AnalyticsBarn
-AnalyticsBarn --> | Log Replication | AnalyticsRaft
-FinanceScheduler --> | Dispatch Finance Slices | RuniAgent
-AnalyticsScheduler --> | Dispatch Analytics Slices | RuniAgent
-RuniAgent --> | Launch with Herd Isolation | RuniSlice
-RuniAgent --> | Fetch Finance Secrets | FinanceSecrets
-RuniAgent --> | Fetch Analytics Secrets | AnalyticsSecrets
-RuniSlice --> | Emit Lineage Events | FinanceGovernance
-RuniSlice --> | Emit Lineage Events | AnalyticsGovernance
-RuniSlice --> | Expose Service Port | RuniAgent
-RuniAgent --> | Port-Forwarded Access | Developer
-&lt;/div>
-&lt;script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
-document.addEventListener('DOMContentLoaded', () => {
-mermaid.initialize({
-startOnLoad: true,
-theme: 'default',
-securityLevel: 'loose',
-flowchart: { useMaxWidth: true, htmlLabels: true },
-zoom: { enabled: true, scaleFactor: 0.2 }
-});
-mermaid.run();
-});
-&lt;/script>
-&lt;h2>🛠️ Prerequisites&lt;span class="hx:absolute hx:-mt-20" id="-prerequisites">&lt;/span>
+Developer --&amp;gt; | CLI/API Requests | GlobalAPI
+GlobalAPI --&amp;gt; | Resolve Herd Assignment | HerdDirectory
+GlobalAPI --&amp;gt; | Finance Pipelines | FinanceScheduler
+GlobalAPI --&amp;gt; | Analytics Pipelines | AnalyticsScheduler
+FinanceScheduler --&amp;gt; | DAG and Placement Reads | FinanceBarn
+FinanceGovernance --&amp;gt; | Metadata/Lineage Writes | FinanceBarn
+FinanceSecrets --&amp;gt; | Secrets CRUD | FinanceBarn
+FinanceBarn --&amp;gt; | Log Replication | FinanceRaft
+AnalyticsScheduler --&amp;gt; | DAG and Placement Reads | AnalyticsBarn
+AnalyticsGovernance --&amp;gt; | Metadata/Lineage Writes | AnalyticsBarn
+AnalyticsSecrets --&amp;gt; | Secrets CRUD | AnalyticsBarn
+AnalyticsBarn --&amp;gt; | Log Replication | AnalyticsRaft
+FinanceScheduler --&amp;gt; | Dispatch Finance Slices | RuniAgent
+AnalyticsScheduler --&amp;gt; | Dispatch Analytics Slices | RuniAgent
+RuniAgent --&amp;gt; | Launch with Herd Isolation | RuniSlice
+RuniAgent --&amp;gt; | Fetch Finance Secrets | FinanceSecrets
+RuniAgent --&amp;gt; | Fetch Analytics Secrets | AnalyticsSecrets
+RuniSlice --&amp;gt; | Emit Lineage Events | FinanceGovernance
+RuniSlice --&amp;gt; | Emit Lineage Events | AnalyticsGovernance
+RuniSlice --&amp;gt; | Expose Service Port | RuniAgent
+RuniAgent --&amp;gt; | Port-Forwarded Access | Developer
+&lt;/pre>&lt;h2>🛠️ Prerequisites&lt;span class="hx:absolute hx:-mt-20" id="-prerequisites">&lt;/span>
 &lt;a href="#-prerequisites" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Ensure you have:&lt;/p>
 &lt;ul>
 &lt;li>A &lt;code>.dsl&lt;/code> scenario: &lt;code>features/cdm_trade/trade_cdm.dsl&lt;/code>&lt;/li>
@@ -3290,16 +3244,15 @@ mermaid.run();
 &lt;li>Sample input data: &lt;code>golden/cdm_trade/input.json&lt;/code>&lt;/li>
 &lt;/ul>
 &lt;p>Our example presents the following:&lt;/p>
-&lt;div class="mermaid">
+&lt;pre class="mermaid hx:mt-6">
 flowchart TD
-A["Kafka (raw)"] --> B["DecodeCDMEvents"]
-B --> C["sf:control.decoded_cdm_events"]
-B --> D["ValidateLifecycle"]
-D -->|if !valid| E["sf:control.invalid_cdm_events"]
-D -->|if valid| F["TagWithFDC3Context"]
-F --> G["sf:cdm.validated_trade_events"]
-&lt;/div>
-&lt;hr>
+A[&amp;#34;Kafka (raw)&amp;#34;] --&amp;gt; B[&amp;#34;DecodeCDMEvents&amp;#34;]
+B --&amp;gt; C[&amp;#34;sf:control.decoded_cdm_events&amp;#34;]
+B --&amp;gt; D[&amp;#34;ValidateLifecycle&amp;#34;]
+D --&amp;gt;|if !valid| E[&amp;#34;sf:control.invalid_cdm_events&amp;#34;]
+D --&amp;gt;|if valid| F[&amp;#34;TagWithFDC3Context&amp;#34;]
+F --&amp;gt; G[&amp;#34;sf:cdm.validated_trade_events&amp;#34;]
+&lt;/pre>&lt;hr>
 &lt;h2>💡 Example Flow&lt;span class="hx:absolute hx:-mt-20" id="-example-flow">&lt;/span>
 &lt;a href="#-example-flow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Create a secure namespace (herd)&lt;/span>
