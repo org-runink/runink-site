@@ -10,7 +10,7 @@ This example shows how to define, test, apply, and run a declarative data pipeli
 
 ## Environment scenario
 
-{{< mermaid >}}
+```mermaid
 %% Mermaid Diagram: Runink Architecture (Blueprint View)
 
 flowchart TD
@@ -97,8 +97,7 @@ flowchart TD
   RuniSlice --> | Emit Lineage Events | AnalyticsGovernance 
   RuniSlice --> | Expose Service Port | RuniAgent 
   RuniAgent --> | Port-Forwarded Access | Developer 
-
-{{< /mermaid >}}
+```
 
 ## 🛠️ Prerequisites
 
@@ -111,7 +110,7 @@ Ensure you have:
 
 Our example presents the following:
 
-{{< mermaid >}}
+```mermaid
 flowchart TD
   A["Kafka (raw)"] --> B["DecodeCDMEvents"]
   B --> C["sf:control.decoded_cdm_events"]
@@ -120,7 +119,7 @@ flowchart TD
   D -->|if !valid| E["sf:control.invalid_cdm_events"]
   D -->|if valid| F["TagWithFDC3Context"]
   F --> G["sf:cdm.validated_trade_events"]
-{{< /mermaid >}}
+```
 
 ---
 

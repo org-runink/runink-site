@@ -11,8 +11,7 @@ Self-sufficient, distributed environment for orchestrating and executing data pi
 
 Runink operates with a Control Plane managing multiple Worker Nodes, each running a Runi Agent.
 
-{{< mermaid >}}
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+```mermaid
 flowchart LR 
     subgraph External ["External Interaction"]
         A["User / Client
@@ -77,7 +76,7 @@ flowchart LR
     style RaftConsensus fill:#ffebcc,stroke:#aa7700,stroke-width:1px,stroke-dasharray: 5 5,color:#000
     style WorkerNode fill:#cceece,stroke:#006600,stroke-width:2px,color:#000
     style ExternalServices fill:#ffcccc,stroke:#990000,stroke-width:2px,color:#000
-{{< /mermaid >}}
+```
 
 ### Runi Agent / Worker slice channels orchesrtration
 
@@ -88,15 +87,13 @@ Each slice runs as:
 - In an **isolated namespace**
 - Authenticated over mTLS via service tokens
 
-{{< mermaid >}}
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+```mermaid
 flowchart TD
     A["Runi Agent<br/>(PID 1 inside namespace)"] --> B["Launch Slice<br/>(Normalize step)"]
     B --> C1["io.Pipe() Reader<br/>→ Goroutine: Validate step"]
     B --> C2["io.Pipe() Reader<br/>→ Goroutine: Enrich step"]
     B --> D["Final Writer<br/>(sink to disk or message bus)"]
-{{< /mermaid >}}
-
+```
 
 
 ### Core Principles

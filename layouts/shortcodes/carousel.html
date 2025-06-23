@@ -1,0 +1,69 @@
+<div class="carousel" id="carousel-{{ now.Unix }}">
+  <div class="carousel-track">
+    {{ .Inner }}
+  </div>
+</div>
+
+<style>
+.carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  width: 412px;
+  height: 680px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+.carousel-item .card {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Optional: Prevent card content from overflowing */
+.carousel-item .card img {
+  object-fit: contain;
+}
+</style>
+
+<script>
+(function() {
+  const id = "{{ now.Unix }}";
+  let index = 0;
+  const carousel = document.getElementById("carousel-" + id);
+  const track = carousel.querySelector('.carousel-track');
+  const slides = carousel.querySelectorAll('.carousel-item');
+
+  function updateSlide() {
+    const slideWidth = slides[0].offsetWidth;
+    track.style.transform = `translateX(-${index * slideWidth}px)`;
+  }
+
+  setInterval(() => {
+    const visibleSlides = Math.floor(carousel.offsetWidth / slides[0].offsetWidth) || 1;
+    const totalSteps = slides.length - visibleSlides + 1;
+    index = (index + 1) % totalSteps;
+    updateSlide();
+  }, 5000);
+
+  window.addEventListener('resize', updateSlide);
+  updateSlide();
+})();
+</script>

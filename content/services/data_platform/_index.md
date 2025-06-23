@@ -1,84 +1,108 @@
 ---
-title: "Data Platform Quickstart | Runink"
 weight: 3
 layout: "service"
 description: "Launch a modern data platform with Runink’s tool-agnostic Data Platform Quickstart. Secure pipelines, governance, and insights in weeks."
+toc: false
 ---
 
+## Launch a Reliable, Insight-Driven Data Platform with our *Data Platform Quickstart*
 
-**Build a scalable, secure, and insight-driven data platform — fast.**
+If you're struggling with scattered pipelines, unreliable dashboards, or fragile infrastructure — you're not alone. The **Data Platform Quickstart** is a focused, 4-week engagement to help your team build a secure, scalable, and modern data foundation fast.
 
-Whether you're modernizing your data stack or starting from scratch, the Quickstart engagement accelerates your journey to actionable analytics with best-in-class architecture and governance. We work with your current stack or recommend and implement the right tools for your goals.
+Whether you're refreshing an outdated stack or launching from scratch, we help you make confident architecture decisions, set up trusted pipelines, and deliver analytics your team can act on.
 
----
+This accelerator is ideal for organizations that:
 
-## 🚩 **Who It's For**
+{{< cards >}}
+  {{< card icon="chart-bar" subtitle="Need a trustworthy foundation for reporting, analytics, or AI" >}}
+  {{< card icon="database" subtitle="Have fragmented pipelines or unreliable data visibility" >}}
+  {{< card icon="check-circle" subtitle="Want a faster, expert-guided path to modern data infrastructure" >}}
+{{< /cards >}}
 
-This engagement is ideal if you:
-
-* Need a reliable foundation for analytics, reporting, or AI.
-* Are drowning in fragmented data pipelines, poor visibility, or unreliable dashboards.
-* Are launching a new data initiative and need a strong, secure starting point.
-* Want expert input to validate, upgrade, or refactor your current architecture.
-
----
-
-## 📅 **What’s Included?**
-
-Our 4-week engagement typically includes:
-
-### **Week 1: Discovery & Design**
-
-* Stakeholder workshops to align data goals with business outcomes
-* Audit of current data systems (if any)
-* Roadmap proposal: stack selection, architecture, ingestion plan, governance framework
-
-### **Week 2–3: Implementation & Integration**
-
-* Setup or configuration of your selected data warehouse or lake
-* Data pipeline creation (batch/streaming) for 1–2 key domains
-* Lightweight governance setup: documentation, lineage, access control
-
-### **Week 4: Delivery & Enablement**
-
-* Initial reporting/dashboard layer or analytics interface
-* Operational playbook with observability, cost control, and SLA guidance
-* Handover session and roadmap for next-stage scaling
+> _"We don’t just stand up dashboards — we lay the groundwork for trusted, resilient data products."_  
 
 ---
 
-## 📌 **What You'll Walk Away With**
+### What to Expect
 
-* A secure, scalable data platform tailored to your organization
-* High-trust ingestion pipelines and reliable transformation workflows
-* Governance foundations: access, lineage, and documentation
-* Analytics that your teams can trust — and build on
+**Effort:** Minimal disruption — high-impact results for your data and analytics teams
+
+Our **Data Platform Quickstart** is designed to move fast — giving your team a reliable platform to build on, not just a proof of concept. We combine strategic guidance with hands-on implementation, tailored to your tools, goals, and data landscape.
+
+{{< tabs items="Phase 1,Phase 2,Phase 3" >}}
+
+{{< tab >}}
+{{% steps %}}
+
+## Discovery & Design
+
+We start by understanding your data goals and technical context so we can align the architecture to your real business needs.
+
+#### **What we do:**
+
+* Stakeholder workshops across engineering, analytics, and product
+* Audit of existing data architecture (if applicable)
+* Define key data domains, sources, and target use cases
+* Recommend cloud-native or hybrid stack options
+* Create architecture blueprint and implementation plan
+
+#### **Outcome:**
+
+A clear roadmap to a scalable data platform aligned with your business and analytics priorities.
+
+{{% /steps %}}
+{{< /tab >}}
+
+{{< tab >}}
+{{% steps %}}
+
+## Implementation & Integration
+
+We build the backbone of your modern data stack using trusted tools and proven practices.
+
+#### **What we implement:**
+
+* Set up your cloud warehouse or data lake (BigQuery, Snowflake, Redshift, etc.)
+* Create ingestion pipelines for 1–2 high-value domains (batch or streaming)
+* Deploy basic transformation logic using dbt, Spark, or SQL
+* Implement lightweight data governance: lineage, metadata, access control
+
+#### **Outcome:**
+
+A functioning, secure data platform that ingests and transforms real data — with transparency and control.
+
+{{% /steps %}}
+{{< /tab >}}
+
+{{< tab >}}
+{{% steps %}}
+
+## Delivery & Enablement
+
+We close by ensuring your team has the tools, training, and confidence to take the platform forward.
+
+#### **What we deliver:**
+
+* Initial dashboards or data interface to visualize pipeline outputs
+* Observability & cost control best practices
+* Documentation, runbooks, and a roadmap for phase two (scale, governance, AI enablement)
+* Final handover and enablement session with your team
+
+#### **Outcome:**
+
+A platform your team understands, owns, and can scale — with analytics and reporting that drive confidence, not confusion.
+
+{{% /steps %}}
+{{< /tab >}}
+
+{{< /tabs >}}
+
+> *"Good data platforms don’t just work — they build trust across your organization. We help you start strong."*
 
 ---
 
-## ⚙️ **Tech Stack Philosophy**
+## Ready to Build Smarter with Data?
 
-We are **tool-agnostic** — we can:
-
-* **Adapt** to your current tools (e.g., existing cloud provider, data warehouse, orchestration tool).
-* **Recommend** a modern stack that aligns with your strategy, budget, and roadmap.
-* Work across cloud-native, open-source, and enterprise solutions as needed.
-
-Tools we commonly work with: Snowflake, BigQuery, Redshift, Databricks, dbt, Airflow, Kafka, Spark, Looker, Tableau, Power BI — but we’re not locked in.
-
----
-
-## 🎯 **Why Runink?**
-
-* Deep experience architecting data platforms across finance, retail, and tech
-* Balanced focus on engineering velocity *and* governance rigor
-* Strategic, hands-on approach — no bloated roadmaps, just results
-* We build platforms your teams can own and scale
-
----
-
-## ✅ **Next Steps**
-
-Let’s take the complexity out of your data platform and get results in weeks — not quarters.
+Let’s make your platform a launchpad — not a bottleneck.
 
 [**Book a Free Discovery Call | Request a Custom Proposal →**](/contact)

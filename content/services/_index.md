@@ -1,57 +1,40 @@
 ---
-title: "Runink: Professional Cloud, Data, and AI Services"
 weight: 1
 layout: "landing"
 description: "Runink offers expert consulting services for Cloud Architecture, Data Engineering, and Generative AI Leadership."
+toc: false
 ---
 
-**Empowering engineering teams and executives to build reliable, secure, and scalable cloud-native platforms.**
+### Enabling Confident Innovation in the Cloud, Data, and AI Era
 
-We specialize in Cloud Architecture, Data Engineering, and Generative AI strategy — enabling modern organizations to accelerate innovation without compromising security or compliance.
+At Runink, we partner with engineering teams and executives to deliver cloud-native platforms that are secure, scalable, and built for real-world complexity.
 
----
+We bring together deep technical expertise in **Cloud Architecture**, **Data Engineering**, and **Generative AI strategy** to help modern organizations accelerate responsibly — without compromising on security, compliance, or operational clarity.
 
-### 🚀 What We Do
+From untangling legacy systems to deploying intelligent automation pipelines, our team delivers pragmatic solutions that meet enterprise expectations — with the speed of a startup and the rigor of seasoned architects.
 
-At Runink, we help companies transform legacy systems, adopt modern data platforms, and lead with intelligent automation. Whether you need a rapid cloud migration, a robust data pipeline, or strategic guidance for AI initiatives — we deliver pragmatic, enterprise-grade solutions with speed and clarity.
-
----
+<br>
 
 ### Our Core Service Areas
 
-#### Cloud Architecture & DevOps
-
-Modernize your infrastructure with secure-by-default cloud platforms, automated CI/CD, and scalable multi-cloud strategies.
-
-#### Data Engineering & Governance
-
-Build intelligent data ecosystems using modern warehouses, robust pipelines, and federated governance for real-time insights and regulatory confidence.
-
-#### Generative AI & Technical Leadership
-
-Plan and scale AI initiatives with confidence — including infrastructure for LLMs, responsible AI frameworks, and executive-level strategic leadership.
-
----
-
-### Ready-to-Deploy Consulting Packages
-
 Choose a tailored engagement or a focused accelerator to get started fast:
 
-* [**Cloud Infrastructure Accelerator**](/services/cloud_accelerator) → Get a secure, production-grade cloud foundation in just weeks
-* [**Data Platform Quickstart**](/services/data_platform) → Deliver insights with scalable data pipelines and warehousing
-* [**AI and Data Maturity Assessment**](/services/ai_readiness) → Strategy-first, evaluate your organization’s readiness for AI adoption and Data maturity
-* [**Security & Compliance Readiness**](/services/security_readiness) → Align your stack with SOC 2, HIPAA, or GDPR from day one
-* [**Fractional CTO/CDO Advisory**](/services/fractional_cxo) → Access seasoned leadership to guide your platform, people, and priorities
+{{< carousel >}}
+  {{< carousel-item >}} {{< card subtitle="Get a secure, production-grade cloud foundation" link="/services/cloud_accelerator" image="/images/services/cloud_accelerator.png" >}} {{< /carousel-item >}}
+  {{< carousel-item >}} {{< card subtitle="Deliver insights with scalable data pipelines and data warehousing" link="/services/data_platform" image="/images/services/data_platform.png">}} {{< /carousel-item >}}
+  {{< carousel-item >}} {{< card subtitle="Strategy-first, evaluate your organization’s readiness for AI adoption and Data Maturity" link="/services/ai_readiness" image="/images/services/ai_readiness.png" >}} {{< /carousel-item >}}
+  {{< carousel-item >}} {{< card subtitle="Access seasoned leadership to guide your platform, people, and priorities" link="/services/fractional_cxo" image="/images/services/fractional_cxo.png" >}} {{< /carousel-item >}}
+{{< /carousel >}}
 
----
+### Why Companies Choose Runink
 
-### Why Runink?
+{{< cards >}}
+  {{< card title="Enterprise-Proven Leadership" icon="badge-check" subtitle="With over 18 years of hands-on experience across industries, we’ve led transformation initiatives in some of the most regulated and data-intensive environments.">}}
+  {{< card title="Battle-Tested Delivery" icon="shield-check" subtitle="Our team has designed and delivered solutions for financial institutions, insurers, healthcare networks, and retail supply chains — where scale, security, and speed aren't optional." >}}
+  {{< card title="Cloud-Native by Design" icon="users" subtitle="We’re multi-cloud experts fluent in AWS, GCP, and Azure — with a track record of building resilient platforms, real-time data pipelines, and governance frameworks that hold up under scrutiny." >}}
+{{< /cards >}}
 
-* 18+ years of enterprise data & cloud leadership
-* Trusted by financial, insurance, retail, supply-chain, and healthcare sectors
-* Deep expertise in multi-cloud, platform engineering, and governance
-
----
+<br>
 
 ### Get Started with Runink
 

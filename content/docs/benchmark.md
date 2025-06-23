@@ -238,8 +238,7 @@ weight: 20
 | **Observability** | Built-in, unified stack | Custom integration |
 
 ## Process flow
-{{< mermaid >}}
-%%{init:{"fontFamily":"monospace", "sequence":{"showSequenceNumbers":true}}}%%
+```mermaid
 %% Mermaid Diagram: MapReduce vs RDD vs Raft (Runink)
 flowchart LR
   subgraph Normal_Operation["✅ Normal Operation (Execution Flow)"]
@@ -300,7 +299,7 @@ flowchart LR
       RFD --> SR --> RC --> EL --> RE --> CE
     end
   end
-{{< /mermaid >}}
+```
 
 
 ## 🚀 How This Model Beats the Status Quo
