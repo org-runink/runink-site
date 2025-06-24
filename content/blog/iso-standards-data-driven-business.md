@@ -9,7 +9,7 @@ robots: index, follow
 canonical: https://www.runink.org/blog/iso-standards-data-driven-business
 ---
 
-![](./iso-standards-data-driven.png)
+![](/image/blog/iso-standards-data-driven.png)
 
 > **TL;DR**  
 > Implementing ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001, and ISO 27701 together forms a **holistic framework** that strengthens data quality, security, privacy, and AI governance—laying a **trustworthy foundation for data‑driven growth**.

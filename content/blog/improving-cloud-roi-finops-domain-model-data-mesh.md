@@ -1,6 +1,7 @@
 ---
 title: "Improving Cloud ROI with FinOps, Domain Models, and Data Mesh"
 description: "Explore how integrating domain-driven models, data mesh principles, and FinOps cloud controls can enhance departmental cloud ROI measurement and optimize financial transparency."
+date: 2025-06-07
 slug: improving-cloud-roi-finops-domain-model-data-mesh
 author: "Runink Editorial Team"
 tags: [FinOps, Cloud ROI, Data Mesh, Domain Models, Cloud Management]
@@ -8,7 +9,7 @@ robots: index, follow
 canonical: https://www.runink.org/blog/improving-cloud-roi-finops-domain-model-data-mesh
 ---
 
-![](./improving-cloud-roi-finops-domain-model-data-mesh.png)
+![](/images/blog/improving-cloud-roi-finops-domain-model-data-mesh.png)
 
 > **TL;DR:**
 > TL;DR: Aligning domain models and data mesh principles with FinOps frameworks and standardized cloud controls significantly improves cloud ROI measurement at the departmental level by ensuring financial transparency, accountability, and efficient optimization.

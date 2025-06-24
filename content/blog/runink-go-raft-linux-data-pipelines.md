@@ -9,7 +9,7 @@ robots: index, follow
 canonical: https://www.runink.org/blog/runink-go-raft-linux-data-pipelines
 ---
 
-![](./runink-go-raft-linux-data-pipelines.png)
+![](/image/blog/runink-go-raft-linux-data-pipelines.png)
 
 > **TL;DR:**
 > Runink is a streamlined, Go-native platform for managing secure and efficient data pipelines without Kubernetes. It uses Linux primitives (namespaces, cgroups) for isolation, Raft consensus for strong consistency and governance, and complies with open standards such as OpenLineage, Open Data Contracts, and OpenTelemetry—simplifying orchestration, enhancing performance, and ensuring transparent data governance.

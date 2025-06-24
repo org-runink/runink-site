@@ -17,15 +17,14 @@
     
     <item>
       <title>Why Dynamic Masking on Shared Snowflake Objects is Mandatory for Data-Driven Companies</title>
-      <link>http://localhost:1313/blog/dynamic-masking-snowflake-shared-objects/</link>
+      <link>http://localhost:1313/blog/2025/06/01/dynamic-masking-snowflake-shared-objects/</link>
       <pubDate>Sun, 01 Jun 2025 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/dynamic-masking-snowflake-shared-objects/</guid>
+      <guid>http://localhost:1313/blog/2025/06/01/dynamic-masking-snowflake-shared-objects/</guid>
       <description>
         
         
-        &lt;p&gt;&lt;img src=&#34;./dynamic-masking-snowflake-shared-objects.png&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
-&lt;blockquote&gt;
+        &lt;blockquote&gt;
   &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;&lt;br&gt;
 Dynamic data masking on shared Snowflake objects is essential for compliant financial and insurance companies. It ensures regulatory alignment (GDPR, CCPA, HIPAA, etc.), strengthens data security, limits insider threats, and preserves real-time analytics integrity—enabling secure, scalable, and cost-efficient data sharing without compromising sensitive information.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -101,15 +100,14 @@ Dynamic data masking on shared Snowflake objects is essential for compliant fina
     
     <item>
       <title>Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives</title>
-      <link>http://localhost:1313/blog/runink-go-raft-linux-data-pipelines/</link>
+      <link>http://localhost:1313/blog/2025/05/01/runink-go-raft-linux-data-pipelines/</link>
       <pubDate>Thu, 01 May 2025 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/runink-go-raft-linux-data-pipelines/</guid>
+      <guid>http://localhost:1313/blog/2025/05/01/runink-go-raft-linux-data-pipelines/</guid>
       <description>
         
         
-        &lt;p&gt;&lt;img src=&#34;./runink-go-raft-linux-data-pipelines.png&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
-&lt;blockquote&gt;
+        &lt;blockquote&gt;
   &lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;
 Runink is a streamlined, Go-native platform for managing secure and efficient data pipelines without Kubernetes. It uses Linux primitives (namespaces, cgroups) for isolation, Raft consensus for strong consistency and governance, and complies with open standards such as OpenLineage, Open Data Contracts, and OpenTelemetry—simplifying orchestration, enhancing performance, and ensuring transparent data governance.&lt;/p&gt;
 &lt;/blockquote&gt;
