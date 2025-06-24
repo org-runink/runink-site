@@ -1,5 +1,5 @@
 ---
-title: "Community Technical Answers for your current challenges"
+title: "Blog | Whitepapers"
 layout: "blog"
 description: "Insights, best practices, and thought leadership on cloud infrastructure, data engineering, generative AI, and industry trends from the Runink team."
 ---
