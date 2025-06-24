@@ -1,0 +1,134 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Runink – Sentiment Analysis</title><link>https://runink.org/tags/sentiment-analysis/</link><description>Recent content in Sentiment Analysis on Runink</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 24 Jun 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://runink.org/tags/sentiment-analysis/index.xml" rel="self" type="application/rss+xml"/><item><title>Affordable Analytics: Harnessing A2A and LangChain for Scalable Insights</title><link>https://runink.org/blog/2025/06/24/a2a-langchain-affordable-analytics/</link><pubDate>Tue, 24 Jun 2025 00:00:00 +0000</pubDate><guid>https://runink.org/blog/2025/06/24/a2a-langchain-affordable-analytics/</guid><description>
+&lt;p>&lt;img src="https://runink.org/images/blog/a2a-langchain-affordable-analytics.png" alt="" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>TL;DR:&lt;/strong>
+A2A offers cost-effective, modular analytics through lightweight, open-source agents. Paired with LangChain, it enables scalable, AI-powered insights without the overhead of traditional BI tools. Perfect for teams on a budget seeking advanced data workflows.&lt;/p>
+&lt;/blockquote>
+&lt;br>
+&lt;hr>
+&lt;h2>Better Insights on a Budget: Leveraging A2A with LangChain&lt;span class="hx:absolute hx:-mt-20" id="better-insights-on-a-budget-leveraging-a2a-with-langchain">&lt;/span>
+&lt;a href="#better-insights-on-a-budget-leveraging-a2a-with-langchain" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>In today&amp;rsquo;s fast-paced, data-driven world, businesses often face a critical challenge: extracting meaningful insights without the deep pockets typically associated with powerful analytics solutions. The Agent-to-Agent (A2A) open-source protocol emerges as a compelling answer to this challenge, offering affordable yet sophisticated analytics capabilities.&lt;/p>
+&lt;h3>What is A2A?&lt;span class="hx:absolute hx:-mt-20" id="what-is-a2a">&lt;/span>
+&lt;a href="#what-is-a2a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Agent-to-Agent (A2A) is a lightweight, open-source protocol designed to enable diverse software agents to discover, communicate, and collaborate efficiently. Unlike traditional analytics solutions that require substantial investments in licenses and infrastructure, A2A reduces complexity and cost through a decentralized, modular approach.&lt;/p>
+&lt;h3>Why A2A for Budget-Conscious Analytics?&lt;span class="hx:absolute hx:-mt-20" id="why-a2a-for-budget-conscious-analytics">&lt;/span>
+&lt;a href="#why-a2a-for-budget-conscious-analytics" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Cost Efficiency&lt;span class="hx:absolute hx:-mt-20" id="cost-efficiency">&lt;/span>
+&lt;a href="#cost-efficiency" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Traditional analytics setups—such as those involving proprietary BI tools, data warehouses, and orchestration engines—often come with high initial and ongoing expenses. In contrast, A2A leverages open-source software and standard protocols (HTTP, JSON-RPC, Server-Sent Events), dramatically reducing or even eliminating licensing costs.&lt;/p>
+&lt;h4>Modular Flexibility&lt;span class="hx:absolute hx:-mt-20" id="modular-flexibility">&lt;/span>
+&lt;a href="#modular-flexibility" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>A2A’s modular approach allows users to deploy analytics capabilities incrementally, ensuring that investments directly match business requirements. Each analytics step—such as data ingestion, preprocessing, analysis, and visualization—can be managed by individual agents, minimizing unnecessary infrastructure overhead.&lt;/p>
+&lt;h4>Ease of Integration&lt;span class="hx:absolute hx:-mt-20" id="ease-of-integration">&lt;/span>
+&lt;a href="#ease-of-integration" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Thanks to its simplicity and interoperability, A2A integrates smoothly with various existing tools and platforms. Notably, it pairs exceptionally well with LangChain, a powerful framework for developing applications with Large Language Models (LLMs), enabling enhanced analytical capabilities without extra cost.&lt;/p>
+&lt;h3>Deployment with LangChain: A Step-by-Step Guide&lt;span class="hx:absolute hx:-mt-20" id="deployment-with-langchain-a-step-by-step-guide">&lt;/span>
+&lt;a href="#deployment-with-langchain-a-step-by-step-guide" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>LangChain simplifies integration with LLMs, allowing organizations to harness AI-driven insights efficiently. Here&amp;rsquo;s how you can quickly set up an analytics pipeline with A2A and LangChain:&lt;/p>
+&lt;h4>Step 1: Environment Setup&lt;span class="hx:absolute hx:-mt-20" id="step-1-environment-setup">&lt;/span>
+&lt;a href="#step-1-environment-setup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Ensure Python (&amp;gt;=3.9) is installed. Install essential libraries:&lt;/p>
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pip install python-a2a langchain openai&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Step 2: Create A2A Agents&lt;span class="hx:absolute hx:-mt-20" id="step-2-create-a2a-agents">&lt;/span>
+&lt;a href="#step-2-create-a2a-agents" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Define simple, task-specific agents using &lt;code>python-a2a&lt;/code>.&lt;/p>
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">python_a2a&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">A2AServer&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">agent&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">skill&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">requests&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@agent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;ReviewScraper&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">description&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Agent to scrape customer reviews&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">ReviewScraper&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">A2AServer&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nd">@skill&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;fetch_reviews&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">fetch_reviews&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">str&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">limit&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">requests&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reviews&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">response&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">reviews&lt;/span>&lt;span class="p">[:&lt;/span>&lt;span class="n">limit&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">ReviewScraper&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">8000&lt;/span>&lt;span class="p">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Step 3: Sentiment Analysis Agent&lt;span class="hx:absolute hx:-mt-20" id="step-3-sentiment-analysis-agent">&lt;/span>
+&lt;a href="#step-3-sentiment-analysis-agent" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Deploy an agent to perform sentiment analysis on scraped data.&lt;/p>
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">python_a2a&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">A2AServer&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">agent&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">skill&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">textblob&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">TextBlob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@agent&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;SentimentAnalyzer&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">description&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;Analyzes sentiment of reviews&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">SentimentAnalyzer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">A2AServer&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nd">@skill&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;analyze_sentiment&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">analyze_sentiment&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="bp">self&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">reviews&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sentiments&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">review&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">reviews&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">analysis&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">TextBlob&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">review&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;text&amp;#39;&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sentiments&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;review&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">review&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;text&amp;#39;&lt;/span>&lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;sentiment&amp;#39;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">analysis&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sentiment&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">polarity&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">sentiments&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">SentimentAnalyzer&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">port&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">8001&lt;/span>&lt;span class="p">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Step 4: Integrate LangChain for Summarization&lt;span class="hx:absolute hx:-mt-20" id="step-4-integrate-langchain-for-summarization">&lt;/span>
+&lt;a href="#step-4-integrate-langchain-for-summarization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Use LangChain to integrate these agents and summarize insights.&lt;/p>
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">langchain.chains&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">SimpleChain&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">langchain.llms&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">OpenAI&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">requests&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">llm&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">OpenAI&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">api_key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;YOUR_OPENAI_KEY&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">fetch_reviews&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">requests&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">post&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;http://localhost:8000/&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s2">&amp;#34;method&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;fetch_reviews&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;params&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="s2">&amp;#34;url&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;http://example.com/api/reviews&amp;#34;&lt;/span>&lt;span class="p">}})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">response&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">()[&lt;/span>&lt;span class="s1">&amp;#39;result&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">analyze_sentiment&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">reviews&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">requests&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">post&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;http://localhost:8001/&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">json&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="s2">&amp;#34;method&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;analyze_sentiment&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;params&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="s2">&amp;#34;reviews&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">reviews&lt;/span>&lt;span class="p">}})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">response&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="p">()[&lt;/span>&lt;span class="s1">&amp;#39;result&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">chain&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">SimpleChain&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">llm&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">llm&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">reviews&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">fetch_reviews&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sentiments&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">analyze_sentiment&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">reviews&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">summary&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">chain&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;Summarize customer sentiment based on the following data: &lt;/span>&lt;span class="si">{}&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sentiments&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">summary&lt;/span>&lt;span class="p">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Why Integrate A2A and LangChain?&lt;span class="hx:absolute hx:-mt-20" id="why-integrate-a2a-and-langchain">&lt;/span>
+&lt;a href="#why-integrate-a2a-and-langchain" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The integration of A2A with LangChain provides an inexpensive yet powerful analytics solution. LangChain enhances A2A’s agent-driven workflows by leveraging AI-driven summarization, natural language querying, and other sophisticated analytics functionalities. Businesses benefit from actionable insights at a fraction of the cost of traditional analytics infrastructures.&lt;/p>
+&lt;h3>Real-World Use Cases&lt;span class="hx:absolute hx:-mt-20" id="real-world-use-cases">&lt;/span>
+&lt;a href="#real-world-use-cases" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Customer Feedback Analysis:&lt;/strong> Rapidly scrape and analyze customer reviews, generating concise sentiment summaries to inform marketing strategies.&lt;/li>
+&lt;li>&lt;strong>Market Research:&lt;/strong> Efficiently process large data volumes from diverse sources, using agents to collect and preprocess data before summarizing trends and insights via LangChain.&lt;/li>
+&lt;li>&lt;strong>Operational Analytics:&lt;/strong> Automate monitoring and analysis of operational logs or system alerts, producing intelligent summaries and alerts.&lt;/li>
+&lt;/ul>
+&lt;h3>Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion">&lt;/span>
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>By combining A2A’s lightweight, decentralized approach with LangChain’s powerful AI capabilities, organizations can achieve robust, scalable analytics solutions on a constrained budget. This innovative pairing unlocks advanced insights, making sophisticated analytics accessible to businesses of any size.&lt;/p>
+&lt;hr>
+&lt;blockquote>
+&lt;p>&lt;strong>Ready to transform your data into a strategic asset?&lt;/strong>&lt;br>
+&lt;a href="https://runink.org/contact/" >&lt;strong>Schedule Your Consultation | Reach out to our Team →&lt;/strong>&lt;/a> and embark on your ISO‑powered, data‑driven future.&lt;/p>
+&lt;/blockquote></description></item></channel></rss>
