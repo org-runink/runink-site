@@ -1,0 +1,19 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Runink – Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives</title>
+    <link>http://localhost:1313/blog/runink-go-raft-linux-data-pipelines/</link>
+    <description>Recent content in Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives on Runink</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 May 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/blog/runink-go-raft-linux-data-pipelines/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+  </channel>
+</rss>
