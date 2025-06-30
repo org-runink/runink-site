@@ -1,0 +1,815 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="index, follow"><link rel="icon shortcut" href=/favicon.ico sizes=32x32><link rel=icon href=/favicon.svg type=image/svg+xml><link rel=icon href=/favicon-dark.svg type=image/svg+xml media="(prefers-color-scheme: dark)"><link rel=icon href=/favicon-16x16.png type=image/png sizes=16x16><link rel=icon href=/favicon-32x32.png type=image/png sizes=32x32><link rel=apple-touch-icon href=/apple-touch-icon.png sizes=180x180><link fetchpriority=low href=/site.webmanifest rel=manifest><title>CLI Help Commands – Runink</title>
+<meta name=description content='🆘 Runink CLI: Help TemplateThis is a developer-friendly help template for implementing consistent runi <command> --help outputs.
+🧱 Format: Basic Help Command runi <command> [subcommand] [flags] Usage: runi <command> [options] Options: -h, --help Show this help message and exit -v, --verbose Show detailed logs and diagnostics Example: runi init --help Initialize a new Runink project. Usage: runi init [project-name] Flags: -h, --help Show help for init 🔄 Example: runi compile --help runi compile --scenario <file.dsl> Description: Compile a `.dsl` scenario and its contract into an executable Go DAG. Generates a Go file under `rendered/` based on contract-linked step tags. Usage: runi compile --scenario features/trade_cdm.dsl Flags: --scenario Path to a DSL scenario file --out Optional: custom output path for DAG (default: rendered/<name>.go) --dry-run Only validate scenario and contract, do not write DAG --verbose Show full DAG step resolution logs 🧪 Example: runi test --help runi test --scenario <file.dsl> Description: Execute a feature scenario with golden test inputs and compare output. Supports diff mode and golden update flows. Usage: runi test --scenario features/onboard.dsl Flags: --scenario DSL file to test --golden Optional: override path to golden test folder --update Automatically update golden output on success --only <step> Run test up to a specific pipeline step 🔐 Example: runi contract gen --help runi contract gen --struct <package.Type> --out <file> Description: Generate a JSON contract definition from a Go struct. Includes schema, access tags, and validation metadata. Usage: runi contract gen --struct contracts.Customer --out contracts/customer.json Flags: --struct Fully qualified Go type (e.g. contracts.Customer) --out Output contract file path --flatten Inline nested types into flat fields --herd Optional: attach to specific herd (e.g. finance) runi contract diff --help Diff two versions of a contract and show schema drift. Usage: runi contract diff --old v1.json --new v2.json runi run --help Run a compiled pipeline with data inputs. Usage: runi run --scenario <file.dsl> [--contract file] [--herd name] Flags: --scenario Scenario to execute --contract Optional explicit contract --herd Herd to run pipeline in --dry-run Preview DAG resolution only runi lineage --help Show lineage metadata for a run. Usage: runi lineage --run-id <id> Flags: --run-id Unique run identifier --output Format (json|csv|graph) runi publish --help Publish contracts, lineage, and tags to metadata registry. Usage: runi publish --herd <name> [--scenario file] runi repl --help Start interactive REPL for querying test inputs or contract data. Usage: runi repl --scenario <path> 🤖 Example: runi deploy --help runi deploy --target <target> Description: Deploy Runi workers and slices to a remote orchestration cluster. Usage: runi deploy --target k8s Flags: --target Target platform (k8s, bigmachine) --herd Herd (namespace) to deploy into --dry-run Simulate deployment without applying --confirm Require manual confirmation for remote changes runi schedule --help Schedule a pipeline scenario for recurring execution. Usage: runi schedule --scenario <file> --cron "0 6 * * *" Flags: --scenario DSL file --cron Cron-style expression runi audit --help Show schema contract change history and approvals. Usage: runi audit --contract <file> runi restart --help Restart a failed or incomplete pipeline run from its last checkpoint. Usage: runi restart --run-id <uuid> Flags: --run-id Run ID to restart from --force Ignore checkpoint and rerun from start runi resume --help Resume an interrupted or paused pipeline. Usage: runi resume --run-id <uuid> runi checkpoint --help Create a DAG state checkpoint for partial run recovery. Usage: runi checkpoint --scenario <file> runi comment --help Leave inline comments for contracts or fields (used in review tools). Usage: runi comment --contract <file> --field <path> --note <text> runi request-approval --help Submit a contract for governance approval and audit. Usage: runi request-approval --contract <file> runi feedback --help Attach feedback note to a scenario feature for peer review. Usage: runi feedback --scenario <file> --note <text> runi redact --help Automatically redact fields marked pii:"true" in a contract schema. Usage: runi redact --contract <file> --out <file> runi escrow --help Encrypt and store output data for delayed release or approval. Usage: runi escrow --run-id <uuid> --out <vault.json> runi anonymize --help Create a non-sensitive version of input using faker + tags. Usage: runi anonymize --input <file> --contract <file> --out <file> runi trigger --help Define an event trigger for this scenario. Usage: runi trigger --scenario <file> --on webhook|s3|pubsub runi listen --help Start a listener to monitor incoming event and dispatch pipeline. Usage: runi listen --event <type> runi subscribe --help Subscribe to a streaming topic or channel with offset tracking. Usage: runi subscribe --stream <topic> --window 5m runi freeze --help Freeze contract + scenario versions with hashes for snapshot validation. Usage: runi freeze --scenario <file> runi archive --help Archive old versions of scenarios and their runs by herd. Usage: runi archive --herd <name> --keep 3 runi retire --help Retire a contract so it cannot be used in future scenarios. Usage: runi retire --contract <file> runi lineage graph --help Export full DAG and contract lineage as GraphViz dot file. Usage: runi lineage graph --out lineage.dot runi knowledge export --help Export pipeline metadata using RDF serialization (Turtle/N-Triples). Usage: runi knowledge export --format turtle runi query lineage --help Query lineage metadata using SQL-like syntax. Usage: runi query lineage --sql "SELECT * WHERE pii = true" runi openai audit --help Use an LLM to summarize contract diffs or suggest field comments. Usage: runi openai audit --contract <file> runi sandbox --help Execute scenario in a secure ephemeral environment. Usage: runi sandbox --scenario <file> runi simulate --help Replay input data as a stream window to test stateful logic. Usage: runi simulate --input <file> --window 5m runi mint-token --help Generate a short-lived JWT for scoped access by herd or scenario. Usage: runi mint-token --herd finance --role analyst --ttl 5m 🧠 Best Practices ✅ Describe what the command does, not how it’s implemented ✅ Include at least 1 usage example ✅ Use consistent flags: --scenario, --contract, --out, --herd ✅ Provide guidance for --dry-run, --verbose, --help ✅ Include multi-step examples if command touches multiple files '><link rel=canonical href=https://runink.org/data_integrator/clihelp/ itemprop=url><meta property="og:title" content="CLI Help Commands"><meta property="og:description" content='🆘 Runink CLI: Help TemplateThis is a developer-friendly help template for implementing consistent runi <command> --help outputs.
+
+🧱 Format: Basic Help Command
+    
+
+runi <command> [subcommand] [flags]
+
+Usage:
+  runi <command> [options]
+
+Options:
+  -h, --help       Show this help message and exit
+  -v, --verbose    Show detailed logs and diagnostics
+  
+    
+    
+  
+
+
+
+Example: runi init --help
+    
+
+Initialize a new Runink project.
+
+Usage:
+  runi init [project-name]
+
+Flags:
+  -h, --help     Show help for init
+  
+    
+    
+  
+
+
+
+🔄 Example: runi compile --help
+    
+
+runi compile --scenario <file.dsl>
+
+Description:
+  Compile a `.dsl` scenario and its contract into an executable Go DAG.
+  Generates a Go file under `rendered/` based on contract-linked step tags.
+
+Usage:
+  runi compile --scenario features/trade_cdm.dsl
+
+Flags:
+  --scenario    Path to a DSL scenario file
+  --out         Optional: custom output path for DAG (default: rendered/<name>.go)
+  --dry-run     Only validate scenario and contract, do not write DAG
+  --verbose     Show full DAG step resolution logs
+  
+    
+    
+  
+
+
+
+🧪 Example: runi test --help
+    
+
+runi test --scenario <file.dsl>
+
+Description:
+  Execute a feature scenario with golden test inputs and compare output.
+  Supports diff mode and golden update flows.
+
+Usage:
+  runi test --scenario features/onboard.dsl
+
+Flags:
+  --scenario       DSL file to test
+  --golden         Optional: override path to golden test folder
+  --update         Automatically update golden output on success
+  --only <step>    Run test up to a specific pipeline step
+  
+    
+    
+  
+
+
+
+🔐 Example: runi contract gen --help
+    
+
+runi contract gen --struct <package.Type> --out <file>
+
+Description:
+  Generate a JSON contract definition from a Go struct. Includes schema, access tags, and validation metadata.
+
+Usage:
+  runi contract gen --struct contracts.Customer --out contracts/customer.json
+
+Flags:
+  --struct     Fully qualified Go type (e.g. contracts.Customer)
+  --out        Output contract file path
+  --flatten    Inline nested types into flat fields
+  --herd       Optional: attach to specific herd (e.g. finance)
+  
+    
+    
+  
+
+
+
+
+runi contract diff --help
+    
+
+Diff two versions of a contract and show schema drift.
+
+Usage:
+  runi contract diff --old v1.json --new v2.json
+  
+    
+    
+  
+
+
+
+runi run --help
+    
+
+Run a compiled pipeline with data inputs.
+
+Usage:
+  runi run --scenario <file.dsl> [--contract file] [--herd name]
+
+Flags:
+  --scenario     Scenario to execute
+  --contract     Optional explicit contract
+  --herd         Herd to run pipeline in
+  --dry-run      Preview DAG resolution only
+  
+    
+    
+  
+
+
+
+runi lineage --help
+    
+
+Show lineage metadata for a run.
+
+Usage:
+  runi lineage --run-id <id>
+
+Flags:
+  --run-id       Unique run identifier
+  --output       Format (json|csv|graph)
+  
+    
+    
+  
+
+
+
+runi publish --help
+    
+
+Publish contracts, lineage, and tags to metadata registry.
+
+Usage:
+  runi publish --herd <name> [--scenario file]
+  
+    
+    
+  
+
+
+
+runi repl --help
+    
+
+Start interactive REPL for querying test inputs or contract data.
+
+Usage:
+  runi repl --scenario <path>
+  
+    
+    
+  
+
+
+
+🤖 Example: runi deploy --help
+    
+
+runi deploy --target <target>
+
+Description:
+  Deploy Runi workers and slices to a remote orchestration cluster.
+
+Usage:
+  runi deploy --target k8s
+
+Flags:
+  --target      Target platform (k8s, bigmachine)
+  --herd        Herd (namespace) to deploy into
+  --dry-run     Simulate deployment without applying
+  --confirm     Require manual confirmation for remote changes
+  
+    
+    
+  
+
+
+
+runi schedule --help
+    
+
+Schedule a pipeline scenario for recurring execution.
+
+Usage:
+  runi schedule --scenario <file> --cron "0 6 * * *"
+
+Flags:
+  --scenario     DSL file
+  --cron         Cron-style expression
+  
+    
+    
+  
+
+
+
+runi audit --help
+    
+
+Show schema contract change history and approvals.
+
+Usage:
+  runi audit --contract <file>
+  
+    
+    
+  
+
+
+
+
+runi restart --help
+    
+
+Restart a failed or incomplete pipeline run from its last checkpoint.
+
+Usage:
+  runi restart --run-id <uuid>
+
+Flags:
+  --run-id     Run ID to restart from
+  --force      Ignore checkpoint and rerun from start
+  
+    
+    
+  
+
+
+
+runi resume --help
+    
+
+Resume an interrupted or paused pipeline.
+
+Usage:
+  runi resume --run-id <uuid>
+  
+    
+    
+  
+
+
+
+runi checkpoint --help
+    
+
+Create a DAG state checkpoint for partial run recovery.
+
+Usage:
+  runi checkpoint --scenario <file>
+  
+    
+    
+  
+
+
+
+runi comment --help
+    
+
+Leave inline comments for contracts or fields (used in review tools).
+
+Usage:
+  runi comment --contract <file> --field <path> --note <text>
+  
+    
+    
+  
+
+
+
+runi request-approval --help
+    
+
+Submit a contract for governance approval and audit.
+
+Usage:
+  runi request-approval --contract <file>
+  
+    
+    
+  
+
+
+
+runi feedback --help
+    
+
+Attach feedback note to a scenario feature for peer review.
+
+Usage:
+  runi feedback --scenario <file> --note <text>
+  
+    
+    
+  
+
+
+
+runi redact --help
+    
+
+Automatically redact fields marked pii:"true" in a contract schema.
+
+Usage:
+  runi redact --contract <file> --out <file>
+  
+    
+    
+  
+
+
+
+runi escrow --help
+    
+
+Encrypt and store output data for delayed release or approval.
+
+Usage:
+  runi escrow --run-id <uuid> --out <vault.json>
+  
+    
+    
+  
+
+
+
+runi anonymize --help
+    
+
+Create a non-sensitive version of input using faker + tags.
+
+Usage:
+  runi anonymize --input <file> --contract <file> --out <file>
+  
+    
+    
+  
+
+
+
+runi trigger --help
+    
+
+Define an event trigger for this scenario.
+
+Usage:
+  runi trigger --scenario <file> --on webhook|s3|pubsub
+  
+    
+    
+  
+
+
+
+runi listen --help
+    
+
+Start a listener to monitor incoming event and dispatch pipeline.
+
+Usage:
+  runi listen --event <type>
+  
+    
+    
+  
+
+
+
+runi subscribe --help
+    
+
+Subscribe to a streaming topic or channel with offset tracking.
+
+Usage:
+  runi subscribe --stream <topic> --window 5m
+  
+    
+    
+  
+
+
+
+runi freeze --help
+    
+
+Freeze contract + scenario versions with hashes for snapshot validation.
+
+Usage:
+  runi freeze --scenario <file>
+  
+    
+    
+  
+
+
+
+runi archive --help
+    
+
+Archive old versions of scenarios and their runs by herd.
+
+Usage:
+  runi archive --herd <name> --keep 3
+  
+    
+    
+  
+
+
+
+runi retire --help
+    
+
+Retire a contract so it cannot be used in future scenarios.
+
+Usage:
+  runi retire --contract <file>
+  
+    
+    
+  
+
+
+
+runi lineage graph --help
+    
+
+Export full DAG and contract lineage as GraphViz dot file.
+
+Usage:
+  runi lineage graph --out lineage.dot
+  
+    
+    
+  
+
+
+
+runi knowledge export --help
+    
+
+Export pipeline metadata using RDF serialization (Turtle/N-Triples).
+
+Usage:
+  runi knowledge export --format turtle
+  
+    
+    
+  
+
+
+
+runi query lineage --help
+    
+
+Query lineage metadata using SQL-like syntax.
+
+Usage:
+  runi query lineage --sql "SELECT * WHERE pii = true"
+  
+    
+    
+  
+
+
+
+runi openai audit --help
+    
+
+Use an LLM to summarize contract diffs or suggest field comments.
+
+Usage:
+  runi openai audit --contract <file>
+  
+    
+    
+  
+
+
+
+runi sandbox --help
+    
+
+Execute scenario in a secure ephemeral environment.
+
+Usage:
+  runi sandbox --scenario <file>
+  
+    
+    
+  
+
+
+
+runi simulate --help
+    
+
+Replay input data as a stream window to test stateful logic.
+
+Usage:
+  runi simulate --input <file> --window 5m
+  
+    
+    
+  
+
+
+
+runi mint-token --help
+    
+
+Generate a short-lived JWT for scoped access by herd or scenario.
+
+Usage:
+  runi mint-token --herd finance --role analyst --ttl 5m
+  
+    
+    
+  
+
+
+
+🧠 Best Practices
+    
+✅ Describe what the command does, not how it&rsquo;s implemented
+✅ Include at least 1 usage example
+✅ Use consistent flags: --scenario, --contract, --out, --herd
+✅ Provide guidance for --dry-run, --verbose, --help
+✅ Include multi-step examples if command touches multiple files
+
+'><meta property="og:type" content="article"><meta property="og:url" content="https://runink.org/data_integrator/clihelp/"><meta property="article:section" content="data_integrator"><meta itemprop=name content="CLI Help Commands"><meta itemprop=description content='🆘 Runink CLI: Help TemplateThis is a developer-friendly help template for implementing consistent runi <command> --help outputs.
+🧱 Format: Basic Help Command runi <command> [subcommand] [flags] Usage: runi <command> [options] Options: -h, --help Show this help message and exit -v, --verbose Show detailed logs and diagnostics Example: runi init --help Initialize a new Runink project. Usage: runi init [project-name] Flags: -h, --help Show help for init 🔄 Example: runi compile --help runi compile --scenario <file.dsl> Description: Compile a `.dsl` scenario and its contract into an executable Go DAG. Generates a Go file under `rendered/` based on contract-linked step tags. Usage: runi compile --scenario features/trade_cdm.dsl Flags: --scenario Path to a DSL scenario file --out Optional: custom output path for DAG (default: rendered/<name>.go) --dry-run Only validate scenario and contract, do not write DAG --verbose Show full DAG step resolution logs 🧪 Example: runi test --help runi test --scenario <file.dsl> Description: Execute a feature scenario with golden test inputs and compare output. Supports diff mode and golden update flows. Usage: runi test --scenario features/onboard.dsl Flags: --scenario DSL file to test --golden Optional: override path to golden test folder --update Automatically update golden output on success --only <step> Run test up to a specific pipeline step 🔐 Example: runi contract gen --help runi contract gen --struct <package.Type> --out <file> Description: Generate a JSON contract definition from a Go struct. Includes schema, access tags, and validation metadata. Usage: runi contract gen --struct contracts.Customer --out contracts/customer.json Flags: --struct Fully qualified Go type (e.g. contracts.Customer) --out Output contract file path --flatten Inline nested types into flat fields --herd Optional: attach to specific herd (e.g. finance) runi contract diff --help Diff two versions of a contract and show schema drift. Usage: runi contract diff --old v1.json --new v2.json runi run --help Run a compiled pipeline with data inputs. Usage: runi run --scenario <file.dsl> [--contract file] [--herd name] Flags: --scenario Scenario to execute --contract Optional explicit contract --herd Herd to run pipeline in --dry-run Preview DAG resolution only runi lineage --help Show lineage metadata for a run. Usage: runi lineage --run-id <id> Flags: --run-id Unique run identifier --output Format (json|csv|graph) runi publish --help Publish contracts, lineage, and tags to metadata registry. Usage: runi publish --herd <name> [--scenario file] runi repl --help Start interactive REPL for querying test inputs or contract data. Usage: runi repl --scenario <path> 🤖 Example: runi deploy --help runi deploy --target <target> Description: Deploy Runi workers and slices to a remote orchestration cluster. Usage: runi deploy --target k8s Flags: --target Target platform (k8s, bigmachine) --herd Herd (namespace) to deploy into --dry-run Simulate deployment without applying --confirm Require manual confirmation for remote changes runi schedule --help Schedule a pipeline scenario for recurring execution. Usage: runi schedule --scenario <file> --cron "0 6 * * *" Flags: --scenario DSL file --cron Cron-style expression runi audit --help Show schema contract change history and approvals. Usage: runi audit --contract <file> runi restart --help Restart a failed or incomplete pipeline run from its last checkpoint. Usage: runi restart --run-id <uuid> Flags: --run-id Run ID to restart from --force Ignore checkpoint and rerun from start runi resume --help Resume an interrupted or paused pipeline. Usage: runi resume --run-id <uuid> runi checkpoint --help Create a DAG state checkpoint for partial run recovery. Usage: runi checkpoint --scenario <file> runi comment --help Leave inline comments for contracts or fields (used in review tools). Usage: runi comment --contract <file> --field <path> --note <text> runi request-approval --help Submit a contract for governance approval and audit. Usage: runi request-approval --contract <file> runi feedback --help Attach feedback note to a scenario feature for peer review. Usage: runi feedback --scenario <file> --note <text> runi redact --help Automatically redact fields marked pii:"true" in a contract schema. Usage: runi redact --contract <file> --out <file> runi escrow --help Encrypt and store output data for delayed release or approval. Usage: runi escrow --run-id <uuid> --out <vault.json> runi anonymize --help Create a non-sensitive version of input using faker + tags. Usage: runi anonymize --input <file> --contract <file> --out <file> runi trigger --help Define an event trigger for this scenario. Usage: runi trigger --scenario <file> --on webhook|s3|pubsub runi listen --help Start a listener to monitor incoming event and dispatch pipeline. Usage: runi listen --event <type> runi subscribe --help Subscribe to a streaming topic or channel with offset tracking. Usage: runi subscribe --stream <topic> --window 5m runi freeze --help Freeze contract + scenario versions with hashes for snapshot validation. Usage: runi freeze --scenario <file> runi archive --help Archive old versions of scenarios and their runs by herd. Usage: runi archive --herd <name> --keep 3 runi retire --help Retire a contract so it cannot be used in future scenarios. Usage: runi retire --contract <file> runi lineage graph --help Export full DAG and contract lineage as GraphViz dot file. Usage: runi lineage graph --out lineage.dot runi knowledge export --help Export pipeline metadata using RDF serialization (Turtle/N-Triples). Usage: runi knowledge export --format turtle runi query lineage --help Query lineage metadata using SQL-like syntax. Usage: runi query lineage --sql "SELECT * WHERE pii = true" runi openai audit --help Use an LLM to summarize contract diffs or suggest field comments. Usage: runi openai audit --contract <file> runi sandbox --help Execute scenario in a secure ephemeral environment. Usage: runi sandbox --scenario <file> runi simulate --help Replay input data as a stream window to test stateful logic. Usage: runi simulate --input <file> --window 5m runi mint-token --help Generate a short-lived JWT for scoped access by herd or scenario. Usage: runi mint-token --herd finance --role analyst --ttl 5m 🧠 Best Practices ✅ Describe what the command does, not how it’s implemented ✅ Include at least 1 usage example ✅ Use consistent flags: --scenario, --contract, --out, --herd ✅ Provide guidance for --dry-run, --verbose, --help ✅ Include multi-step examples if command touches multiple files'><meta itemprop=wordCount content="957"><meta name=twitter:card content="summary"><meta name=twitter:title content="CLI Help Commands"><meta name=twitter:description content='🆘 Runink CLI: Help TemplateThis is a developer-friendly help template for implementing consistent runi <command> --help outputs.
+🧱 Format: Basic Help Command runi <command> [subcommand] [flags] Usage: runi <command> [options] Options: -h, --help Show this help message and exit -v, --verbose Show detailed logs and diagnostics Example: runi init --help Initialize a new Runink project. Usage: runi init [project-name] Flags: -h, --help Show help for init 🔄 Example: runi compile --help runi compile --scenario <file.dsl> Description: Compile a `.dsl` scenario and its contract into an executable Go DAG. Generates a Go file under `rendered/` based on contract-linked step tags. Usage: runi compile --scenario features/trade_cdm.dsl Flags: --scenario Path to a DSL scenario file --out Optional: custom output path for DAG (default: rendered/<name>.go) --dry-run Only validate scenario and contract, do not write DAG --verbose Show full DAG step resolution logs 🧪 Example: runi test --help runi test --scenario <file.dsl> Description: Execute a feature scenario with golden test inputs and compare output. Supports diff mode and golden update flows. Usage: runi test --scenario features/onboard.dsl Flags: --scenario DSL file to test --golden Optional: override path to golden test folder --update Automatically update golden output on success --only <step> Run test up to a specific pipeline step 🔐 Example: runi contract gen --help runi contract gen --struct <package.Type> --out <file> Description: Generate a JSON contract definition from a Go struct. Includes schema, access tags, and validation metadata. Usage: runi contract gen --struct contracts.Customer --out contracts/customer.json Flags: --struct Fully qualified Go type (e.g. contracts.Customer) --out Output contract file path --flatten Inline nested types into flat fields --herd Optional: attach to specific herd (e.g. finance) runi contract diff --help Diff two versions of a contract and show schema drift. Usage: runi contract diff --old v1.json --new v2.json runi run --help Run a compiled pipeline with data inputs. Usage: runi run --scenario <file.dsl> [--contract file] [--herd name] Flags: --scenario Scenario to execute --contract Optional explicit contract --herd Herd to run pipeline in --dry-run Preview DAG resolution only runi lineage --help Show lineage metadata for a run. Usage: runi lineage --run-id <id> Flags: --run-id Unique run identifier --output Format (json|csv|graph) runi publish --help Publish contracts, lineage, and tags to metadata registry. Usage: runi publish --herd <name> [--scenario file] runi repl --help Start interactive REPL for querying test inputs or contract data. Usage: runi repl --scenario <path> 🤖 Example: runi deploy --help runi deploy --target <target> Description: Deploy Runi workers and slices to a remote orchestration cluster. Usage: runi deploy --target k8s Flags: --target Target platform (k8s, bigmachine) --herd Herd (namespace) to deploy into --dry-run Simulate deployment without applying --confirm Require manual confirmation for remote changes runi schedule --help Schedule a pipeline scenario for recurring execution. Usage: runi schedule --scenario <file> --cron "0 6 * * *" Flags: --scenario DSL file --cron Cron-style expression runi audit --help Show schema contract change history and approvals. Usage: runi audit --contract <file> runi restart --help Restart a failed or incomplete pipeline run from its last checkpoint. Usage: runi restart --run-id <uuid> Flags: --run-id Run ID to restart from --force Ignore checkpoint and rerun from start runi resume --help Resume an interrupted or paused pipeline. Usage: runi resume --run-id <uuid> runi checkpoint --help Create a DAG state checkpoint for partial run recovery. Usage: runi checkpoint --scenario <file> runi comment --help Leave inline comments for contracts or fields (used in review tools). Usage: runi comment --contract <file> --field <path> --note <text> runi request-approval --help Submit a contract for governance approval and audit. Usage: runi request-approval --contract <file> runi feedback --help Attach feedback note to a scenario feature for peer review. Usage: runi feedback --scenario <file> --note <text> runi redact --help Automatically redact fields marked pii:"true" in a contract schema. Usage: runi redact --contract <file> --out <file> runi escrow --help Encrypt and store output data for delayed release or approval. Usage: runi escrow --run-id <uuid> --out <vault.json> runi anonymize --help Create a non-sensitive version of input using faker + tags. Usage: runi anonymize --input <file> --contract <file> --out <file> runi trigger --help Define an event trigger for this scenario. Usage: runi trigger --scenario <file> --on webhook|s3|pubsub runi listen --help Start a listener to monitor incoming event and dispatch pipeline. Usage: runi listen --event <type> runi subscribe --help Subscribe to a streaming topic or channel with offset tracking. Usage: runi subscribe --stream <topic> --window 5m runi freeze --help Freeze contract + scenario versions with hashes for snapshot validation. Usage: runi freeze --scenario <file> runi archive --help Archive old versions of scenarios and their runs by herd. Usage: runi archive --herd <name> --keep 3 runi retire --help Retire a contract so it cannot be used in future scenarios. Usage: runi retire --contract <file> runi lineage graph --help Export full DAG and contract lineage as GraphViz dot file. Usage: runi lineage graph --out lineage.dot runi knowledge export --help Export pipeline metadata using RDF serialization (Turtle/N-Triples). Usage: runi knowledge export --format turtle runi query lineage --help Query lineage metadata using SQL-like syntax. Usage: runi query lineage --sql "SELECT * WHERE pii = true" runi openai audit --help Use an LLM to summarize contract diffs or suggest field comments. Usage: runi openai audit --contract <file> runi sandbox --help Execute scenario in a secure ephemeral environment. Usage: runi sandbox --scenario <file> runi simulate --help Replay input data as a stream window to test stateful logic. Usage: runi simulate --input <file> --window 5m runi mint-token --help Generate a short-lived JWT for scoped access by herd or scenario. Usage: runi mint-token --herd finance --role analyst --ttl 5m 🧠 Best Practices ✅ Describe what the command does, not how it’s implemented ✅ Include at least 1 usage example ✅ Use consistent flags: --scenario, --contract, --out, --herd ✅ Provide guidance for --dry-run, --verbose, --help ✅ Include multi-step examples if command touches multiple files'><link rel=preload href=/css/compiled/main.min.f9cf30bf284de3aaa04a1f593afb282f3de9db8c43d18cec40561b32612e846b.css as=style integrity="sha256-+c8wvyhN46qgSh9ZOvsoLz3p24xD0YzsQFYbMmEuhGs="><link href=/css/compiled/main.min.f9cf30bf284de3aaa04a1f593afb282f3de9db8c43d18cec40561b32612e846b.css rel=stylesheet integrity="sha256-+c8wvyhN46qgSh9ZOvsoLz3p24xD0YzsQFYbMmEuhGs="><link rel=preconnect href=https://www.googletagmanager.com crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=G-SEECKDWZNJ"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-SEECKDWZNJ")</script><script>const defaultTheme="system",setDarkTheme=()=>{document.documentElement.classList.add("dark"),document.documentElement.style.colorScheme="dark"},setLightTheme=()=>{document.documentElement.classList.remove("dark"),document.documentElement.style.colorScheme="light"};"color-theme"in localStorage?localStorage.getItem("color-theme")==="dark"?setDarkTheme():setLightTheme():(defaultTheme==="dark"?setDarkTheme():setLightTheme(),defaultTheme==="system"&&(window.matchMedia("(prefers-color-scheme: dark)").matches?setDarkTheme():setLightTheme()))</script></head><body dir=ltr><div class="nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden"><div class="nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"></div><nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6"><a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href=/><img class="hx:mr-2 hx:block hx:dark:hidden" src=/images/logo_black.png alt=Logo height=20 width=20>
+<img class="hx:mr-2 hx:hidden hx:dark:block" src=/images/logo_white.png alt="Dark Logo" height=20 width=20>
+<span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title=Runink>Runink</span>
+</a><a title="Runink Data Companion" href=/data_companion class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Runink Data Companion</span>
+</a><a title=Blog href=/blog class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Blog</span>
+</a><a title=Contact href=/contact class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Contact</span>
+</a><a title="Professional Services" href=/services class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"><span class=hx:text-center>Professional Services</span>
+</a><button type=button aria-label=Menu class="hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden"><svg height="24" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"/></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"/></g></svg></button></nav></div><div class='hx:mx-auto hx:flex hextra-max-page-width'><aside class="sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block"><div class="hx:px-4 hx:pt-4 hx:md:hidden"><div class="search-wrapper hx:relative hx:md:w-64"><div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300"><input placeholder=Search... class="search-input hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current" type=search spellcheck=false>
+<kbd class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex">CTRL K</kbd></div><div><ul class="search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]" style="transition:max-height .2s ease 0s"></ul></div></div></div><div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]"><ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden"><li><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/services/>Services
+<span class=hextra-sidebar-collapsible-button><svg fill="none" viewBox="0 0 24 24" stroke="currentcolor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"/></svg></span></a><div class="hx:ltr:pr-0 hx:overflow-hidden"><ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/services/cloud_accelerator/>Cloud Accelerator</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/services/data_platform/>Data Platform</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/services/ai_readiness/>Ai Readiness</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/services/fractional_cxo/>Fractional Cxo</a></li></ul></div></li><li><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_companion/>Runink Data Companion</a></li><li class=open><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/>Runink Data Integrator
+<span class=hextra-sidebar-collapsible-button><svg fill="none" viewBox="0 0 24 24" stroke="currentcolor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"/></svg></span></a><div class="hx:ltr:pr-0 hx:overflow-hidden"><ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/architecture/>Architecture</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/components/>Components</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/benchmark/>Benchmark</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/cli/>CLI Reference</a></li><li class="hx:flex hx:flex-col open"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500" href=/data_integrator/clihelp/>CLI Help Commands</a><ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li><a href=#-format-basic-help-command class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🧱 Format: Basic Help Command</a></li><li><a href=#example-runi-init---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">Example: runi init --help</a></li><li><a href=#-example-runi-compile---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🔄 Example: runi compile --help</a></li><li><a href=#-example-runi-test---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🧪 Example: runi test --help</a></li><li><a href=#-example-runi-contract-gen---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🔐 Example: runi contract gen --help</a></li><li><a href=#runi-contract-diff---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi contract diff --help</a></li><li><a href=#runi-run---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi run --help</a></li><li><a href=#runi-lineage---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi lineage --help</a></li><li><a href=#runi-publish---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi publish --help</a></li><li><a href=#runi-repl---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi repl --help</a></li><li><a href=#-example-runi-deploy---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🤖 Example: runi deploy --help</a></li><li><a href=#runi-schedule---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi schedule --help</a></li><li><a href=#runi-audit---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi audit --help</a></li><li><a href=#runi-restart---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi restart --help</a></li><li><a href=#runi-resume---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi resume --help</a></li><li><a href=#runi-checkpoint---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi checkpoint --help</a></li><li><a href=#runi-comment---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi comment --help</a></li><li><a href=#runi-request-approval---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi request-approval --help</a></li><li><a href=#runi-feedback---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi feedback --help</a></li><li><a href=#runi-redact---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi redact --help</a></li><li><a href=#runi-escrow---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi escrow --help</a></li><li><a href=#runi-anonymize---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi anonymize --help</a></li><li><a href=#runi-trigger---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi trigger --help</a></li><li><a href=#runi-listen---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi listen --help</a></li><li><a href=#runi-subscribe---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi subscribe --help</a></li><li><a href=#runi-freeze---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi freeze --help</a></li><li><a href=#runi-archive---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi archive --help</a></li><li><a href=#runi-retire---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi retire --help</a></li><li><a href=#runi-lineage-graph---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi lineage graph --help</a></li><li><a href=#runi-knowledge-export---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi knowledge export --help</a></li><li><a href=#runi-query-lineage---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi query lineage --help</a></li><li><a href=#runi-openai-audit---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi openai audit --help</a></li><li><a href=#runi-sandbox---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi sandbox --help</a></li><li><a href=#runi-simulate---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi simulate --help</a></li><li><a href=#runi-mint-token---help class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">runi mint-token --help</a></li><li><a href=#-best-practices class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50">🧠 Best Practices</a></li></ul></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/contributing/>Contributing</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/data-lineage/>Data Lineage</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/feature-dsl/>Feature DSL</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/getting_started/>Getting Started</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/glossary/>Glossary</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/roadmap/>Roadmap</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/runink_quickstart/>Runink Quickstart</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/schema-contracts/>Schema Contracts</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/data_integrator/security/>Security & RBAC</a></li></ul></div></li><li><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/>Blog | Whitepapers
+<span class=hextra-sidebar-collapsible-button><svg fill="none" viewBox="0 0 24 24" stroke="currentcolor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"/></svg></span></a><div class="hx:ltr:pr-0 hx:overflow-hidden"><ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/06/30/a2a-langchain-affordable-analytics-copy/>Revolutionizing Transportation: How Runink's AI Powers Modal Shift and Route Optimization</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/06/24/a2a-langchain-affordable-analytics/>Affordable Analytics: Harnessing A2A and LangChain for Scalable Insights</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/06/16/iso-standards-data-driven-business/>Why ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001 & ISO 27701 Matter for Data‑Driven Business Success</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/06/07/improving-cloud-roi-finops-domain-model-data-mesh/>Improving Cloud ROI with FinOps, Domain Models, and Data Mesh</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/06/01/dynamic-masking-snowflake-shared-objects/>Why Dynamic Masking on Shared Snowflake Objects is Mandatory for Data-Driven Companies</a></li><li class="hx:flex hx:flex-col"><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/blog/2025/05/01/runink-go-raft-linux-data-pipelines/>Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives</a></li></ul></div></li><li><a class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50" href=/contact/>Contact</a></li></ul><div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div><div class="hx:md:hidden hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation=show><div class="hx:flex hx:grow hx:flex-col"><button title="Change theme" data-theme=light class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50" type=button aria-label="Change theme"><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" class="hx:group-data-[theme=light]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728.0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height="12" class="hx:group-data-[theme=dark]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div></button></div></div></aside><nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents"><div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-format-basic-help-command>🧱 Format: Basic Help Command</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#example-runi-init---help>Example: runi init --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-example-runi-compile---help>🔄 Example: runi compile --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-example-runi-test---help>🧪 Example: runi test --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-example-runi-contract-gen---help>🔐 Example: runi contract gen --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-contract-diff---help>runi contract diff --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-run---help>runi run --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-lineage---help>runi lineage --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-publish---help>runi publish --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-repl---help>runi repl --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-example-runi-deploy---help>🤖 Example: runi deploy --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-schedule---help>runi schedule --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-audit---help>runi audit --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-restart---help>runi restart --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-resume---help>runi resume --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-checkpoint---help>runi checkpoint --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-comment---help>runi comment --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-request-approval---help>runi request-approval --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-feedback---help>runi feedback --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-redact---help>runi redact --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-escrow---help>runi escrow --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-anonymize---help>runi anonymize --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-trigger---help>runi trigger --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-listen---help>runi listen --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-subscribe---help>runi subscribe --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-freeze---help>runi freeze --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-archive---help>runi archive --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-retire---help>runi retire --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-lineage-graph---help>runi lineage graph --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-knowledge-export---help>runi knowledge export --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-query-lineage---help>runi query lineage --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-openai-audit---help>runi openai audit --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-sandbox---help>runi sandbox --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-simulate---help>runi simulate --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#runi-mint-token---help>runi mint-token --help</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href=#-best-practices>🧠 Best Practices</a></li></ul><div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><button aria-hidden=true id=backToTop onclick=scrollUp() class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+<span>Scroll to top</span><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentcolor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/></svg></button></div></div></nav><article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12"><br class="hx:mt-1.5 hx:text-sm"><h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">CLI Help Commands</h1><div class=hx:mb-16></div><div class=content><h1>🆘 Runink CLI: Help Template</h1><p>This is a developer-friendly help template for implementing consistent <code>runi &lt;command> --help</code> outputs.</p><hr><h2>🧱 Format: Basic Help Command<span class="hx:absolute hx:-mt-20" id=-format-basic-help-command></span>
+<a href=#-format-basic-help-command class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>runi &lt;command&gt; [subcommand] [flags]
+
+Usage:
+  runi &lt;command&gt; [options]
+
+Options:
+  -h, --help       Show this help message and exit
+  -v, --verbose    Show detailed logs and diagnostics</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>Example: <code>runi init --help</code><span class="hx:absolute hx:-mt-20" id=example-runi-init---help></span>
+<a href=#example-runi-init---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Initialize a new Runink project.
+
+Usage:
+  runi init [project-name]
+
+Flags:
+  -h, --help     Show help for init</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>🔄 Example: <code>runi compile --help</code><span class="hx:absolute hx:-mt-20" id=-example-runi-compile---help></span>
+<a href=#-example-runi-compile---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>runi compile --scenario &lt;file.dsl&gt;
+
+Description:
+  Compile a `.dsl` scenario and its contract into an executable Go DAG.
+  Generates a Go file under `rendered/` based on contract-linked step tags.
+
+Usage:
+  runi compile --scenario features/trade_cdm.dsl
+
+Flags:
+  --scenario    Path to a DSL scenario file
+  --out         Optional: custom output path for DAG (default: rendered/&lt;name&gt;.go)
+  --dry-run     Only validate scenario and contract, do not write DAG
+  --verbose     Show full DAG step resolution logs</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>🧪 Example: <code>runi test --help</code><span class="hx:absolute hx:-mt-20" id=-example-runi-test---help></span>
+<a href=#-example-runi-test---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>runi test --scenario &lt;file.dsl&gt;
+
+Description:
+  Execute a feature scenario with golden test inputs and compare output.
+  Supports diff mode and golden update flows.
+
+Usage:
+  runi test --scenario features/onboard.dsl
+
+Flags:
+  --scenario       DSL file to test
+  --golden         Optional: override path to golden test folder
+  --update         Automatically update golden output on success
+  --only &lt;step&gt;    Run test up to a specific pipeline step</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>🔐 Example: <code>runi contract gen --help</code><span class="hx:absolute hx:-mt-20" id=-example-runi-contract-gen---help></span>
+<a href=#-example-runi-contract-gen---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>runi contract gen --struct &lt;package.Type&gt; --out &lt;file&gt;
+
+Description:
+  Generate a JSON contract definition from a Go struct. Includes schema, access tags, and validation metadata.
+
+Usage:
+  runi contract gen --struct contracts.Customer --out contracts/customer.json
+
+Flags:
+  --struct     Fully qualified Go type (e.g. contracts.Customer)
+  --out        Output contract file path
+  --flatten    Inline nested types into flat fields
+  --herd       Optional: attach to specific herd (e.g. finance)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><hr><h2><code>runi contract diff --help</code><span class="hx:absolute hx:-mt-20" id=runi-contract-diff---help></span>
+<a href=#runi-contract-diff---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Diff two versions of a contract and show schema drift.
+
+Usage:
+  runi contract diff --old v1.json --new v2.json</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi run --help</code><span class="hx:absolute hx:-mt-20" id=runi-run---help></span>
+<a href=#runi-run---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Run a compiled pipeline with data inputs.
+
+Usage:
+  runi run --scenario &lt;file.dsl&gt; [--contract file] [--herd name]
+
+Flags:
+  --scenario     Scenario to execute
+  --contract     Optional explicit contract
+  --herd         Herd to run pipeline in
+  --dry-run      Preview DAG resolution only</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi lineage --help</code><span class="hx:absolute hx:-mt-20" id=runi-lineage---help></span>
+<a href=#runi-lineage---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Show lineage metadata for a run.
+
+Usage:
+  runi lineage --run-id &lt;id&gt;
+
+Flags:
+  --run-id       Unique run identifier
+  --output       Format (json|csv|graph)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi publish --help</code><span class="hx:absolute hx:-mt-20" id=runi-publish---help></span>
+<a href=#runi-publish---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Publish contracts, lineage, and tags to metadata registry.
+
+Usage:
+  runi publish --herd &lt;name&gt; [--scenario file]</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi repl --help</code><span class="hx:absolute hx:-mt-20" id=runi-repl---help></span>
+<a href=#runi-repl---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Start interactive REPL for querying test inputs or contract data.
+
+Usage:
+  runi repl --scenario &lt;path&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>🤖 Example: <code>runi deploy --help</code><span class="hx:absolute hx:-mt-20" id=-example-runi-deploy---help></span>
+<a href=#-example-runi-deploy---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>runi deploy --target &lt;target&gt;
+
+Description:
+  Deploy Runi workers and slices to a remote orchestration cluster.
+
+Usage:
+  runi deploy --target k8s
+
+Flags:
+  --target      Target platform (k8s, bigmachine)
+  --herd        Herd (namespace) to deploy into
+  --dry-run     Simulate deployment without applying
+  --confirm     Require manual confirmation for remote changes</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi schedule --help</code><span class="hx:absolute hx:-mt-20" id=runi-schedule---help></span>
+<a href=#runi-schedule---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Schedule a pipeline scenario for recurring execution.
+
+Usage:
+  runi schedule --scenario &lt;file&gt; --cron &#34;0 6 * * *&#34;
+
+Flags:
+  --scenario     DSL file
+  --cron         Cron-style expression</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi audit --help</code><span class="hx:absolute hx:-mt-20" id=runi-audit---help></span>
+<a href=#runi-audit---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Show schema contract change history and approvals.
+
+Usage:
+  runi audit --contract &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><hr><h2><code>runi restart --help</code><span class="hx:absolute hx:-mt-20" id=runi-restart---help></span>
+<a href=#runi-restart---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Restart a failed or incomplete pipeline run from its last checkpoint.
+
+Usage:
+  runi restart --run-id &lt;uuid&gt;
+
+Flags:
+  --run-id     Run ID to restart from
+  --force      Ignore checkpoint and rerun from start</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi resume --help</code><span class="hx:absolute hx:-mt-20" id=runi-resume---help></span>
+<a href=#runi-resume---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Resume an interrupted or paused pipeline.
+
+Usage:
+  runi resume --run-id &lt;uuid&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi checkpoint --help</code><span class="hx:absolute hx:-mt-20" id=runi-checkpoint---help></span>
+<a href=#runi-checkpoint---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Create a DAG state checkpoint for partial run recovery.
+
+Usage:
+  runi checkpoint --scenario &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi comment --help</code><span class="hx:absolute hx:-mt-20" id=runi-comment---help></span>
+<a href=#runi-comment---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Leave inline comments for contracts or fields (used in review tools).
+
+Usage:
+  runi comment --contract &lt;file&gt; --field &lt;path&gt; --note &lt;text&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi request-approval --help</code><span class="hx:absolute hx:-mt-20" id=runi-request-approval---help></span>
+<a href=#runi-request-approval---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Submit a contract for governance approval and audit.
+
+Usage:
+  runi request-approval --contract &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi feedback --help</code><span class="hx:absolute hx:-mt-20" id=runi-feedback---help></span>
+<a href=#runi-feedback---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Attach feedback note to a scenario feature for peer review.
+
+Usage:
+  runi feedback --scenario &lt;file&gt; --note &lt;text&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi redact --help</code><span class="hx:absolute hx:-mt-20" id=runi-redact---help></span>
+<a href=#runi-redact---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Automatically redact fields marked pii:&#34;true&#34; in a contract schema.
+
+Usage:
+  runi redact --contract &lt;file&gt; --out &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi escrow --help</code><span class="hx:absolute hx:-mt-20" id=runi-escrow---help></span>
+<a href=#runi-escrow---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Encrypt and store output data for delayed release or approval.
+
+Usage:
+  runi escrow --run-id &lt;uuid&gt; --out &lt;vault.json&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi anonymize --help</code><span class="hx:absolute hx:-mt-20" id=runi-anonymize---help></span>
+<a href=#runi-anonymize---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Create a non-sensitive version of input using faker &#43; tags.
+
+Usage:
+  runi anonymize --input &lt;file&gt; --contract &lt;file&gt; --out &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi trigger --help</code><span class="hx:absolute hx:-mt-20" id=runi-trigger---help></span>
+<a href=#runi-trigger---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Define an event trigger for this scenario.
+
+Usage:
+  runi trigger --scenario &lt;file&gt; --on webhook|s3|pubsub</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi listen --help</code><span class="hx:absolute hx:-mt-20" id=runi-listen---help></span>
+<a href=#runi-listen---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Start a listener to monitor incoming event and dispatch pipeline.
+
+Usage:
+  runi listen --event &lt;type&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi subscribe --help</code><span class="hx:absolute hx:-mt-20" id=runi-subscribe---help></span>
+<a href=#runi-subscribe---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Subscribe to a streaming topic or channel with offset tracking.
+
+Usage:
+  runi subscribe --stream &lt;topic&gt; --window 5m</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi freeze --help</code><span class="hx:absolute hx:-mt-20" id=runi-freeze---help></span>
+<a href=#runi-freeze---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Freeze contract &#43; scenario versions with hashes for snapshot validation.
+
+Usage:
+  runi freeze --scenario &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi archive --help</code><span class="hx:absolute hx:-mt-20" id=runi-archive---help></span>
+<a href=#runi-archive---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Archive old versions of scenarios and their runs by herd.
+
+Usage:
+  runi archive --herd &lt;name&gt; --keep 3</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi retire --help</code><span class="hx:absolute hx:-mt-20" id=runi-retire---help></span>
+<a href=#runi-retire---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Retire a contract so it cannot be used in future scenarios.
+
+Usage:
+  runi retire --contract &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi lineage graph --help</code><span class="hx:absolute hx:-mt-20" id=runi-lineage-graph---help></span>
+<a href=#runi-lineage-graph---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Export full DAG and contract lineage as GraphViz dot file.
+
+Usage:
+  runi lineage graph --out lineage.dot</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi knowledge export --help</code><span class="hx:absolute hx:-mt-20" id=runi-knowledge-export---help></span>
+<a href=#runi-knowledge-export---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Export pipeline metadata using RDF serialization (Turtle/N-Triples).
+
+Usage:
+  runi knowledge export --format turtle</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi query lineage --help</code><span class="hx:absolute hx:-mt-20" id=runi-query-lineage---help></span>
+<a href=#runi-query-lineage---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Query lineage metadata using SQL-like syntax.
+
+Usage:
+  runi query lineage --sql &#34;SELECT * WHERE pii = true&#34;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi openai audit --help</code><span class="hx:absolute hx:-mt-20" id=runi-openai-audit---help></span>
+<a href=#runi-openai-audit---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Use an LLM to summarize contract diffs or suggest field comments.
+
+Usage:
+  runi openai audit --contract &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi sandbox --help</code><span class="hx:absolute hx:-mt-20" id=runi-sandbox---help></span>
+<a href=#runi-sandbox---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Execute scenario in a secure ephemeral environment.
+
+Usage:
+  runi sandbox --scenario &lt;file&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi simulate --help</code><span class="hx:absolute hx:-mt-20" id=runi-simulate---help></span>
+<a href=#runi-simulate---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Replay input data as a stream window to test stateful logic.
+
+Usage:
+  runi simulate --input &lt;file&gt; --window 5m</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2><code>runi mint-token --help</code><span class="hx:absolute hx:-mt-20" id=runi-mint-token---help></span>
+<a href=#runi-mint-token---help class=subheading-anchor aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>Generate a short-lived JWT for scoped access by herd or scenario.
+
+Usage:
+  runi mint-token --herd finance --role analyst --ttl 5m</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code"><div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><hr><h2>🧠 Best Practices<span class="hx:absolute hx:-mt-20" id=-best-practices></span>
+<a href=#-best-practices class=subheading-anchor aria-label="Permalink for this section"></a></h2><ul><li>✅ Describe what the command <strong>does</strong>, not how it&rsquo;s implemented</li><li>✅ Include at least 1 usage example</li><li>✅ Use consistent flags: <code>--scenario</code>, <code>--contract</code>, <code>--out</code>, <code>--herd</code></li><li>✅ Provide guidance for <code>--dry-run</code>, <code>--verbose</code>, <code>--help</code></li><li>✅ Include multi-step examples if command touches multiple files</li></ul><hr></div><div class=hx:mt-16></div></main></article></div><footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><button title="Change theme" data-theme=light class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50" type=button aria-label="Change theme"><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" class="hx:group-data-[theme=light]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728.0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height="12" class="hx:group-data-[theme=dark]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div></button></div><hr class="hx:border-gray-200 hx:dark:border-neutral-800"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"><div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class=hx:font-semibold><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target=_blank rel="noopener noreferrer" title="Hextra GitHub Homepage" href=https://github.com/imfing/hextra><span>Runink: Data You Can Trust. Decisions You Can Defend.</span></a></div><div class="hx:mt-6 hx:text-xs">© 2025 Runink.</div></div></div></footer><script defer src=/js/main.min.d79b5810dc30b603acec675d5fa5589bf9e34cb76b9c79991b9b04da7c9aa6ff.js integrity="sha256-15tYENwwtgOs7GddX6VYm/njTLdrnHmZG5sE2nyapv8="></script><script defer src=/js/flexsearch.433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c.js integrity="sha256-Qz6UGopXPruZMfwW/HUmara5P1aawvtPPcZoguBBb0w=" crossorigin=anonymous></script><script defer src=/en.search.min.41fbce4080c5b8b810d6dafec71cdfd6ccb3d652bb47bbf0f27804a33812d71e.js integrity="sha256-QfvOQIDFuLgQ1tr+xxzf1syz1lK7R7vw8ngEozgS1x4="></script></body></html>
