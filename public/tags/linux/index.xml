@@ -1,0 +1,60 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Runink – Linux</title>
+    <link>http://localhost:1313/tags/linux/</link>
+    <description>Recent content in Linux on Runink</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 May 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives</title>
+      <link>http://localhost:1313/blog/2025/05/01/runink-go-raft-linux-data-pipelines/</link>
+      <pubDate>Thu, 01 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/2025/05/01/runink-go-raft-linux-data-pipelines/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;img src=&#34;http://localhost:1313/image/blog/runink-go-raft-linux-data-pipelines.png&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;
+Runink is a streamlined, Go-native platform for managing secure and efficient data pipelines without Kubernetes. It uses Linux primitives (namespaces, cgroups) for isolation, Raft consensus for strong consistency and governance, and complies with open standards such as OpenLineage, Open Data Contracts, and OpenTelemetry—simplifying orchestration, enhancing performance, and ensuring transparent data governance.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;hr&gt;
+&lt;h1&gt;Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives&lt;/h1&gt;&lt;p&gt;Modern data platforms often rely on complex stacks involving Kubernetes, Spark, Airflow, and DBT—each tool addressing part of the data pipeline lifecycle. Runink presents a radically simplified, vertically integrated alternative: a Go-native distributed pipeline execution and governance platform built upon Linux primitives and Raft consensus. In this article, we&amp;rsquo;ll explore the core components of Runink—Runink CLI/API, Runi Agent/Slices, the Barn Domain Model Control Plane, and Herd Domain Boundary Controls—and demonstrate how they redefine pipeline orchestration.&lt;/p&gt;
+&lt;h2&gt;Runink CLI/API: Developer Experience First&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;runink-cliapi-developer-experience-first&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#runink-cliapi-developer-experience-first&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Runink emphasizes developer ergonomics with its powerful CLI, &lt;code&gt;runi&lt;/code&gt;, designed to streamline pipeline creation and management. Instead of YAML sprawl and disparate tools, Runink provides a unified interface for contract management, scenario compilation, and golden testing. Developers declaratively define pipelines using the intuitive Runink DSL, facilitating rapid, test-driven development and CI/CD automation.&lt;/p&gt;
+&lt;h2&gt;Runi Agent and Runi Slices: Lightweight, Stream-Oriented Isolation&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;runi-agent-and-runi-slices-lightweight-stream-oriented-isolation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#runi-agent-and-runi-slices-lightweight-stream-oriented-isolation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;At the execution layer, Runink deploys &lt;strong&gt;Runi Agents&lt;/strong&gt; on each node to orchestrate isolated &lt;strong&gt;Runi Slices&lt;/strong&gt;—ephemeral Go processes launched via &lt;code&gt;os/exec&lt;/code&gt;, scoped with &lt;code&gt;chroot&lt;/code&gt;, and confined using Linux cgroups and namespaces. Instead of spinning up containers, slices stream data through &lt;code&gt;io.Reader&lt;/code&gt;/&lt;code&gt;Writer&lt;/code&gt; pipelines, backed by buffered I/O and &lt;code&gt;os.Pipe()&lt;/code&gt;—enabling zero-copy, backpressure-aware processing without materializing entire datasets. Each slice is evaluated in isolation using &lt;code&gt;eval&lt;/code&gt;, subject to strict CPU and memory limits, making execution not only fast and memory-stable, but also auditable and secure by default.&lt;/p&gt;
+&lt;h2&gt;Barn Domain Model Control Plane: Raft-Backed Governance&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;barn-domain-model-control-plane-raft-backed-governance&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#barn-domain-model-control-plane-raft-backed-governance&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The core orchestration is managed by &lt;strong&gt;Barn&lt;/strong&gt;, Runink&amp;rsquo;s domain model control plane built upon Raft consensus. Barn provides strong consistency across cluster state, secrets management, and scheduling, eliminating common distributed system pitfalls like split-brain conditions. The Raft-backed store ensures deterministic task placement and robust fault tolerance, critical for secure and auditable data pipelines.&lt;/p&gt;
+&lt;h2&gt;Herd Domain Boundary Controls: Multi-Tenancy and Security&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;herd-domain-boundary-controls-multi-tenancy-and-security&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#herd-domain-boundary-controls-multi-tenancy-and-security&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Runink introduces &lt;strong&gt;Herds&lt;/strong&gt; as the primary isolation boundary—composed of one or more &lt;strong&gt;Runi Agents&lt;/strong&gt; and their associated &lt;strong&gt;Runi Slices&lt;/strong&gt;. Each Herd defines a domain-specific execution environment with its own RBAC policies, resource quotas, and namespace-scoped metadata. By grouping Runi slices under a shared Herd, Runink ensures strict tenant separation, secure data handling, and controlled resource usage—all enforced natively via cgroups and Linux namespaces. This built-in, slice-aware governance model eliminates the complexity of external orchestrators while providing robust multi-tenancy and compliance guarantees.&lt;/p&gt;
+&lt;h2&gt;Built-in Data Governance and Lineage&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;built-in-data-governance-and-lineage&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#built-in-data-governance-and-lineage&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Runink captures detailed lineage information natively, embedding run metadata directly into pipeline execution. This lineage includes schema contracts, transformation versions, input/output mappings, and runtime metrics, enabling precise audit trails and regulatory compliance. Governance becomes integral to pipeline execution rather than an external process, ensuring data responsibility at every step.&lt;/p&gt;
+&lt;h2&gt;Zero-Copy, Functional Pipelines with Declarative Scheduling&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;zero-copy-functional-pipelines-with-declarative-scheduling&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#zero-copy-functional-pipelines-with-declarative-scheduling&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Runink emphasizes zero-copy, streaming pipelines using Go’s efficient I/O primitives. Data flows through pipelines without unnecessary buffering, significantly enhancing performance and memory efficiency. Its functional programming approach simplifies pipeline testing, guaranteeing correctness through golden tests and schema contracts.&lt;/p&gt;
+&lt;p&gt;Declarative scheduling completes the picture, allowing engineers to specify resource requirements and constraints explicitly, leaving the scheduler to determine optimal execution placement using Raft-consistent state.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;By leveraging Go, Linux primitives, and Raft, Runink offers a unique, high-performance, secure-by-default alternative to conventional pipeline stacks. Its integrated design simplifies operations, increases performance, and provides comprehensive data governance capabilities—redefining how platform teams and data engineers build and manage their data infrastructure.&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Ready to transform your data into a strategic asset?&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;http://localhost:1313/contact/&#34; &gt;&lt;strong&gt;Schedule Your Consultation | Reach out to our Team →&lt;/strong&gt;&lt;/a&gt; and embark on your ISO‑powered, data‑driven future.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

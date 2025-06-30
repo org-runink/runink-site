@@ -1,6 +1,6 @@
 <div class="carousel" id="carousel-{{ now.Unix }}">
   <div class="carousel-track">
-    {{ .Inner }}
+    {{ .Inner }} <!-- Each item must have class="carousel-item" -->
   </div>
 </div>
 
@@ -37,7 +37,6 @@
   text-align: center;
 }
 
-/* ✅ Updated image styling: 3x taller (600px) */
 .carousel-item .card img {
   object-fit: contain;
   max-width: 100%;
@@ -46,12 +45,15 @@
 </style>
 
 <script>
-(function() {
+document.addEventListener("DOMContentLoaded", function () {
   const id = "{{ now.Unix }}";
-  let index = 0;
   const carousel = document.getElementById("carousel-" + id);
-  const track = carousel.querySelector('.carousel-track');
-  const slides = carousel.querySelectorAll('.carousel-item');
+  const track = carousel.querySelector(".carousel-track");
+  const slides = carousel.querySelectorAll(".carousel-item");
+  
+  if (slides.length === 0) return; // safeguard
+
+  let index = 0;
 
   function updateSlide() {
     const slideWidth = slides[0].offsetWidth;
@@ -63,7 +65,7 @@
     updateSlide();
   }, 5000);
 
-  window.addEventListener('resize', updateSlide);
+  window.addEventListener("resize", updateSlide);
   updateSlide();
-})();
+});
 </script>

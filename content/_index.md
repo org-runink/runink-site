@@ -25,7 +25,6 @@ toc: false
   {{< card title="From governance to execution in one place" icon="shield-check" subtitle="Schema validation, access control, scheduling, observability, and lineage — all built-in." >}}
   {{< card title="Minimize risks, maximize agility" icon="finger-print" subtitle="Changes are testable, auditable, and rollback-friendly by default." >}}
   {{< card title="Deliver Business-Ready Outputs" icon="template" subtitle="Whether for analytics, finance, ML, or compliance — every result is trustworthy and traceable." >}}
-  {{< card title="Govern Access and Data Anonymization Automatically" icon="lock-closed" subtitle="Field-level tags, RBAC enforcement, and lineage all tied to your organizational roles." >}}
 {{< /cards >}}
 
 ## Who It's For?
@@ -46,7 +45,7 @@ toc: false
 Want to simplify your pipeline stack and move faster with confidence?
 
 {{< cards >}}
-  {{< card link="/docs/components" title="Runink Components" icon="academic-cap">}}
+  {{< card link="/data_companion" title="Runink Data Companion" icon="academic-cap">}}
   {{< card link="/services/" title="Professional Services" icon="briefcase">}}
   {{< card link="/blog/" title="Runink Blog" icon="collection">}}
 {{< /cards >}}

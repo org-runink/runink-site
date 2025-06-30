@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Benchmark – Runink</title>
+  <meta name="description" content="1. Architecture &amp; Paradigm Runink: A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a Raft-based control plane to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.
+Competitors: Use a layered, loosely coupled stack:" /><link rel="canonical" href="http://localhost:1313/data_integrator/benchmark/" itemprop="url" />
+
+<meta property="og:title" content="Benchmark" />
+<meta property="og:description" content="1. Architecture &amp; Paradigm
+    
+
+Runink: A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a Raft-based control plane to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.
+
+
+Competitors: Use a layered, loosely coupled stack:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/data_integrator/benchmark/" /><meta property="article:section" content="data_integrator" />
+
+
+
+  <meta itemprop="name" content="Benchmark">
+  <meta itemprop="description" content="1. Architecture &amp; Paradigm Runink: A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a Raft-based control plane to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.
+Competitors: Use a layered, loosely coupled stack:">
+  <meta itemprop="wordCount" content="1598">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Benchmark">
+  <meta name="twitter:description" content="1. Architecture &amp; Paradigm Runink: A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a Raft-based control plane to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.
+Competitors: Use a layered, loosely coupled stack:">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+
+  
+
+  <script>
+     
+    const defaultTheme = 'system';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  
+  </head>
+<body dir="ltr"><div class="nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+        <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo_black.png" alt="Logo" height="20" width="20" />
+        <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo_white.png" alt="Dark Logo" height="20" width="20" />
+        <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title="Runink">Runink</span>
+    </a>
+            <a
+              title="Runink Data Companion"
+              href="/data_companion"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Runink Data Companion</span>
+            </a>
+            <a
+              title="Blog"
+              href="/blog"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Blog</span>
+            </a>
+            <a
+              title="Contact"
+              href="/contact"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Contact</span>
+            </a>
+            <a
+              title="Professional Services"
+              href="/services"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Professional Services</span>
+            </a><button type="button" aria-label="Menu" class="hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  
+  <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+    <div class="search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/"
+    
+  >Services
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/cloud_accelerator/"
+    
+  >Cloud Accelerator
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/data_platform/"
+    
+  >Data Platform
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/ai_readiness/"
+    
+  >Ai Readiness
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/services/fractional_cxo/"
+    
+  >Fractional Cxo
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_companion/"
+    
+  >Runink Data Companion
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/"
+    
+  >Runink Data Integrator
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/architecture/"
+    
+  >Architecture
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/components/"
+    
+  >Components
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/data_integrator/benchmark/"
+    
+  >Benchmark
+    </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#1-architecture--paradigm"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >1. Architecture &amp; Paradigm</a>
+            </li>
+          <li>
+              <a
+                href="#1-mapreduce-vs-rdd-vs-raft-for-data-pipelines"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >1. MapReduce vs. RDD vs. Raft for Data Pipelines</a>
+            </li>
+          <li>
+              <a
+                href="#2-raft-advantages-for-distributed-coordination"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2. Raft Advantages for Distributed Coordination</a>
+            </li>
+          <li>
+              <a
+                href="#3-performance--resource-efficiency"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >3. Performance &amp; Resource Efficiency</a>
+            </li>
+          <li>
+              <a
+                href="#4-scheduling--resource-management"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >4. Scheduling &amp; Resource Management</a>
+            </li>
+          <li>
+              <a
+                href="#5-security-model"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >5. Security Model</a>
+            </li>
+          <li>
+              <a
+                href="#6-data-governance-lineage--metadata"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >6. Data Governance, Lineage &amp; Metadata</a>
+            </li>
+          <li>
+              <a
+                href="#7-multi-tenancy"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7. Multi-Tenancy</a>
+            </li>
+          <li>
+              <a
+                href="#8-llm-integration--metadata-handling"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >8. LLM Integration &amp; Metadata Handling</a>
+            </li>
+          <li>
+              <a
+                href="#9-observability"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >9. Observability</a>
+            </li>
+          <li>
+              <a
+                href="#10-ecosystem--maturity"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >10. Ecosystem &amp; Maturity</a>
+            </li>
+          <li>
+              <a
+                href="#11-complexity--operational-effort"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >11. Complexity &amp; Operational Effort</a>
+            </li>
+          <li>
+              <a
+                href="#-summary-why-raft-makes-runink-different"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >✅ Summary: Why Raft Makes Runink Different</a>
+            </li>
+          <li>
+              <a
+                href="#process-flow"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Process flow</a>
+            </li>
+          <li>
+              <a
+                href="#-how-this-model-beats-the-status-quo"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🚀 How This Model Beats the Status Quo</a>
+            </li>
+          <li>
+              <a
+                href="#-conclusion-go--linux-internals--raft--data-native-compute"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >🧠 Conclusion: Go &#43; Linux internals &#43; Raft = Data-Native Compute</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/cli/"
+    
+  >CLI Reference
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/clihelp/"
+    
+  >CLI Help Commands
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/contributing/"
+    
+  >Contributing
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/data-lineage/"
+    
+  >Data Lineage
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/feature-dsl/"
+    
+  >Feature DSL
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/getting_started/"
+    
+  >Getting Started
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/glossary/"
+    
+  >Glossary
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/roadmap/"
+    
+  >Roadmap
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/runink_quickstart/"
+    
+  >Runink Quickstart
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/schema-contracts/"
+    
+  >Schema Contracts
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/data_integrator/security/"
+    
+  >Security &amp; RBAC
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/"
+    
+  >Blog | Whitepapers
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/06/30/a2a-langchain-affordable-analytics-copy/"
+    
+  >Revolutionizing Transportation: How Runink&#39;s AI Powers Modal Shift and Route Optimization
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/06/24/a2a-langchain-affordable-analytics/"
+    
+  >Affordable Analytics: Harnessing A2A and LangChain for Scalable Insights
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/06/16/iso-standards-data-driven-business/"
+    
+  >Why ISO 8000, ISO 27000, ISO 27017, ISO 27018, ISO 42001 &amp; ISO 27701 Matter for Data‑Driven Business Success
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/06/07/improving-cloud-roi-finops-domain-model-data-mesh/"
+    
+  >Improving Cloud ROI with FinOps, Domain Models, and Data Mesh
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/06/01/dynamic-masking-snowflake-shared-objects/"
+    
+  >Why Dynamic Masking on Shared Snowflake Objects is Mandatory for Data-Driven Companies
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/blog/2025/05/01/runink-go-raft-linux-data-pipelines/"
+    
+  >Runink: Rethinking Data Pipelines with Go, Raft, and Linux Primitives
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/contact/"
+    
+  >Contact
+    </a></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height=12 class="hx:group-data-[theme=dark]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div>
+</button>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-architecture--paradigm">1. Architecture &amp; Paradigm
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-mapreduce-vs-rdd-vs-raft-for-data-pipelines">1. MapReduce vs. RDD vs. Raft for Data Pipelines
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#11-architecture--paradigm">1.1 Architecture &amp; Paradigm
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#12-performance--efficiency">1.2. Performance &amp; Efficiency
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#13-data-governance-and-lineage">1.3. Data Governance and Lineage
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#14-fault-tolerance-and-recovery">1.4. Fault Tolerance and Recovery
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#15-security-and-isolation">1.5. Security and Isolation
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#16-real-case-scenario-example">1.6 Real case scenario example
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-raft-advantages-for-distributed-coordination">2. Raft Advantages for Distributed Coordination
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-performance--resource-efficiency">3. Performance &amp; Resource Efficiency
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#4-scheduling--resource-management">4. Scheduling &amp; Resource Management
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#5-security-model">5. Security Model
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#6-data-governance-lineage--metadata">6. Data Governance, Lineage &amp; Metadata
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#7-multi-tenancy">7. Multi-Tenancy
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#8-llm-integration--metadata-handling">8. LLM Integration &amp; Metadata Handling
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#9-observability">9. Observability
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#10-ecosystem--maturity">10. Ecosystem &amp; Maturity
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#11-complexity--operational-effort">11. Complexity &amp; Operational Effort
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-summary-why-raft-makes-runink-different">✅ Summary: Why Raft Makes Runink Different
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#process-flow">Process flow
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-how-this-model-beats-the-status-quo">🚀 How This Model Beats the Status Quo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-compared-to-apache-spark">✅ Compared to Apache Spark
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-compared-to-kubernetes--airflow">✅ Compared to Kubernetes &#43; Airflow
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#-conclusion-go--linux-internals--raft--data-native-compute">🧠 Conclusion: Go &#43; Linux internals &#43; Raft = Data-Native Compute
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12">
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Benchmark</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          <h2>1. Architecture &amp; Paradigm<span class="hx:absolute hx:-mt-20" id="1-architecture--paradigm"></span>
+    <a href="#1-architecture--paradigm" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong> A Go/Linux-native, vertically integrated data platform that combines execution, scheduling, governance, and observability in a single runtime. Unlike traditional stacks, Runink does not rely on Kubernetes or external orchestrators. Instead, it uses a <strong>Raft-based control plane</strong> to ensure high availability and consensus across services like scheduling, metadata, and security — forming a distributed operating model purpose-built for data.</p>
+</li>
+<li>
+<p><strong>Competitors:</strong> Use a layered, loosely coupled stack:</p>
+<ul>
+<li><em>Execution:</em> Spark, Beam (JVM-based)</li>
+<li><em>Orchestration:</em> Airflow, Dagster (often on Kubernetes)</li>
+<li><em>Transformation:</em> DBT (runs SQL on external data platforms)</li>
+<li><em>Cluster Management:</em> Kubernetes, Slurm</li>
+<li><em>Governance:</em> Collibra, Apache Atlas (external)</li>
+</ul>
+</li>
+<li>
+<p><strong>Key Differentiator:</strong> Runink is <strong>built from the ground up</strong> as a distributed system — with <strong>Raft consensus</strong> at its core — whereas competitors compose multiple tools that communicate asynchronously or rely on external state systems.</p>
+</li>
+</ul>
+<hr>
+<h2>1. MapReduce vs. RDD vs. Raft for Data Pipelines<span class="hx:absolute hx:-mt-20" id="1-mapreduce-vs-rdd-vs-raft-for-data-pipelines"></span>
+    <a href="#1-mapreduce-vs-rdd-vs-raft-for-data-pipelines" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><hr>
+<h3>1.1 Architecture &amp; Paradigm<span class="hx:absolute hx:-mt-20" id="11-architecture--paradigm"></span>
+    <a href="#11-architecture--paradigm" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Aspect</th>
+          <th style="text-align: left">MapReduce</th>
+          <th style="text-align: left">RDD</th>
+          <th style="text-align: left">Raft (Runink model)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Origin</strong></td>
+          <td style="text-align: left">Google (2004)</td>
+          <td style="text-align: left">Spark (2010)</td>
+          <td style="text-align: left">Raft (2013) adapted for distributed control</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Execution Model</strong></td>
+          <td style="text-align: left">Batch, two-stage (Map → Reduce)</td>
+          <td style="text-align: left">In-memory DAGs of transformations</td>
+          <td style="text-align: left">Real-time coordination of distributed nodes</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Consistency Model</strong></td>
+          <td style="text-align: left">Eventual (job outputs persisted)</td>
+          <td style="text-align: left">Best effort (job outputs in memory, lineage for recovery)</td>
+          <td style="text-align: left">Strong consistency (N/2+1 consensus)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Primary Use</strong></td>
+          <td style="text-align: left">Large batch analytics</td>
+          <td style="text-align: left">Interactive, iterative analytics</td>
+          <td style="text-align: left">Distributed metadata/state management for pipelines</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Fault Tolerance</strong></td>
+          <td style="text-align: left">Output checkpointing</td>
+          <td style="text-align: left">Lineage-based recomputation</td>
+          <td style="text-align: left">Log replication and state machine replication</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>1.2. Performance &amp; Efficiency<span class="hx:absolute hx:-mt-20" id="12-performance--efficiency"></span>
+    <a href="#12-performance--efficiency" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Aspect</th>
+          <th style="text-align: left">MapReduce</th>
+          <th style="text-align: left">RDD</th>
+          <th style="text-align: left">Raft (Runink)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Cold Start Time</strong></td>
+          <td style="text-align: left">High (JVM startup, slot allocation)</td>
+          <td style="text-align: left">Medium (Spark cluster overhead)</td>
+          <td style="text-align: left">Low (Go processes, native scheduling)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Memory Use</strong></td>
+          <td style="text-align: left">Disk-heavy</td>
+          <td style="text-align: left">Memory-heavy (RDD caching)</td>
+          <td style="text-align: left">Lightweight (control metadata, not bulk data)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>I/O Overhead</strong></td>
+          <td style="text-align: left">Heavy disk I/O (HDFS reads/writes)</td>
+          <td style="text-align: left">Network/memory optimized, but needs enough RAM</td>
+          <td style="text-align: left">Minimal (only metadata replication)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Pipeline Complexity</strong></td>
+          <td style="text-align: left">Requires multiple jobs for DAGs</td>
+          <td style="text-align: left">Natural DAG execution</td>
+          <td style="text-align: left">Direct DAG compilation from DSLs (Runink)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>1.3. Data Governance and Lineage<span class="hx:absolute hx:-mt-20" id="13-data-governance-and-lineage"></span>
+    <a href="#13-data-governance-and-lineage" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Aspect</th>
+          <th style="text-align: left">MapReduce</th>
+          <th style="text-align: left">RDD</th>
+          <th style="text-align: left">Raft (Runink)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Built-in Lineage</strong></td>
+          <td style="text-align: left">No (external)</td>
+          <td style="text-align: left">Yes (RDD lineage graph)</td>
+          <td style="text-align: left">Yes (atomic commit of contracts, steps, runs)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Governance APIs</strong></td>
+          <td style="text-align: left">Manual (logs, job output)</td>
+          <td style="text-align: left">Partial (Spark listeners)</td>
+          <td style="text-align: left">Native (contracts, lineage logs, per-slice metadata)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Auditability</strong></td>
+          <td style="text-align: left">Hard to reconstruct</td>
+          <td style="text-align: left">Possible with effort</td>
+          <td style="text-align: left">Native per-run audit logs, Raft-signed events</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>1.4. Fault Tolerance and Recovery<span class="hx:absolute hx:-mt-20" id="14-fault-tolerance-and-recovery"></span>
+    <a href="#14-fault-tolerance-and-recovery" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Aspect</th>
+          <th style="text-align: left">MapReduce</th>
+          <th style="text-align: left">RDD</th>
+          <th style="text-align: left">Raft (Runink)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Recovery Mechanism</strong></td>
+          <td style="text-align: left">Re-run failed jobs</td>
+          <td style="text-align: left">Recompute from lineage</td>
+          <td style="text-align: left">Replay committed log entries</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Failure Impact</strong></td>
+          <td style="text-align: left">Full-stage re-execution</td>
+          <td style="text-align: left">Depends on lost partitions</td>
+          <td style="text-align: left">Minimal if quorum is maintained</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Availability Guarantee</strong></td>
+          <td style="text-align: left">None</td>
+          <td style="text-align: left">Partial (driver failure = job loss)</td>
+          <td style="text-align: left">Strong (as long as majority nodes are alive)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>1.5. Security and Isolation<span class="hx:absolute hx:-mt-20" id="15-security-and-isolation"></span>
+    <a href="#15-security-and-isolation" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Aspect</th>
+          <th style="text-align: left">MapReduce</th>
+          <th style="text-align: left">RDD</th>
+          <th style="text-align: left">Raft (Runink)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Authentication</strong></td>
+          <td style="text-align: left">Optional</td>
+          <td style="text-align: left">Optional</td>
+          <td style="text-align: left">Mandatory (OIDC, RBAC)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Secrets Management</strong></td>
+          <td style="text-align: left">Ad hoc</td>
+          <td style="text-align: left">Ad hoc</td>
+          <td style="text-align: left">Native, Raft-backed, scoped by Herds</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Multi-Tenancy</strong></td>
+          <td style="text-align: left">None</td>
+          <td style="text-align: left">None</td>
+          <td style="text-align: left">Herd isolation (namespace + cgroup enforcement)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>1.6 Real case scenario example<span class="hx:absolute hx:-mt-20" id="16-real-case-scenario-example"></span>
+    <a href="#16-real-case-scenario-example" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Imagine a critical pipeline for trade settlement</strong>:</p>
+<ul>
+<li><strong>MapReduce</strong> would force every job to write to disk between stages — slow and painful for debugging.</li>
+<li><strong>RDD</strong> would speed things up but require heavy RAM and still risk full job loss if the driver fails.</li>
+<li><strong>Raft (Runink)</strong> keeps every contract, every transformation, every secret <strong>atomically committed</strong> and recoverable — <strong>even if a node crashes mid-run</strong>, the system can <strong>resume from the last committed stage</strong> safely.</li>
+</ul>
+<hr>
+<h2>2. Raft Advantages for Distributed Coordination<span class="hx:absolute hx:-mt-20" id="2-raft-advantages-for-distributed-coordination"></span>
+    <a href="#2-raft-advantages-for-distributed-coordination" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p><strong>Runink:</strong></p>
+<ul>
+<li>
+<p>Uses <strong>Raft</strong> for <strong>strong consistency</strong> and <strong>leader election</strong> across:</p>
+<ul>
+<li>Control plane state (Herds, pipelines, RBAC, quotas)</li>
+<li>Scheduler decisions</li>
+<li>Secrets and metadata governance</li>
+</ul>
+</li>
+<li>
+<p>Guarantees:</p>
+<ul>
+<li>No split-brain conditions</li>
+<li>Predictable and deterministic behavior in failure scenarios</li>
+<li>Fault-tolerant HA (N/2+1 consensus)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Kubernetes uses etcd (Raft-backed), but tools like Airflow/Spark have no equivalent.</li>
+<li>Scheduling decisions, lineage, and metadata handling are often <strong>eventually consistent</strong> or stored in <strong>external systems</strong> without consensus guarantees.</li>
+<li>Result: higher complexity, latency, and coordination failure risks under scale or failure.</li>
+</ul>
+<hr>
+<h2>3. Performance &amp; Resource Efficiency<span class="hx:absolute hx:-mt-20" id="3-performance--resource-efficiency"></span>
+    <a href="#3-performance--resource-efficiency" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Written in Go for low-latency cold starts and efficient concurrency.</li>
+<li>Uses direct <code>exec</code>, <code>cgroups</code>, and <code>namespaces</code>, not Docker/K8s layers.</li>
+<li>Raft ensures <strong>low-overhead coordination</strong>, avoiding polling retries and state divergence.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Spark is JVM-based; powerful but resource-heavy.</li>
+<li>K8s introduces orchestration latency, plus pod startup and scheduling delays.</li>
+<li>Airflow relies on Celery/K8s executors with less efficient scheduling granularity.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>4. Scheduling &amp; Resource Management<span class="hx:absolute hx:-mt-20" id="4-scheduling--resource-management"></span>
+    <a href="#4-scheduling--resource-management" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Custom, Raft-backed <strong>Scheduler</strong> matches pipeline steps to nodes in real time.</li>
+<li>Considers Herd quotas, CPU/GPU/Memory availability.</li>
+<li>Deterministic task placement and retry logic are <strong>logged and replayable</strong> via Raft.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Kubernetes schedulers are general-purpose and not pipeline-aware.</li>
+<li>Airflow does not control actual compute — delegates to backends like K8s.</li>
+<li>Slurm excels in HPC, but lacks pipeline-native orchestration and data governance.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>5. Security Model<span class="hx:absolute hx:-mt-20" id="5-security-model"></span>
+    <a href="#5-security-model" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Secure-by-default with OIDC + JWT, RBAC, Secrets Manager, mTLS, and field-level masking.</li>
+<li><strong>Secrets are versioned and replicated with Raft</strong>, avoiding plaintext spillage or inconsistent states.</li>
+<li>Namespace isolation per Herd.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Kubernetes offers RBAC and secrets, but complexity leads to misconfigurations.</li>
+<li>Airflow often shares sensitive configs (connections, variables) across DAGs.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>6. Data Governance, Lineage &amp; Metadata<span class="hx:absolute hx:-mt-20" id="6-data-governance-lineage--metadata"></span>
+    <a href="#6-data-governance-lineage--metadata" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Built-in <strong>Data Governance Service</strong> stores contracts, lineage, quality metrics, and annotations.</li>
+<li>Changes are <strong>committed to Raft</strong>, ensuring <strong>atomic updates</strong> and rollback support.</li>
+<li>Contracts and pipeline steps are <strong>versioned</strong> and tracked centrally.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Require integrating platforms like Atlas or Collibra.</li>
+<li>Lineage capture is manual or partial, with data loss possible on failure or drift.</li>
+<li>Metadata syncing lacks consistency guarantees.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>7. Multi-Tenancy<span class="hx:absolute hx:-mt-20" id="7-multi-tenancy"></span>
+    <a href="#7-multi-tenancy" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Uses <strong>Herds</strong> as isolation units — enforced via RBAC, ephemeral UIDs, cgroups, and namespace boundaries.</li>
+<li>Raft ensures configuration updates (quotas, roles) are <strong>safely committed</strong> across all replicas.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Kubernetes uses namespaces and resource quotas.</li>
+<li>Airflow has no robust multi-tenancy — teams often need separate deployments.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>8. LLM Integration &amp; Metadata Handling<span class="hx:absolute hx:-mt-20" id="8-llm-integration--metadata-handling"></span>
+    <a href="#8-llm-integration--metadata-handling" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>LLM inference is a <strong>first-class pipeline step</strong>.</li>
+<li>Annotations are tied to lineage and <strong>stored transactionally</strong> in the Raft-backed governance store.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>LLMs are orchestrated as container steps via KubernetesPodOperator or Argo.</li>
+<li>Metadata is stored in external tools or left untracked.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>9. Observability<span class="hx:absolute hx:-mt-20" id="9-observability"></span>
+    <a href="#9-observability" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Built-in metrics via Prometheus, structured logs via Fluentd.</li>
+<li>Metadata and run stats are <strong>Raft-consistent</strong>, enabling reproducible audit trails.</li>
+<li>Observability spans from node → slice → Herd → run.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Spark, Airflow, and K8s use external stacks (Loki, Grafana, EFK) that need configuration and instrumentation.</li>
+<li>Logs may be disjointed or context-lacking.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>10. Ecosystem &amp; Maturity<span class="hx:absolute hx:-mt-20" id="10-ecosystem--maturity"></span>
+    <a href="#10-ecosystem--maturity" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>Early-stage, but intentionally narrow in scope and highly integrated.</li>
+<li>No need for external orchestrators or data governance platforms.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Vast ecosystems (Airflow, Spark, DBT, K8s) with huge community support.</li>
+<li>Tradeoff: Requires significant integration, coordination, and DevOps effort.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>11. Complexity &amp; Operational Effort<span class="hx:absolute hx:-mt-20" id="11-complexity--operational-effort"></span>
+    <a href="#11-complexity--operational-effort" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>
+<p><strong>Runink:</strong></p>
+<ul>
+<li>High initial build complexity — but centralization of Raft and Go-based primitives allows for <strong>deterministic ops</strong>, easier debug, and stronger safety guarantees.</li>
+<li><strong>Zero external dependencies</strong> once deployed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Operationally fragmented. DevOps teams must manage multiple platforms (e.g., K8s, Helm, Spark, Airflow).</li>
+<li>Requires cross-tool observability, secrets management, and governance.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>✅ Summary: Why Raft Makes Runink Different<span class="hx:absolute hx:-mt-20" id="-summary-why-raft-makes-runink-different"></span>
+    <a href="#-summary-why-raft-makes-runink-different" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Capability</th>
+          <th>Runink (Raft-Powered)</th>
+          <th>Spark / Airflow / K8s Stack</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>State Coordination</strong></td>
+          <td>Raft Consensus</td>
+          <td>Partial (only K8s/etcd)</td>
+      </tr>
+      <tr>
+          <td><strong>Fault Tolerance</strong></td>
+          <td>HA Replication</td>
+          <td>Tool-dependent</td>
+      </tr>
+      <tr>
+          <td><strong>Scheduler</strong></td>
+          <td>Raft-backed, deterministic</td>
+          <td>Varies per layer</td>
+      </tr>
+      <tr>
+          <td><strong>Governance</strong></td>
+          <td>Native, consistent, queryable</td>
+          <td>External</td>
+      </tr>
+      <tr>
+          <td><strong>Secrets</strong></td>
+          <td>Encrypted + Raft-consistent</td>
+          <td>K8s or env vars</td>
+      </tr>
+      <tr>
+          <td><strong>Lineage</strong></td>
+          <td>Immutable + auto-tracked</td>
+          <td>External integrations</td>
+      </tr>
+      <tr>
+          <td><strong>Multitenancy</strong></td>
+          <td>Herds + namespace isolation</td>
+          <td>Namespaces (K8s)</td>
+      </tr>
+      <tr>
+          <td><strong>Security</strong></td>
+          <td>End-to-end mTLS + RBAC + UIDs</td>
+          <td>Complex setup</td>
+      </tr>
+      <tr>
+          <td><strong>LLM-native</strong></td>
+          <td>First-class integration</td>
+          <td>Ad hoc orchestration</td>
+      </tr>
+      <tr>
+          <td><strong>Observability</strong></td>
+          <td>Built-in, unified stack</td>
+          <td>Custom integration</td>
+      </tr>
+  </tbody>
+</table>
+<h2>Process flow<span class="hx:absolute hx:-mt-20" id="process-flow"></span>
+    <a href="#process-flow" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><pre class="mermaid hx:mt-6">
+  %% Mermaid Diagram: MapReduce vs RDD vs Raft (Runink)
+flowchart LR
+  subgraph Normal_Operation[&#34;✅ Normal Operation (Execution Flow)&#34;]
+    subgraph MapReduce
+      ID1[&#34;Input Data 📂&#34;]
+      MP[&#34;Map Phase 🛠️&#34;]
+      SS[&#34;Shuffle &amp; Sort Phase 🔀&#34;]
+      RP[&#34;Reduce Phase 🛠️&#34;]
+      ID1 --&gt; MP --&gt; SS --&gt; RP
+    end
+
+    subgraph RDD
+      RID1[&#34;Input Data 📂&#34;]
+      RT[&#34;RDD Transformations 🔄&#34;]
+      AT[&#34;Action Trigger ▶️&#34;]
+      JS[&#34;Job Scheduler 📋&#34;]
+      CE[&#34;Cluster Execution (Executors) ⚙️&#34;]
+      OD[&#34;Output Data 📦&#34;]
+      RID1 --&gt; RT --&gt; AT --&gt; JS --&gt; CE --&gt; OD
+    end
+
+    subgraph Raft_Runink
+      RIN[&#34;Input Data 📂&#34;]
+      RC[&#34;Raft Commit (Contracts + Metadata) 🗄️&#34;]
+      RS[&#34;Runi Scheduler (Raft-backed) 🧠&#34;]
+      LW[&#34;Launch Slices (Isolated Workers) 🚀&#34;]
+      ROD[&#34;Output Data 📦&#34;]
+      RIN --&gt; RC --&gt; RS --&gt; LW --&gt; ROD
+    end
+  end
+
+  subgraph Failure_Recovery[&#34;⚡ Failure Recovery Flow (Crash Handling)&#34;]
+    subgraph MapReduce_Failure
+      MFID[&#34;Input Data 📂&#34;]
+      MFR[&#34;Map Phase Running 🛠️&#34;]
+      MC[&#34;Map Node Crash 🛑&#34;]
+      MF[&#34;Job Fails Entirely ❌&#34;]
+      MR[&#34;Manual Restart Needed 🔄&#34;]
+      MFID --&gt; MFR --&gt; MC --&gt; MF --&gt; MR
+    end
+
+    subgraph RDD_Failure
+      RFID[&#34;Input Data 📂&#34;]
+      RER[&#34;RDD Execution Running 🔄&#34;]
+      RCN[&#34;RDD Node Crash 🛑&#34;]
+      DR[&#34;Driver Attempts Lineage Recompute 🔁&#34;]
+      PR[&#34;Partial or Full Job Restart 🔄&#34;]
+      RFID --&gt; RER --&gt; RCN --&gt; DR --&gt; PR
+    end
+
+    subgraph Raft_Failure
+      RFD[&#34;Input Data 📂&#34;]
+      SR[&#34;Slice Running 🚀&#34;]
+      RC[&#34;Raft Node Crash 🛑&#34;]
+      EL[&#34;Raft Detects Loss + Elects New Leader 🧠&#34;]
+      RE[&#34;Reschedule Slice Elsewhere ♻️&#34;]
+      CE[&#34;Continue Execution Seamlessly ✅&#34;]
+      RFD --&gt; SR --&gt; RC --&gt; EL --&gt; RE --&gt; CE
+    end
+  end
+</pre><h2>🚀 How This Model Beats the Status Quo<span class="hx:absolute hx:-mt-20" id="-how-this-model-beats-the-status-quo"></span>
+    <a href="#-how-this-model-beats-the-status-quo" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>✅ Compared to Apache Spark<span class="hx:absolute hx:-mt-20" id="-compared-to-apache-spark"></span>
+    <a href="#-compared-to-apache-spark" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th>Spark (JVM)</th>
+          <th>Runink (Go + Linux primitives)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>JVM-based, slow cold starts</td>
+          <td>Instantaneous slice spawn using <code>exec</code></td>
+      </tr>
+      <tr>
+          <td>Containerized via YARN/Mesos/K8s</td>
+          <td>No container daemon needed</td>
+      </tr>
+      <tr>
+          <td>Fault tolerance via RDD lineage/logs</td>
+          <td>Strong consistency via Raft</td>
+      </tr>
+      <tr>
+          <td>Needs external tools for lineage</td>
+          <td>Built-in governance and metadata</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h3>✅ Compared to Kubernetes + Airflow<span class="hx:absolute hx:-mt-20" id="-compared-to-kubernetes--airflow"></span>
+    <a href="#-compared-to-kubernetes--airflow" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th>Kubernetes / Airflow</th>
+          <th>Runink</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>DAGs stored in SQL, not consistent across API servers</td>
+          <td>DAGs submitted via Raft log, replicated to all</td>
+      </tr>
+      <tr>
+          <td>Task scheduling needs K8s Scheduler or Celery</td>
+          <td>Runi agents coordinate locally via consensus</td>
+      </tr>
+      <tr>
+          <td>Containers = overhead</td>
+          <td>Direct <code>exec</code> in a namespaced PID space</td>
+      </tr>
+      <tr>
+          <td>Secrets are environment or K8s Secret dependent</td>
+          <td>Raft-backed, RBAC-scoped Secrets Manager</td>
+      </tr>
+      <tr>
+          <td>Governance/logging external</td>
+          <td>Observability and lineage native and real-time</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>🧠 Conclusion: Go + Linux internals + Raft = Data-Native Compute<span class="hx:absolute hx:-mt-20" id="-conclusion-go--linux-internals--raft--data-native-compute"></span>
+    <a href="#-conclusion-go--linux-internals--raft--data-native-compute" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Runink leverages <strong>Raft consensus not just for fault tolerance, but as a foundational architectural choice</strong>. It eliminates whole categories of orchestration complexity, state drift, and configuration mismatches by building from first principles — while offering <strong>a single runtime that natively understands pipelines, contracts, lineage, and compute</strong>.</p>
+<p>If you’re designing a modern data platform — especially one focused on governance, and efficient domain isolation — Runink is a <strong>radically integrated alternative</strong> to the Kubernetes-centric model.</p>
+
+        </div>
+        <div class="hx:mt-16"></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height=12 class="hx:group-data-[theme=dark]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div>
+</button>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Runink: Data You Can Trust. Decisions You Can Defend.</span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2025 Runink.</div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/en.search.js" integrity=""></script>
+
+<script defer src="/js/mermaid.min.33744df263a45feb1a4ee042f5394988640cd27ad0c83311adf077b344a3076f.js" integrity="sha256-M3RN8mOkX&#43;saTuBC9TlJiGQM0nrQyDMRrfB3s0SjB28=" crossorigin="anonymous"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    
+    document.querySelectorAll(".mermaid").forEach((el) => {
+      el.dataset.original = el.innerHTML;
+    });
+
+    const theme = document.documentElement.classList.contains("dark") ? "dark" : "default";
+    mermaid.initialize({ startOnLoad: true, theme: theme });
+
+    let timeout;
+    new MutationObserver(() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        const theme = document.documentElement.classList.contains("dark") ? "dark" : "default";
+        document.querySelectorAll(".mermaid").forEach((el) => {
+          
+          el.innerHTML = el.dataset.original;
+          el.removeAttribute("data-processed");
+        });
+        mermaid.initialize({ startOnLoad: true, theme: theme });
+        mermaid.init();
+      }, 150);
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  });
+</script>
+
+  </body>
+</html>
