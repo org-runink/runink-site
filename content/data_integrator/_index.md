@@ -1,7 +1,9 @@
 ---
 title: "Runink Data Integrator"
+layout: "landing"
 weight: 1
----------
+toc: false
+---
 
 ## 📌 Overview
 
