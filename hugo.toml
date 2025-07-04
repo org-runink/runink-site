@@ -42,12 +42,12 @@ section = ["HTML", "RSS"]
   
 [menu]
 [[menu.main]]
-identifier = "docs"
-name = "Runink Data Companion"
-pageRef = "/data_companion"
+identifier = "logistics Companion"
+name = "Runink Logistics"
+pageRef = "/logistics_companion"
 weight = 1
 [[menu.main]]
-identifier = "docs"
+identifier = "data_integrator"
 name = "Runink Data Integrator"
 pageRef = "/data_integrator"
 weight = 2
