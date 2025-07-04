@@ -1,5 +1,5 @@
 ---
-title: "Runink Data Companion"
+title: "Runink Logistics Companion"
 layout: "landing"
 weight: 1
 toc: false
